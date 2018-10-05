@@ -1,0 +1,111 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="redactapplicationModelStoreContainer" CdmEntityContainer="redactapplicationEntities">
+    <EntitySetMapping Name="COMMANDEs">
+      <EntityTypeMapping TypeName="redactapplicationModel.COMMANDE">
+        <MappingFragment StoreEntitySet="COMMANDE">
+          <ScalarProperty Name="commandeThemeId" ColumnName="commandeThemeId" />
+          <ScalarProperty Name="commandeStatutId" ColumnName="commandeStatutId" />
+          <ScalarProperty Name="commandeProjetId" ColumnName="commandeProjetId" />
+          <ScalarProperty Name="etat_paiement" ColumnName="etat_paiement" />
+          <ScalarProperty Name="contenu_livre" ColumnName="contenu_livre" />
+          <ScalarProperty Name="balise_titre" ColumnName="balise_titre" />
+          <ScalarProperty Name="consigne_autres" ColumnName="consigne_autres" />
+          <ScalarProperty Name="consigne_type_contenuId" ColumnName="consigne_type_contenuId" />
+          <ScalarProperty Name="consigne_references" ColumnName="consigne_references" />
+          <ScalarProperty Name="texte_ancrage" ColumnName="texte_ancrage" />
+          <ScalarProperty Name="mot_cle_secondaire" ColumnName="mot_cle_secondaire" />
+          <ScalarProperty Name="mot_cle_pricipal" ColumnName="mot_cle_pricipal" />
+          <ScalarProperty Name="nombre_mots" ColumnName="nombre_mots" />
+          <ScalarProperty Name="commandeTypeId" ColumnName="commandeTypeId" />
+          <ScalarProperty Name="ordrePriorite" ColumnName="ordrePriorite" />
+          <ScalarProperty Name="date_livraison" ColumnName="date_livraison" />
+          <ScalarProperty Name="date_cmde" ColumnName="date_cmde" />
+          <ScalarProperty Name="commandeRedacteurId" ColumnName="commandeRedacteurId" />
+          <ScalarProperty Name="commandeReferenceurId" ColumnName="commandeReferenceurId" />
+          <ScalarProperty Name="commandeId" ColumnName="commandeId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="COMMANDE_TYPE">
+      <EntityTypeMapping TypeName="redactapplicationModel.COMMANDE_TYPE">
+        <MappingFragment StoreEntitySet="COMMANDE_TYPE">
+          <ScalarProperty Name="Type" ColumnName="Type" />
+          <ScalarProperty Name="commandeTypeId" ColumnName="commandeTypeId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="CONTENU_TYPE">
+      <EntityTypeMapping TypeName="redactapplicationModel.CONTENU_TYPE">
+        <MappingFragment StoreEntitySet="CONTENU_TYPE">
+          <ScalarProperty Name="Type" ColumnName="Type" />
+          <ScalarProperty Name="contenuTypeId" ColumnName="contenuTypeId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="PROJETS">
+      <EntityTypeMapping TypeName="redactapplicationModel.PROJET">
+        <MappingFragment StoreEntitySet="PROJETS">
+          <ScalarProperty Name="projet_name" ColumnName="projet_name" />
+          <ScalarProperty Name="projetId" ColumnName="projetId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="ROLEs">
+      <EntityTypeMapping TypeName="redactapplicationModel.ROLE">
+        <MappingFragment StoreEntitySet="ROLE">
+          <ScalarProperty Name="roleNom" ColumnName="roleNom" />
+          <ScalarProperty Name="roleId" ColumnName="roleId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="STATUT_COMMANDE">
+      <EntityTypeMapping TypeName="redactapplicationModel.STATUT_COMMANDE">
+        <MappingFragment StoreEntitySet="STATUT_COMMANDE">
+          <ScalarProperty Name="statut_cmde" ColumnName="statut_cmde" />
+          <ScalarProperty Name="statutCommandeId" ColumnName="statutCommandeId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="THEMES">
+      <EntityTypeMapping TypeName="redactapplicationModel.THEME">
+        <MappingFragment StoreEntitySet="THEMES">
+          <ScalarProperty Name="theme_name" ColumnName="theme_name" />
+          <ScalarProperty Name="themeId" ColumnName="themeId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="UserRoles">
+      <EntityTypeMapping TypeName="redactapplicationModel.UserRole">
+        <MappingFragment StoreEntitySet="UserRole">
+          <ScalarProperty Name="idUser" ColumnName="idUser" />
+          <ScalarProperty Name="idRole" ColumnName="idRole" />
+          <ScalarProperty Name="idUserRole" ColumnName="idUserRole" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="UTILISATEURs">
+      <EntityTypeMapping TypeName="redactapplicationModel.UTILISATEUR">
+        <MappingFragment StoreEntitySet="UTILISATEUR">
+          <ScalarProperty Name="redactVolumeRestant" ColumnName="redactVolumeRestant" />
+          <ScalarProperty Name="redactTarif" ColumnName="redactTarif" />
+          <ScalarProperty Name="redactPhone" ColumnName="redactPhone" />
+          <ScalarProperty Name="redactNiveau" ColumnName="redactNiveau" />
+          <ScalarProperty Name="redactThemes" ColumnName="redactThemes" />
+          <ScalarProperty Name="redactReferenceur" ColumnName="redactReferenceur" />
+          <ScalarProperty Name="redactModePaiement" ColumnName="redactModePaiement" />
+          <ScalarProperty Name="redactVolume" ColumnName="redactVolume" />
+          <ScalarProperty Name="redactSkype" ColumnName="redactSkype" />
+          <ScalarProperty Name="logoUrl" ColumnName="logoUrl" />
+          <ScalarProperty Name="dateToken" ColumnName="dateToken" />
+          <ScalarProperty Name="token" ColumnName="token" />
+          <ScalarProperty Name="userMotdepasse" ColumnName="userMotdepasse" />
+          <ScalarProperty Name="userMail" ColumnName="userMail" />
+          <ScalarProperty Name="userPrenom" ColumnName="userPrenom" />
+          <ScalarProperty Name="userNom" ColumnName="userNom" />
+          <ScalarProperty Name="userId" ColumnName="userId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+  </EntityContainerMapping>
+</Mapping>

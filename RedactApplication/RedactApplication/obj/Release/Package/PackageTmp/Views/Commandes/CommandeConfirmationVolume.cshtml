@@ -1,0 +1,27 @@
+﻿
+@model RedactApplication.Models.COMMANDEViewModel
+@{
+    ViewBag.Title = "ConfirmCommande";
+    if (Model != null)
+    {
+        ViewBag.commandeId = Model.commandeId;
+    }
+}
+<div class="popupModal">
+    <div class="icone_type">
+        <img src="~/images/icon-done.png" alt="Photo done">
+    </div>
+    <div class="pop_content">
+        <h3>Done !</h3>
+        <span class="ltl-consign"><i class="fa fa-info-circle"></i>La commande a bien été créee !</span>
+        <label for="" class="col-50 pull-left">
+            Choisir Rédacteur
+            @Html.DropDownListFor(x => Model.listRedacteurId, new SelectList(Model.ListRedacteur, "Value", "Text"), htmlAttributes: new { id = "SelectItemRedacteur" })
+        </label>
+
+        <ul class="bouttons_area">
+            <li><button type="submit" class="green_hit" onclick="@("window.location.href='" + @Url.RouteUrl("Home", new { controller = "Commandes", action = "ListCommandes" }) + "'");">Ok</button></li>
+            <li><button type="submit" class="blue_hit" onclick="@("window.location.href='" + @Url.RouteUrl("Home", new { controller = "Commandes", action = "Create" }) + "'");">Creer une commande</button></li>
+        </ul>
+    </div>
+</div>

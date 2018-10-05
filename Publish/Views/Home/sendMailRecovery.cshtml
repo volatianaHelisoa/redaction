@@ -1,0 +1,29 @@
+﻿@model RedactApplication.Models.UTILISATEURViewModel
+@{
+    ViewBag.Title = "SendMailRecoveryConfirmation";
+    if (Model != null)
+    {
+     
+        ViewBag.userId = Model.userId;
+
+    }
+
+  
+}
+
+
+<div class="flex-content flex-jcenter-acenter flex-col pop-up">
+    <div class="popup-container with-shadow">
+        <div class="head gradient-blue">
+            <h1>Terminé</h1>
+        </div>
+        <div class="content-section text-centered icon-bottom">
+            <i class="pop-icon green-bg"></i>
+            <p>Nous venons d'envoyer les instructions de réinitialisation du mot de passe à <strong class="green-text">@ViewBag.mail</strong></p>
+            
+                <input type="submit" value="Ok" class="btn btn-primary" onclick="@("window.location.href='" + @Url.RouteUrl("Home", new {controller = "Home", action = "ListeUser"}) + "'");">
+            
+        </div>
+    </div>
+
+</div>

@@ -1,0 +1,206 @@
+﻿@model RedactApplication.Models.UTILISATEURViewModel
+@{
+    ViewBag.Title = "Utilisateur";
+
+    if (Model != null)
+    {
+        ViewBag.userId = Model.userId;
+    }
+
+
+    Layout = "~/Views/Shared/LayoutConnected.cshtml";
+}
+@section Scripts{
+
+    <link rel="stylesheet" href="~/Content/css/elements/profil.css">
+    <script>
+          $("#checkReferenceur").prop('checked', false);
+    $("#checkRedacteur").prop('checked', false);
+    $("#checkManager").prop('checked', false);
+    @if (ViewBag.userRole == 1)
+    {
+        @:jQuery("#checkReferenceur").prop('checked', true);
+    }
+    @if (ViewBag.userRole == 2)
+    {
+        @:jQuery("#checkRedacteur").prop('checked', true);
+
+    }
+    @if (@ViewBag.userRole == 3)
+    {
+        @:jQuery("#checkManager").prop('checked', true);
+    }
+    </script>
+}
+
+@if (ViewBag.succes != null)
+{
+    if (ViewBag.succes == 1)
+    {
+        <script>
+            $("#EditUserPopUp").modal();
+            $("div#EditUserPopUp").css("display", "block");
+        </script>
+    }
+}
+@if (Model != null && Session["name"] != null && @Session["role"] != null && @Session["role"].ToString() != "5")
+{
+
+    <main id="wrapper">
+        <div id="single-container">
+            <div class="onglets ease-in-out">
+                <ul>
+                    <li> @Html.ActionLink("Dashboard", "Dashboard", new { controller = "Home" }) </li>
+                    @if (@Session["role"] != null && @Session["role"].ToString() != "2")
+                    {
+                        <li> @Html.ActionLink("Utilisateurs", "ListeUser", new { controller = "Home" }, new { @class = "active" }) </li>
+                    }
+                    <li>@Html.ActionLink("Commandes", "ListCommandes", new { controller = "Commandes" })</li>
+                    @if (@Session["role"] != null && @Session["role"].ToString() != "1")
+                    {
+                        <li>@Html.ActionLink("Factures", "ListFacture", new { controller = "Facture" })</li>
+                    }
+                    </ul>
+            </div>
+            <div class="card back-office with-shadow">
+
+
+
+
+                <input type="hidden" value="@Model.userId" name="idUser">
+                <div class="head">
+                    <div class="flex-content flex-jcenter-acenter edit-avatar">
+                        <span class="profil-thumb">
+
+                            @if (!string.IsNullOrEmpty(Model.logoUrl))
+                            {
+                                <img id="new-profil-preview" src="@Model.logoUrl" alt="@Model.userNom" title="@Model.userNom" />
+                            }
+                            else
+                            { <img id="new-profil-preview" src="~/images/avatar.png" alt="" srcset="" />}
+                        </span>
+
+                    </div>
+                </div>
+
+                <!-- Champs -->
+                <section class="clearfix" id="user-profil-detail">
+                    <div class="col-50 pull-left">
+                        <div class="item">
+                            <strong><i class="fa fa-user"></i> Nom</strong>
+                            <span>@Html.DisplayFor(x => x.userNom)</span>
+                        </div>
+                        <div class="item">
+                            <strong><i class="fa fa-user"></i> Prénom</strong>
+                            <span>@Html.DisplayFor(x => x.userPrenom, new { @required = true })</span>
+                        </div>
+                        <div class="item">
+                            <strong><i class="fa fa-phone"></i> Téléphone</strong>
+                            <span>@Html.DisplayFor(x => x.redactPhone, new { @type = "tel", @required = true })</span>
+                        </div>
+
+                    </div>
+
+                    <div class="col-50 pull-right">
+                        <div class="item">
+                            <strong><i class="fa fa-envelope-open"></i> E-mail</strong>
+                            <span>@Html.DisplayFor(x => x.userMail, new { @required = true, @type = "email" })</span>
+                        </div>
+                        <div class="item">
+                            <strong><i class="fa fa-skype"></i> Skype</strong>
+                            <span>@Html.DisplayFor(x => x.redactSkype, new { @required = true })</span>
+                        </div>
+                    </div>
+                </section>
+                <div class="sep"></div>
+                <section class="clearfix" id="user-profil-role">
+                    <div class="section-title">
+                        <span>Role</span>
+                    </div>
+                    <div class="container-fluid">
+                        <div class="col-md-4 item-usr">
+                            <input type="checkbox" name="selectedRole" value="1" id="checkReferenceur" style="display: inline-block; width: auto; vertical-align: middle; margin: 10px 0;" disabled /> Referenceur
+                        </div>
+                        <div class="col-md-4 item-usr">
+                            <input type="checkbox" name="selectedRole" value="2" id="checkRedacteur" style="display: inline-block; width: auto; vertical-align: middle; margin: 10px 0;" disabled /> Redacteur
+                        </div>
+                        <div class="col-md-4 item-usr">
+                            <input type="checkbox" name="selectedRole" value="3" id="checkManager" style="display: inline-block; width: auto; vertical-align: middle; margin: 10px 0;" disabled />  Manager
+                        </div>
+
+
+                    </div>
+                </section>
+                <div class="sep"></div>
+                @if (@Session["role"] != null && @Session["role"].ToString() == "2")
+                {
+                    <section class="clearfix user-info" id="CheckEditRedacteur">
+                        <div class="section-title">
+                            <span>Redacteur informations</span>
+                        </div>
+                        <label for="" class="col-50 pull-right">
+                            <div class="item">
+                                <strong>Volume / Jour</strong>
+                                <span>@Html.DisplayFor(x => x.redactVolume, new { @type = "number" })</span>
+                            </div>
+                        </label>
+                        <label for="" class="col-50 pull-left">
+                            <div class="item">
+                                <strong>Tarif (Ariary)</strong>
+                                <span>@Html.DisplayFor(x => x.redactTarif, new { @type = "number" })</span>
+                            </div>
+                        </label>
+                        <label for="" class="col-50 pull-right">
+                            <div class="item">
+                                <strong>Thèmes</strong>
+                                <span>@Html.DisplayFor(x => x.redactThemes)</span>
+                            </div>
+                        </label>
+                        <label for="" class="col-50 pull-left">
+                            <div class="item">
+                                <strong>Niveau</strong>
+                                <span>@Html.DisplayFor(x => x.redactNiveau)</span>
+                            </div>
+                        </label>
+                        <label for="" class="col-50 pull-right">
+                            <div class="item">
+                                <strong>Référenceur</strong>
+                                <span>@Html.DisplayFor(x => x.redactReferenceur)</span>
+                            </div>
+                        </label>
+                        <label for="" class="col-50 pull-left">
+                            <div class="item">
+                                <strong>Mode de paiement</strong>
+                                <span>@Html.DisplayFor(x => x.redactModePaiement)</span>
+                            </div>
+                        </label>
+
+                    </section>
+                }
+                <div class="sep"></div>
+                @if (@Session["role"] != null && @Session["role"].ToString() == "2")
+                {
+                    <section class="clearfix submit-area">
+
+                        @Html.ActionLink("Edit", "EditUser", "Home", new { hash = Model.userId }, new { @class = "btn btn-success" })
+                        @Html.ActionLink("Annuler", "ListCommandes", "Commandes", new { }, new { @class = "btn btn-warning" })
+
+                    </section>
+                }
+                else
+                {
+                    <section class="clearfix submit-area">
+
+                        @Html.ActionLink("Edit", "EditUser", "Home", new { hash = Model.userId }, new { @class = "btn btn-success" })
+                        @Html.ActionLink("Annuler", "ListeUser", "Home", new { }, new { @class = "btn btn-warning" })
+
+                    </section>
+                }
+
+
+            </div>
+</div>
+</main>
+}
+
+

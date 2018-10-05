@@ -1,0 +1,73 @@
+﻿<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex,nofollow" />
+    <link href="~/Content/css/layout/layout.css" rel="stylesheet" />
+    <link href="~/Content/style.css" rel="stylesheet" />
+    <link href="~/Content/font-awesome.css" rel="stylesheet" />
+    <link rel="stylesheet" href="~/Content/bootstrap.css">
+    <link rel="shortcut icon" type="image/x-icon" href="" />
+    <title>Mediaclick</title>
+
+    @*<title>@ViewBag.Title</title>*@
+
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+    @RenderSection("css", required: false)
+
+
+</head>
+<body>
+<header id="header">
+    <div class="fullPanel top-panel clear">
+        <div class="left">
+            @*<img src="~/images/home.jpg" style="width:41px;height:41px;" class="ltlavatar">*@   
+            <img style="width:41px;height:41px;" src="@Session["logoUrl"]" class="ltlavatar">   
+            <span id="pAneltxt">Redact application</span>
+        </div>
+        <div class="right">
+            <div class="user_wlcm">Welcome, <span>@Session["name"] @Session["surname"] </span>
+                <span class="badge">@Session["commande"] </span>
+                <div class="attrib">  
+                    @if (@Session["role"] != null && @Session["role"].ToString() == "1")
+                    {
+                        <p>(Référenceur)</p> 
+                    }
+                    @if (@Session["role"] != null && @Session["role"].ToString() == "2")
+                    {
+                        <p>(Rédacteur)</p>  
+                    }
+                    @if (@Session["role"] != null && @Session["role"].ToString() == "3")
+                    {
+                        <p>(User manager)</p>  
+                    }
+                    @if (@Session["role"] != null && @Session["role"].ToString() == "4")
+                    {
+                        <p>(Administrateur)</p> 
+                
+                    }
+                </div>
+                <a href="javascript:void(0)" onclick="@("window.location.href='" + @Url.Action("LogoutPage", "Login") + "'");"><i class="fa fa-user-circle-o"></i>Logout</a>
+            </div>
+          
+        </div>
+    </div>
+</header>
+<!-- Loading spinner -->
+<div id="cachepage"><span><img src="~/images/spinner.gif" /></span></div>    
+<!-- End loading spinner -->
+@RenderBody()
+<footer></footer>
+
+@Scripts.Render("~/bundles/jquery")
+@Scripts.Render("~/bundles/bootstrap")
+@RenderSection("scripts", required: false)
+@RenderSection("AddToHead", required: false)
+<script src="~/Scripts/GestionVue.js"></script>
+    
+</body>
+
+</html>
+

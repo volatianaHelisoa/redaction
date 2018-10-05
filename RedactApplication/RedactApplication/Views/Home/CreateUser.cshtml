@@ -1,0 +1,177 @@
+﻿@model RedactApplication.Models.UTILISATEURViewModel
+
+@{
+    ViewBag.Title = "Utilisateur";
+    if (Model != null)
+    {
+
+        ViewBag.userId = Model.userId;
+        Model.userNom = "";
+        Model.userPrenom = "";
+    }
+
+    Layout = "~/Views/Shared/LayoutConnected.cshtml";
+}
+@section Scripts{
+
+    <link rel="stylesheet" href="~/Content/css/elements/profil.css">
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-multiselect/0.9.15/js/bootstrap-multiselect.js"></script>
+
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-multiselect/0.9.15/css/bootstrap-multiselect.css" rel="stylesheet" />
+
+    <script>
+        jQuery("#CheckEditRedacteur").hide();
+        $("#checkReferenceur").prop('checked', false);
+        $("#checkRedacteur").prop('checked', false);
+        $("#checkManager").prop('checked', false);
+
+        jQuery(document).ready(function () {
+
+           
+
+        });
+
+        function setrequiredprop(attr) {
+            $("#checkManager").prop('checked', attr);
+            $("#checkRedacteur").prop('checked', attr);
+        }
+    </script>
+
+    @if (ViewBag.succes != null)
+    {
+        if (ViewBag.succes == 1)
+        {
+            <script>
+                $("#addUserPopUp").modal();
+                $("div#addUserPopUp").css("display", "block");
+            </script>
+        }
+
+        else if (ViewBag.succes == 3)
+        {
+            <script>
+                $("#errorValidDataUserPopUp").modal();
+                $("div#errorValidDataUserPopUp").css("display", "block");
+            </script>
+        }
+    }
+}
+
+
+
+    <main id="wrapper">
+        <div id="single-container">
+            <div class="onglets ease-in-out">
+                <ul>
+                    <li> @Html.ActionLink("Dashboard", "Dashboard", new { controller = "Home" }) </li>
+                    @if (@Session["role"] != null && @Session["role"].ToString() != "2")
+                    {
+                        <li> @Html.ActionLink("Utilisateurs", "ListeUser", new { controller = "Home" }, new { @class = "active" }) </li>
+                    }
+                    <li>@Html.ActionLink("Commandes", "ListCommandes", new { controller = "Commandes" })</li>
+                    @if (@Session["role"] != null && @Session["role"].ToString() != "1")
+                    {
+                        <li>@Html.ActionLink("Factures", "ListFacture", new { controller = "Facture" })</li>
+                    }
+                    </ul>
+            </div>
+            <div class="card back-office with-shadow">
+
+                <div class="head">
+                    <h1>Créer utilisateur</h1>
+                    <p>Veuillez remplir les champs Requis (*) et appuyez sur Enregistrer pour créer un utilisateur</p>
+                </div>
+
+
+                @using (Html.BeginForm("EnregistrerTemplateUtilisateur", "Home", FormMethod.Post, new { @class = "formfields", @id = "enregistrerUtilisateur", enctype = "multipart/form-data" }))
+                {
+                    <fieldset>
+
+                        <div class="head">
+                            <div class="flex-content flex-jcenter-acenter edit-avatar">
+                                <span class="profil-thumb">
+                                    <img id="new-profil-preview" src="~/images/avatar.png" alt="" srcset="" />
+                                </span>
+                                <div class="flex-content flex-col change-avatar">
+                                    <span class="file-name">Votre avatar</span>
+                                    @Html.TextBoxFor(m => m.logoUrl, new { type = "file", @class = "fileTriger", name = "file", id = "user-profil", accept = "image/*" })
+                                    <div class="input-custom">
+                                        <label for="user-profil" class="label-file">Choisir</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Champs -->
+                        <section class="clearfix">
+                            <label for="" class="col-50 pull-left">
+                                Nom (*)
+                                @Html.TextBoxFor(x => x.userNom, new { @required = true })
+                            </label>
+                            <label for="" class="col-50 pull-right">
+                                Prénom (*)
+                                @Html.TextBoxFor(x => x.userPrenom, new { @required = true })
+                            </label>
+                            <label for="" class="col-50 pull-left">
+                                E-mail (*)
+                                @Html.TextBoxFor(x => x.userMail, new { @required = true, @type = "email" })
+                                @if (ViewBag.ErrorUserValidation != null)
+                                {
+                                    <label class="error-msg ltl-consign input-error">Adresse mail invalide.</label>
+                                }
+                            </label>
+                          
+                        </section>
+                       
+
+                        <section class="clearfix submit-area" id="toast">
+                            <input type="submit" value="Enregistrer" class="btn btn-success">
+                            @Html.ActionLink("Annuler", "ListeUserTemplate", "Home", new { }, new { @class = "btn btn-warning" })
+
+                        </section>
+                    </fieldset>
+                }
+            </div>
+        </div>
+        <!--  Dialogue succès ajout user   -->
+        <div id="addUserPopUp" style="display:none" class="popup-notif">
+            @Html.Partial("~/Views/Home/CreatedUserConfirmation.cshtml")
+        </div>
+
+        <!--  Dialogue error valid data   -->
+        <div id="errorValidDataUserPopUp" style="display:none" class="popup-notif">
+            @Html.Partial("~/Views/Home/ErrorUser.cshtml")
+        </div>
+    </main>
+
+
+
+
+
+
+
+
+
+
+
+<script>
+    var selectAll = function () {
+
+        $('.usr-sel :checkbox').each(function () {
+            this.checked = true;
+        });
+    };
+
+    var unSelectAll = function () {
+        $('.usr-sel :checkbox').each(function () {
+            this.checked = false;
+        });
+    };
+
+    var GoToListUser = function (userId) {
+        document.location.href = "../Home/ListeUser";
+    };
+
+
+</script>

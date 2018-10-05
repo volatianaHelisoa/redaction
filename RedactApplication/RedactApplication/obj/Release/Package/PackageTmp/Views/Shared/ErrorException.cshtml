@@ -1,0 +1,26 @@
+﻿@model System.Web.Mvc.HandleErrorInfo
+@{
+    ViewBag.Title = "Erreur";
+}
+
+<div class="flex-content flex-jcenter-acenter flex-col pop-up">
+    <div class="popup-container with-shadow">
+        <div class="head gradient-blue">
+            <h1>OUPS !</h1>
+        </div>
+        <div class="content-section text-centered icon-bottom">
+            <i class="pop-icon red-bg"></i>
+            <p>Une erreur s'est produite <br> Une erreur inattendue s'est produite sur notre site Web. L'administrateur du site a été notifié.</p>
+            @using (Html.BeginForm("Accueil", "Login", FormMethod.Post))
+            {
+                <input type="submit" value="Ok" class="btn btn-primary" >
+            }
+            </div>
+    </div>
+
+</div>
+<script>
+    function redirectPage(parameters) {
+        window.location.href = "/Login/Accueil";
+    }
+</script>

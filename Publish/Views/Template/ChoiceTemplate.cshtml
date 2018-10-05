@@ -1,0 +1,303 @@
+﻿
+@{
+    ViewBag.Title = "ListTemplate";
+    Layout = "~/Views/Shared/LayoutConnected.cshtml";
+}
+@section Scripts{
+
+    <script src="~/Scripts/redac-script.js"></script>
+    <link rel="stylesheet" href="~/Content/css/elements/sites-creation.css">
+}
+
+<main id="wrapper">
+    <div id="single-container">
+        <div class="onglets ease-in-out">
+            <ul>
+                <li> @Html.ActionLink("Dashboard", "ListTemplate", new { controller = "Template" }) </li>
+
+                <li> @Html.ActionLink("Creation Site", "ChoiceTemplate", new { controller = "Template" }, new { @class = "active" })</li>
+
+            </ul>
+        </div>
+       
+        <div class="theme-select grey-bg">
+            <h1>CHOISIR VOTRE THEME</h1>
+            <section class="clearfix container">
+                <div class="row">
+                    @using (Html.BeginForm("Theme1", "Template", FormMethod.Post, new { @class = "formfields col-md-3" }))
+                    {
+                        <div class="item" data-index="1" id="theme1">
+                            <div class="thumb with-shadow"><img src="~/images/theme1_thumb.jpg" /></div>
+                            <span class="choose-color">Thème 1</span>
+                            <div class="theme-param theme1__templates">
+                                <div class="control-group">
+                                    <h4>Selectionnez vos couleurs</h4>
+                                    <label class="control control--checkbox">
+                                        <input type="radio" checked="checked" value="default" name="color-select" />
+                                        <div class="control__indicator"></div>
+                                        <div class="color-scheme default">
+                                            <dd class="color1"></dd>
+                                            <dd class="color2"></dd>
+                                            <dd class="color3"></dd>
+                                        </div>
+                                    </label>
+                                    <label class="control control--checkbox">
+                                        <input type="radio" name="color-select" value="dark" />
+                                        <div class="control__indicator"></div>
+                                        <div class="color-scheme dark">
+                                            <dd class="color1"></dd>
+                                            <dd class="color2"></dd>
+                                            <dd class="color3"></dd>
+                                        </div>
+                                    </label>
+                                    <label class="control control--checkbox">
+                                        <input type="radio" name="color-select" value="light" />
+                                        <div class="control__indicator"></div>
+                                        <div class="color-scheme theme2">
+                                            <dd class="color1"></dd>
+                                            <dd class="color2"></dd>
+                                            <dd class="color3"></dd>
+                                        </div>
+                                    </label>
+
+                                    <div class="create-theme">
+                                        <input type="submit" value="Créer" class="btn btn-success btn-small">
+                                       <a class="btn btn-warning btn-small cancel-color-choice" id="close-1">Annuler</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    }
+
+                    @using (Html.BeginForm("Theme2", "Template", FormMethod.Post, new { @class = "formfields col-md-3" }))
+                    {
+                        <div class="item" data-index="1" id="theme2">
+                            <div class="thumb with-shadow"><img src="~/images/theme2_thumb.jpg" /></div>
+                            <span class="choose-color">Thème 2</span>
+                            <div class="theme-param theme2__templates">
+                                <div class="control-group">
+                                    <h4>Selectionnez vos couleurs</h4>
+                                    <label class="control control--checkbox">
+                                        <input type="radio" checked="checked" value="default" name="color-select" />
+                                        <div class="control__indicator"></div>
+                                        <div class="color-scheme default">
+                                            <dd class="color1"></dd>
+                                            <dd class="color2"></dd>
+                                            <dd class="color3"></dd>
+                                        </div>
+                                    </label>
+                                    <label class="control control--checkbox">
+                                        <input type="radio" name="color-select" value="dark" />
+                                        <div class="control__indicator"></div>
+                                        <div class="color-scheme dark">
+                                            <dd class="color1"></dd>
+                                            <dd class="color2"></dd>
+                                            <dd class="color3"></dd>
+                                        </div>
+                                    </label>
+                                    <label class="control control--checkbox">
+                                        <input type="radio" name="color-select" value="light" />
+                                        <div class="control__indicator"></div>
+                                        <div class="color-scheme theme2">
+                                            <dd class="color1"></dd>
+                                            <dd class="color2"></dd>
+                                            <dd class="color3"></dd>
+                                        </div>
+                                    </label>
+                                    <div class="create-theme">
+                                        <input type="submit" value="Créer" class="btn btn-success btn-small">
+                                       <a class="btn btn-warning btn-small cancel-color-choice" id="close-1">Annuler</a>
+                                    </div>
+                                </div>
+                            </div>
+                          
+                        </div>
+                    }
+
+                    @using (Html.BeginForm("Theme3", "Template", FormMethod.Post, new { @class = "formfields col-md-3" }))
+                    {
+                        <div class="item" data-index="1" id="theme3">
+                            <div class="thumb with-shadow"><img src="~/images/theme3_thumb.jpg" /></div>
+                            <span class="choose-color">Thème 3</span>
+                            <div class="theme-param theme3__templates">
+                                <div class="control-group">
+                                    <h4>Selectionnez vos couleurs</h4>
+                                    <label class="control control--checkbox">
+                                        <input type="radio" checked="checked" value="default" name="color-select" />
+                                        <div class="control__indicator"></div>
+                                        <div class="color-scheme default">
+                                            <dd class="color1"></dd>
+                                            <dd class="color2"></dd>
+                                            <dd class="color3"></dd>
+                                        </div>
+                                    </label>
+                                    <label class="control control--checkbox">
+                                        <input type="radio" name="color-select" value="dark" />
+                                        <div class="control__indicator"></div>
+                                        <div class="color-scheme dark">
+                                            <dd class="color1"></dd>
+                                            <dd class="color2"></dd>
+                                            <dd class="color3"></dd>
+                                        </div>
+                                    </label>
+                                    <label class="control control--checkbox">
+                                        <input type="radio" name="color-select" value="light" />
+                                        <div class="control__indicator"></div>
+                                        <div class="color-scheme theme2">
+                                            <dd class="color1"></dd>
+                                            <dd class="color2"></dd>
+                                            <dd class="color3"></dd>
+                                        </div>
+                                    </label>
+                                    <div class="create-theme">
+                                        <input type="submit" value="Créer" class="btn btn-success btn-small">
+                                       <a class="btn btn-warning btn-small cancel-color-choice" id="close-1">Annuler</a>
+                                    </div>
+                                </div>
+                            </div>
+                          
+                        </div>
+                    }
+
+                    @using (Html.BeginForm("Theme4", "Template", FormMethod.Post, new { @class = "formfields col-md-3" }))
+                    {
+                        <div class="item" data-index="1" id="theme4">
+                            <div class="thumb with-shadow"><img src="~/images/theme4_thumb.jpg" /></div>
+                            <span class="choose-color">Thème 4</span>
+                            <div class="theme-param theme4__templates">
+                                <div class="control-group">
+                                    <h4>Selectionnez vos couleurs</h4>
+                                    <label class="control control--checkbox">
+                                        <input type="radio" checked="checked" value="default" name="color-select" />
+                                        <div class="control__indicator"></div>
+                                        <div class="color-scheme default">
+                                            <dd class="color1"></dd>
+                                            <dd class="color2"></dd>
+                                            <dd class="color3"></dd>
+                                        </div>
+                                    </label>
+                                    <label class="control control--checkbox">
+                                        <input type="radio" name="color-select" value="dark" />
+                                        <div class="control__indicator"></div>
+                                        <div class="color-scheme dark">
+                                            <dd class="color1"></dd>
+                                            <dd class="color2"></dd>
+                                            <dd class="color3"></dd>
+                                        </div>
+                                    </label>
+                                    <label class="control control--checkbox">
+                                        <input type="radio" name="color-select" value="light" />
+                                        <div class="control__indicator"></div>
+                                        <div class="color-scheme theme2">
+                                            <dd class="color1"></dd>
+                                            <dd class="color2"></dd>
+                                            <dd class="color3"></dd>
+                                        </div>
+                                    </label>
+                                    <div class="create-theme">
+                                        <input type="submit" value="Créer" class="btn btn-success btn-small">
+                                       <a class="btn btn-warning btn-small cancel-color-choice" id="close-1">Annuler</a>
+                                    </div>
+                                </div>
+                            </div>
+                         
+                        </div>
+                    }
+
+                    @using (Html.BeginForm("Theme5", "Template", FormMethod.Post, new { @class = "formfields col-md-3" }))
+                    {
+                        <div class="item" data-index="1" id="theme5">
+                            <div class="thumb with-shadow"><img src="~/images/theme5_thumb.jpg" /></div>
+                            <span class="choose-color">Thème 5</span>
+                            <div class="theme-param theme5__templates">
+                                <div class="control-group">
+                                    <h4>Selectionnez vos couleurs</h4>
+                                    <label class="control control--checkbox">
+                                        <input type="radio" checked="checked" value="default" name="color-select" />
+                                        <div class="control__indicator"></div>
+                                        <div class="color-scheme default">
+                                            <dd class="color1"></dd>
+                                            <dd class="color2"></dd>
+                                            <dd class="color3"></dd>
+                                        </div>
+                                    </label>
+                                    <label class="control control--checkbox">
+                                        <input type="radio" name="color-select" value="dark" />
+                                        <div class="control__indicator"></div>
+                                        <div class="color-scheme dark">
+                                            <dd class="color1"></dd>
+                                            <dd class="color2"></dd>
+                                            <dd class="color3"></dd>
+                                        </div>
+                                    </label>
+                                    <label class="control control--checkbox">
+                                        <input type="radio" name="color-select" value="light" />
+                                        <div class="control__indicator"></div>
+                                        <div class="color-scheme theme2">
+                                            <dd class="color1"></dd>
+                                            <dd class="color2"></dd>
+                                            <dd class="color3"></dd>
+                                        </div>
+                                    </label>
+                                    <div class="create-theme">
+                                        <input type="submit" value="Créer" class="btn btn-success btn-small">
+                                       <a class="btn btn-warning btn-small cancel-color-choice" id="close-1">Annuler</a>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                        </div>
+                    }
+
+                    @using (Html.BeginForm("Theme6", "Template", FormMethod.Post, new { @class = "formfields col-md-3" }))
+                    {
+                        <div class="item" data-index="1" id="theme6">
+                            <div class="thumb with-shadow"><img src="~/images/theme6_thumb.jpg" /></div>
+                            <span class="choose-color">Thème 6</span>
+                            <div class="theme-param theme6__templates">
+                                <div class="control-group">
+                                    <h4>Selectionnez vos couleurs</h4>
+                                    <label class="control control--checkbox">
+                                        <input type="radio" checked="checked" value="default" name="color-select" />
+                                        <div class="control__indicator"></div>
+                                        <div class="color-scheme default">
+                                            <dd class="color1"></dd>
+                                            <dd class="color2"></dd>
+                                            <dd class="color3"></dd>
+                                        </div>
+                                    </label>
+                                    <label class="control control--checkbox">
+                                        <input type="radio" name="color-select" value="dark" />
+                                        <div class="control__indicator"></div>
+                                        <div class="color-scheme dark">
+                                            <dd class="color1"></dd>
+                                            <dd class="color2"></dd>
+                                            <dd class="color3"></dd>
+                                        </div>
+                                    </label>
+                                    <label class="control control--checkbox">
+                                        <input type="radio" name="color-select" value="light" />
+                                        <div class="control__indicator"></div>
+                                        <div class="color-scheme theme2">
+                                            <dd class="color1"></dd>
+                                            <dd class="color2"></dd>
+                                            <dd class="color3"></dd>
+                                        </div>
+                                    </label>
+                                    <div class="create-theme">
+                                        <input type="submit" value="Créer" class="btn btn-success btn-small">
+                                       <a class="btn btn-warning btn-small cancel-color-choice" id="close-1">Annuler</a>
+                                    </div>
+                                </div>
+                            </div>
+                          
+                        </div>
+                    }
+
+                </div>
+            </section>
+
+        </div>
+    </div>
+</main>
+

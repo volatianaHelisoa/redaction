@@ -1,0 +1,225 @@
+.icon-create-command {
+    background: url(../../../images/creercommande-picto.png) no-repeat center;
+    background-size: 100%;
+}
+.icon-edit-command {
+    background: url(../../../images/editcomande-picto.png) no-repeat center;
+    background-size: 100%;
+}
+
+.head-list .resume {
+    text-align: center;
+    padding: 20px 0;
+    position: relative;
+}
+
+.head-list .resume ul {
+    margin: 0;
+    padding:8px 25px;
+    border: 1px solid #ebebeb;
+    background: #fafafa;
+    display: inline-block;
+}
+
+.head-list .resume li{
+    list-style: none;
+    display: inline-block;
+    text-transform: uppercase;
+    border-right: 1px solid #868686;
+    padding: 0 20px;
+    margin-left: -2px;
+}
+
+.head-list .resume li:last-of-type {
+    border-right: none;
+}
+/** Commande view **/
+.commande-view .wrap span,
+.commande-resume .wrap span {
+    display: block;
+    margin-bottom: 10px;
+    color: #898989;
+}
+.commande-resume .wrap strong,
+.commande-resume .wrap strong {
+    color: #525252;
+}
+
+.project-id {
+    font-size: 20px;
+    display: block;
+    line-height: normal;
+    padding: 10px 10px;
+    background-color: #ececec;
+    border-radius: 3px;
+}
+
+.commande-view .section-title,
+.commande-resume .section-title {
+    margin: 0;
+    padding: 0;
+}
+
+.commande-view .section-title {
+    margin-bottom: 20px;
+}
+
+.commande-view .commande-contenu {
+    padding: 20px;
+    border: 1px solid #dadada;
+    margin-top: 10px;
+    height: 340px;
+    overflow-y: hidden;
+}
+
+.commande-resume .wrap  {
+    background-color: #f9f9f9;
+    padding: 20px;
+}
+.commande-resume .section-title {
+    border: none;
+}
+
+.commande-view .contenu-footer{
+    border-right: 1px solid #dadada;
+    border-bottom: 1px solid #dadada;
+    border-left: 1px solid #dadada;
+    font-size: 12px;
+    padding-left: 20px;
+    background: #f9f9f9;
+}
+.commande-view .contenu-footer span {
+    margin: 0
+}
+.commande-view .contenu-footer button.btn-copy {
+    padding: 7px 20px;
+    font-size: 16px;
+    color: white;
+    background-color: #26b5ff;
+    margin-right: -1px;
+    text-transform: uppercase;
+	border:none;
+}
+
+.commande-view button.btn-copy:hover {
+	background-color:#072667;
+}
+
+.commande-resume .wrap span strong {
+    margin-right: 10px;
+}
+.commande-resume td {
+    vertical-align: top;
+    min-width: 100px;
+}
+.commande-resume td p {
+    margin: 0 0 10px;
+}
+/* Commande non livr� */
+.commande-view .commande-not-delivered > span {
+    font-size: 20px;
+    text-align: center;
+    padding: 50px 0 70px;
+    margin: 0;
+    color: #525252;
+    font-family: 'RL';
+}
+
+.commande-not-delivered .item {
+    flex: 1;
+    text-align: center;
+    cursor: pointer
+}
+
+.commande-not-delivered .item > span {
+    width: 70px;
+    height: 70px;
+    border-radius: 50%;
+    padding: 0;
+    color: white;
+    text-align: center;
+    line-height: 80px;
+    margin: 0 auto 10px;
+    display: block;
+}
+
+.commande-review {
+    max-width: 500px;
+    display: block;
+    margin: 10px auto 30px;
+    background-color: #f9f9f9;
+    padding: 20px;
+}
+
+.commande-review span {
+    display: block;
+    width: 100%;
+    padding: 10px 0;
+    border-bottom: 1px solid #ebebeb;
+}
+
+.commande-review span:last-of-type {
+    border: none
+}
+
+/* POPUPS COMMANDES */
+#refuserCommandePoPup,
+#updateCommandePoPup {
+    margin: -278px auto 0;
+    background: white;
+    padding: 20px 30px 30px;
+    max-width: 570px;
+}
+
+#refuserCommandePoPup .commande-review,
+#updateCommandePoPup .commande-review {
+    margin: 0 auto 20px;
+}
+
+#refuserCommandePoPup h1,
+#updateCommandePoPup h1 {
+    color: #26b5ff;
+    font-size: 25px;
+    text-align: center;
+    padding: 20px 0;
+}
+
+#refuserCommandePoPup textarea
+#updateCommandePoPup textarea {
+    display: block;
+    width: 100%;
+    min-height: 100px;
+    margin-top: 10px;
+    resize: none;
+    padding: 15px;
+}
+
+#volumePopup .content-section p {
+    margin: 40px 0;
+}
+#volumePopup label {
+	display: block;
+	margin-bottom: 20px;
+}
+#volumePopup  p strong {
+    color: #26b5ff;
+}
+
+
+#remarques {
+    display: block;
+    margin-top: 30px;
+}
+
+#remarques .contenu {
+    padding: 20px;
+    background: #ffebeb;
+}
+
+#remarques .contenu p {
+    margin: 0 0 10px;
+}
+
+#remarques .section-title span {
+    background: #ff4026;
+}

@@ -1,0 +1,60 @@
+﻿.usr-srch #UserSearchSubmit {
+    cursor: default;
+}
+.usr-srch #UserSearchSubmit:hover{
+    color: #949494;
+}
+.dataTables_filter{
+    display: none;
+}
+
+.dataTables_info {
+    display: inline-block;
+    padding: 13px;
+    background-color: #268cab;
+    color: #fff !important;
+    width: 100%;
+    font-size: 14px;
+}
+.paging_simple_numbers {
+    position: absolute;
+    right: 70px;
+    font-size: 14px;
+}
+.bottom {
+    position: relative;
+    border-radius: 0 0 7px 7px;
+    padding: 0 1px;
+    overflow: hidden;
+}
+.dataTables_length {
+    position: absolute;
+    right: 10px;
+    bottom: 6px;
+}
+.dataTables_length label {
+    font-size: 0;
+}
+.dataTables_length select{
+    font-size: 14px;
+}
+#myDataTable th {
+    padding: 0;
+}
+
+td.register{
+    font-size: 0;
+}
+#myDataTable tfoot{
+    display: none;
+}
+::-webkit-search-cancel-button {
+	-webkit-appearance:searchfield;
+}
+
+.is-register{
+    background-image: url("../../images/check-icon.svg");
+    background-repeat: no-repeat;
+    background-position: 40px;
+}
+

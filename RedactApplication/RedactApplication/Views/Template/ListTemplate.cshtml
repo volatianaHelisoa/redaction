@@ -1,0 +1,185 @@
+﻿@model RedactApplication.Models.TEMPLATEViewModel
+@{
+    ViewBag.Title = "ListTemplate";
+    Layout = "~/Views/Shared/LayoutConnected.cshtml";
+}
+@section Scripts{
+
+    <script src="~/Scripts/redac-script.js"></script>
+    <link rel="stylesheet" href="~/Content/css/elements/sites-creation.css">
+    <script src="@Url.Content("~/Scripts/jquery-ui-1.12.1.js")"></script>
+    <script src="@Url.Content("~/Scripts/jquery.dataTables.js")"></script>
+    <script src="@Url.Content("~/Scripts/dataTables.js")"></script>
+    <script>
+        $("ul.LinkSearchClear").css("display", "none");
+    </script>
+}
+
+@if (Session["name"] != null && @Session["role"] != null && @Session["role"].ToString() == "5")
+{
+    <main id="wrapper">
+        <div id="single-container">
+
+
+            <div class="card back-office with-shadow">
+                <div class="action-bar flex-content flex-jsbet-acenter">
+                    <div class="left search-bloc">
+                        @using (Html.BeginForm("TemplateSearch", "Template", FormMethod.Post, new { @class = "Template-srch" }))
+                        {
+                            <div class="usr-srch--input-wrapper">
+                                @Html.AntiForgeryToken()
+                                <i class="fa fa-times-circle cancelText"></i>
+                                <input class="usr-srch--input" type="search" placeholder="Rechercher" name="searchValue" id="ValTemplateSearch" title="Search...">
+                            </div>
+                        }
+                    </div>
+                  
+                        <div class="submit-area">
+
+                            <input type="submit" value="Créer une template" class="btn btn-success btn-medium" onclick="@("window.location.href='" + @Url.RouteUrl("Home", new { controller = "Template", action = "ChoiceTemplate" }) + "'");">
+                        </div>
+                    
+                </div>
+                <div class="filters flex-content flex-jsbet-acenter">
+
+
+                    <div class="flex-content flex-jsbet-acenter">
+                        Sélection
+                        <span onclick="CheckedTemplateClick()">Tous</span>
+                        <span onclick="DecheckedTemplateClick()">Aucun</span>
+                        <button class="btn btn-small" onclick="DeleteAllTemplateSelected(@ViewBag.nbrow)"><i class="fa fa-trash"></i> Supprimer la sélection</button>
+                    </div>
+
+
+                </div>
+                <table id="myDataTable" class="trig_table table Template-table">
+                    <thead>
+                        <tr>
+                            <th>
+                                <input type="checkbox" class="checkbox" onclick="ClickAllTemplateInListTemplate()" id="checkAllTemplate" />
+                            </th>
+                            <th>#</th>
+                            <th>Date de création</th>
+                            <th>Projet</th>
+                            <th>Thèmatique</th>
+                            <th>URL</th>
+                            <th>FTP host</th>
+                            <th>FTP password</th>
+                            <th>Créateur</th>
+                            <th class="option">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody class="t1">
+                        @if (ViewBag.listeTemplateVm != null)
+                        {
+                            int count = 0;
+
+                            foreach (var item in ViewBag.listeTemplateVm)
+                            {
+                        <tr>
+                            <td><input type="checkbox" class="checkbox" name="selectedTemplate" value="@item.templateId" /></td>
+                            <td>@(count + 1)</td>
+                            <td>@item.dateCreation.ToShortDateString()</td>
+                            <td>@item.PROJET.projet_name</td>
+                            <td>@item.THEME.theme_name</td>
+                            <td>@item.MODELE.site_url</td>
+                           
+                            <td>@item.ftpUser</td>
+                            <td>@item.ftpPassword</td>
+                            <td>@item.UTILISATEUR.userNom @item.UTILISATEUR.userPrenom</td>
+                            <td class="col-option">
+                                <div class="item">
+                                    <div class="option">
+                                        <a href="http://@item.MODELE.site_url" title="Voir"><i class="fa fa-eye"></i></a>
+                                        <a onclick="DeleteTemplateClick('@item.templateId')" title="Supprimer template"><i class="fa fa-trash"></i></a>
+
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                                count++;
+                            }
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div id="DeleteDatadialog" style="display: none" class="modal-popup">
+            @Html.Partial("~/Views/Template/ErrorNoSelection.cshtml")
+        </div>
+        <div id="SearchTemplateNoResultat" style="display: none" class="modal-popup">
+            @Html.Partial("~/Views/Shared/SearchNoResultat.cshtml")
+        </div>
+        <!--  Dialogue de confirmation suppression d'utilisateur  -->
+        <div id="deleteAllTemplatePoPup" style="display: none" class="modal-popup">
+            @Html.Partial("~/Views/Template/DeleteTemplate.cshtml")
+        </div>
+
+    </main>
+
+}
+else
+{ Response.Redirect("~/Login/Accueil"); }
+<script>
+    /*pour la suppression des utilisateurs séléctionnés*/
+    var DeleteTemplateClick = function (Template) {
+        //  alert(Template);
+        if (Template !== '') {
+
+            $.ajax({
+                type: 'POST',
+                url: '/Template/SelecteAllTemplateToDelete',
+                data: { hash: Template },
+                error: function (ex) {
+                    alert('Error: ' + ex.statusText);
+                },
+                success: function () {
+                    $("#deleteAllTemplatePoPup").modal();
+                },
+                async: true,
+                processData: true
+            });
+        }
+    }
+
+    var DeleteAllTemplateSelected = function (nbrow) {
+        var ListTemplateId = '';
+        $('input[name="selectedTemplate"]:checked').each(function () {
+            ListTemplateId += $(this).val() + ',';
+        });
+        if (ListTemplateId != '') {
+            $.ajax({
+                type: 'POST',
+                url: '/Template/SelecteAllTemplateToDelete',
+                data: { hash: ListTemplateId.substring(0, (ListTemplateId.length - 1)) },
+                error: function (ex) {
+                    //alert('Error: ' + ex.statusText);
+                },
+                success: function () {
+                    $("#deleteAllTemplatePoPup").modal();
+                },
+                async: true,
+                processData: true
+            });
+        } else {
+            $("#DeleteDatadialog").modal();
+        }
+    }
+
+    var ListTemplateData = function () {
+        var selectBox = document.getElementById("nbrowpage");
+        var nbrow = selectBox.options[selectBox.selectedIndex].value;
+        $.ajax({
+            type: 'POST',
+            url: '/Home/ReInitPagination',
+            data: { hash: "paginationChange" },
+            success: function (data) {
+                window.location.href = nbrow;
+            }
+        });
+    }
+
+</script>
+
+

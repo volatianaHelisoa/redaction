@@ -1,0 +1,175 @@
+﻿@model RedactApplication.Models.UTILISATEURViewModel
+@{
+    if (Model != null)
+    {
+        ViewBag.Title = "Utilisateur";
+        ViewBag.UserId = Model.userId;
+    }
+    Layout = "~/Views/Shared/LayoutConnected.cshtml";
+}
+
+@section css
+{
+    <link href="@Url.Content("~/Content/css/jquery-ui.css")" rel="stylesheet" />
+
+    <link href="~/Content/themes/smoothness/jquery-ui.css" rel="stylesheet" />
+    <link rel="stylesheet" href="~/Content/css/elements/dashboard.css">
+}
+
+
+
+@if (Session["name"] != null && @Session["role"] != null && @Session["role"].ToString() != "5")
+{
+    <main id="wrapper">  
+        <div id="single-container">
+            <div class="onglets ease-in-out">
+                <ul>
+                    <li> @Html.ActionLink("Dashboard", "Dashboard", new { controller = "Home" }, new { @class = "active" }) </li>
+                    @if (@Session["role"] != null && @Session["role"].ToString() != "2" && @Session["role"].ToString() != "1")
+                    {
+                        <li> @Html.ActionLink("Utilisateurs", "ListeUser", new { controller = "Home" }) </li>
+                    }
+                    <li>@Html.ActionLink("Commandes", "ListCommandes", new { controller = "Commandes" })</li>
+                    @if (@Session["role"] != null && @Session["role"].ToString() != "1")
+                    {
+                        <li>@Html.ActionLink("Factures", "ListFacture", new { controller = "Facture" })</li>
+
+                    }
+
+                    </ul>
+            </div>
+            <div class="card back-office with-shadow clearfix">
+                @if ( @Session["role"].ToString() != "2")
+                {
+                    <div class="left-dash">
+                        <div class="content">
+                            <div class="titre">utilisateurs</div>
+                            <div class="content-button">
+
+                                <div>
+
+                                    <a href="~/Home/ListeUser/3" class="manager">
+                                        <div>
+                                            <div class="ttl">Manager</div>
+                                            <span>@ViewBag.managerCount</span>
+                                        </div>
+                                    </a>
+                                </div>
+                                <div>
+                                    <a href="~/Home/ListeUser/1" class="referenceur">
+                                        <div>
+                                            <div class="ttl">Réferenceur</div>
+                                            <span>@ViewBag.referenceurCount</span>
+                                        </div>
+                                    </a>
+                                </div>
+                                <div>
+                                    <a href="~/Home/ListeUser/2" class="redac">
+                                        <div>
+                                            <div class="ttl">Rédacteur</div>
+                                            <span>@ViewBag.redacteurCount</span>
+                                        </div>
+                                    </a>
+                                </div>
+                                <span class="clear"></span>
+                            </div>
+                        </div>
+                    </div>
+                }
+                <div class="right-dash ">
+                    <div class="content">
+                        <div class="titre">Commandes texte</div>
+                        <div class="content-button">
+                            @if (@Session["role"].ToString() != "2")
+                            {
+                                <div>
+                                    <a href="~/Commandes/ListCommandes/livrer" class="livraison">
+                                        <div>
+                                            <div class="ttl">Livraisons reçues</div>
+                                            <span>@ViewBag.commandesLivrer</span>
+                                        </div>
+                                    </a>
+                                </div>
+                            }
+                            <div>
+                                <a href="~/Commandes/ListCommandes/retard" class="livraison-retard">
+                                    <div>
+                                        <div class="ttl">Livraison en retard</div>
+                                        <span>@ViewBag.commandesEnRetard</span>
+                                    </div>
+                                </a>
+                            </div>
+                            <div>
+                                <a href="~/Commandes/ListCommandes/refuser" class="refuse">
+                                    <div>
+                                        <div class="ttl">Commande refusée</div>
+                                        <span>@ViewBag.commandesRefuser</span>
+                                    </div>
+                                </a>
+                            </div>
+                            <div>
+                                <a href="~/Commandes/ListCommandes/attente" class="attente">
+                                    <div>
+                                        <div class="ttl">Commande en attente<br>de confirmation</div>
+                                        <span>@ViewBag.commandesEnAttente</span>
+                                    </div>
+                                </a>
+                            </div>
+                            <div>
+                                <a href="~/Commandes/ListCommandes/encours" class="encours">
+                                    <div>
+                                        <div class="ttl">Redaction<br>en cours</div>
+                                        <span>@ViewBag.commandesEnCours</span>
+                                    </div>
+                                </a>
+                            </div>
+                            <div>
+                                <a href="~/Commandes/ListCommandes/annuler" class="annulation">
+                                    <div>
+                                        <div class="ttl">Commande annulée</div>
+                                        <span>@ViewBag.commandesAnnuler</span>
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <span class="clear"></span>
+                @if (@Session["role"].ToString() != "1" )
+                {
+                    <div class="bottom-dash clearfix">
+                        <div class="content">
+                            <div class="titre">Facturation</div>
+                            <div class="content-button clearfix">
+                                <div>
+                                    <a href="~/Commandes/ListCommandes/facturer" class="facturation">
+                                        <div>
+                                            <div class="ttl">Commande à facturer :</div>
+                                            <span>@ViewBag.commandesAFacturer</span>
+                                        </div>
+                                    </a>
+                                </div>
+                                <div>
+                                    <a class="montant">
+                                        <div>
+                                            <div class="ttl">Montant à facturer :</div>
+                                            <span>@ViewBag.montantAFacturer Ar</span>
+                                        </div>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+            </div>
+                
+</main>
+}
+else
+{ Response.Redirect("~/Login/Accueil"); }
+
+
+
+
+

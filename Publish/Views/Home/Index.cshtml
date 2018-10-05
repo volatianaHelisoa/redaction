@@ -1,0 +1,29 @@
+﻿@model RedactApplication.Models.UTILISATEURViewModel
+@{
+    ViewBag.Title = "Home Page";
+}
+
+<main class="wrapperpages">
+    <div class="page" id="Homepage">
+        <div class="welcome-container">
+            <div class="heading-ttl">
+                    <h1>Welcome </h1><span class="heading-ttlp">to Redact application link</span>
+                </div>
+            <div class="avatar_customer avatar_login1">
+                <img  src="@Session["logoUrl"]" alt="Photo profil">
+            </div>
+            <div class="lic_log1">LICENSED TO @Session["orgName"]</div>
+            <div class="btn-submit btn_log1"><input type="submit" value="Log in" onclick="redirectLogin();"></div>
+            
+        </div>
+    </div>
+</main>
+
+
+    <script>
+
+        function redirectLogin() {
+            window.location.href = "/Login/Accueil";
+        }
+
+    </script>

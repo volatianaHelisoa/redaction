@@ -1,0 +1,271 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="redactapplicationModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityContainer Name="redactapplicationEntities" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="COMMANDEs" EntityType="redactapplicationModel.COMMANDE" />
+    <EntitySet Name="COMMANDE_TYPE" EntityType="redactapplicationModel.COMMANDE_TYPE" />
+    <EntitySet Name="CONTENU_TYPE" EntityType="redactapplicationModel.CONTENU_TYPE" />
+    <EntitySet Name="PROJETS" EntityType="redactapplicationModel.PROJET" />
+    <EntitySet Name="ROLEs" EntityType="redactapplicationModel.ROLE" />
+    <EntitySet Name="STATUT_COMMANDE" EntityType="redactapplicationModel.STATUT_COMMANDE" />
+    <EntitySet Name="THEMES" EntityType="redactapplicationModel.THEME" />
+    <EntitySet Name="UserRoles" EntityType="redactapplicationModel.UserRole" />
+    <EntitySet Name="UTILISATEURs" EntityType="redactapplicationModel.UTILISATEUR" />
+    <AssociationSet Name="FK_COMMANDE_COMMANDE_TYPE" Association="redactapplicationModel.FK_COMMANDE_COMMANDE_TYPE">
+      <End Role="COMMANDE_TYPE" EntitySet="COMMANDE_TYPE" />
+      <End Role="COMMANDE" EntitySet="COMMANDEs" />
+    </AssociationSet>
+    <AssociationSet Name="FK_COMMANDE_CONTENU_TYPE" Association="redactapplicationModel.FK_COMMANDE_CONTENU_TYPE">
+      <End Role="CONTENU_TYPE" EntitySet="CONTENU_TYPE" />
+      <End Role="COMMANDE" EntitySet="COMMANDEs" />
+    </AssociationSet>
+    <AssociationSet Name="FK_COMMANDE_PROJETS" Association="redactapplicationModel.FK_COMMANDE_PROJETS">
+      <End Role="PROJET" EntitySet="PROJETS" />
+      <End Role="COMMANDE" EntitySet="COMMANDEs" />
+    </AssociationSet>
+    <AssociationSet Name="FK_COMMANDE_REDACTEUR" Association="redactapplicationModel.FK_COMMANDE_REDACTEUR">
+      <End Role="UTILISATEUR" EntitySet="UTILISATEURs" />
+      <End Role="COMMANDE" EntitySet="COMMANDEs" />
+    </AssociationSet>
+    <AssociationSet Name="FK_COMMANDE_STATUT_COMMANDE" Association="redactapplicationModel.FK_COMMANDE_STATUT_COMMANDE">
+      <End Role="STATUT_COMMANDE" EntitySet="STATUT_COMMANDE" />
+      <End Role="COMMANDE" EntitySet="COMMANDEs" />
+    </AssociationSet>
+    <AssociationSet Name="FK_COMMANDE_THEMES" Association="redactapplicationModel.FK_COMMANDE_THEMES">
+      <End Role="THEME" EntitySet="THEMES" />
+      <End Role="COMMANDE" EntitySet="COMMANDEs" />
+    </AssociationSet>
+    <AssociationSet Name="FK_COMMANDE_UTILISATEUR" Association="redactapplicationModel.FK_COMMANDE_UTILISATEUR">
+      <End Role="UTILISATEUR" EntitySet="UTILISATEURs" />
+      <End Role="COMMANDE" EntitySet="COMMANDEs" />
+    </AssociationSet>
+    <AssociationSet Name="FK_UserRole_ROLE" Association="redactapplicationModel.FK_UserRole_ROLE">
+      <End Role="ROLE" EntitySet="ROLEs" />
+      <End Role="UserRole" EntitySet="UserRoles" />
+    </AssociationSet>
+    <AssociationSet Name="FK_UserRole_UTILISATEUR" Association="redactapplicationModel.FK_UserRole_UTILISATEUR">
+      <End Role="UTILISATEUR" EntitySet="UTILISATEURs" />
+      <End Role="UserRole" EntitySet="UserRoles" />
+    </AssociationSet>
+  </EntityContainer>
+  <EntityType Name="COMMANDE">
+    <Key>
+      <PropertyRef Name="commandeId" />
+    </Key>
+    <Property Name="commandeId" Type="Guid" Nullable="false" />
+    <Property Name="commandeReferenceurId" Type="Guid" />
+    <Property Name="commandeRedacteurId" Type="Guid" />
+    <Property Name="date_cmde" Type="DateTime" Precision="3" />
+    <Property Name="date_livraison" Type="DateTime" Precision="3" />
+    <Property Name="ordrePriorite" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
+    <Property Name="commandeTypeId" Type="Guid" />
+    <Property Name="nombre_mots" Type="Int32" />
+    <Property Name="mot_cle_pricipal" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="mot_cle_secondaire" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="texte_ancrage" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="consigne_references" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="consigne_type_contenuId" Type="Guid" />
+    <Property Name="consigne_autres" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="balise_titre" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+    <Property Name="contenu_livre" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="etat_paiement" Type="Boolean" />
+    <Property Name="commandeProjetId" Type="Guid" />
+    <Property Name="commandeStatutId" Type="Guid" />
+    <Property Name="commandeThemeId" Type="Guid" />
+    <NavigationProperty Name="COMMANDE_TYPE" Relationship="redactapplicationModel.FK_COMMANDE_COMMANDE_TYPE" FromRole="COMMANDE" ToRole="COMMANDE_TYPE" />
+    <NavigationProperty Name="CONTENU_TYPE" Relationship="redactapplicationModel.FK_COMMANDE_CONTENU_TYPE" FromRole="COMMANDE" ToRole="CONTENU_TYPE" />
+    <NavigationProperty Name="PROJET" Relationship="redactapplicationModel.FK_COMMANDE_PROJETS" FromRole="COMMANDE" ToRole="PROJET" />
+    <NavigationProperty Name="UTILISATEUR" Relationship="redactapplicationModel.FK_COMMANDE_REDACTEUR" FromRole="COMMANDE" ToRole="UTILISATEUR" />
+    <NavigationProperty Name="STATUT_COMMANDE" Relationship="redactapplicationModel.FK_COMMANDE_STATUT_COMMANDE" FromRole="COMMANDE" ToRole="STATUT_COMMANDE" />
+    <NavigationProperty Name="THEME" Relationship="redactapplicationModel.FK_COMMANDE_THEMES" FromRole="COMMANDE" ToRole="THEME" />
+  </EntityType>
+  <EntityType Name="COMMANDE_TYPE">
+    <Key>
+      <PropertyRef Name="commandeTypeId" />
+    </Key>
+    <Property Name="commandeTypeId" Type="Guid" Nullable="false" />
+    <Property Name="Type" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="COMMANDEs" Relationship="redactapplicationModel.FK_COMMANDE_COMMANDE_TYPE" FromRole="COMMANDE_TYPE" ToRole="COMMANDE" />
+  </EntityType>
+  <EntityType Name="CONTENU_TYPE">
+    <Key>
+      <PropertyRef Name="contenuTypeId" />
+    </Key>
+    <Property Name="contenuTypeId" Type="Guid" Nullable="false" />
+    <Property Name="Type" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="COMMANDEs" Relationship="redactapplicationModel.FK_COMMANDE_CONTENU_TYPE" FromRole="CONTENU_TYPE" ToRole="COMMANDE" />
+  </EntityType>
+  <EntityType Name="PROJET">
+    <Key>
+      <PropertyRef Name="projetId" />
+    </Key>
+    <Property Name="projetId" Type="Guid" Nullable="false" />
+    <Property Name="projet_name" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="COMMANDEs" Relationship="redactapplicationModel.FK_COMMANDE_PROJETS" FromRole="PROJET" ToRole="COMMANDE" />
+  </EntityType>
+  <EntityType Name="ROLE">
+    <Key>
+      <PropertyRef Name="roleId" />
+    </Key>
+    <Property Name="roleId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="roleNom" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <NavigationProperty Name="UserRoles" Relationship="redactapplicationModel.FK_UserRole_ROLE" FromRole="ROLE" ToRole="UserRole" />
+  </EntityType>
+  <EntityType Name="STATUT_COMMANDE">
+    <Key>
+      <PropertyRef Name="statutCommandeId" />
+    </Key>
+    <Property Name="statutCommandeId" Type="Guid" Nullable="false" />
+    <Property Name="statut_cmde" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="COMMANDEs" Relationship="redactapplicationModel.FK_COMMANDE_STATUT_COMMANDE" FromRole="STATUT_COMMANDE" ToRole="COMMANDE" />
+  </EntityType>
+  <EntityType Name="THEME">
+    <Key>
+      <PropertyRef Name="themeId" />
+    </Key>
+    <Property Name="themeId" Type="Guid" Nullable="false" />
+    <Property Name="theme_name" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="COMMANDEs" Relationship="redactapplicationModel.FK_COMMANDE_THEMES" FromRole="THEME" ToRole="COMMANDE" />
+  </EntityType>
+  <EntityType Name="UserRole">
+    <Key>
+      <PropertyRef Name="idUserRole" />
+    </Key>
+    <Property Name="idUserRole" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="idRole" Type="Int32" />
+    <Property Name="idUser" Type="Guid" />
+    <NavigationProperty Name="ROLE" Relationship="redactapplicationModel.FK_UserRole_ROLE" FromRole="UserRole" ToRole="ROLE" />
+    <NavigationProperty Name="UTILISATEUR" Relationship="redactapplicationModel.FK_UserRole_UTILISATEUR" FromRole="UserRole" ToRole="UTILISATEUR" />
+  </EntityType>
+  <EntityType Name="UTILISATEUR">
+    <Key>
+      <PropertyRef Name="userId" />
+    </Key>
+    <Property Name="userId" Type="Guid" Nullable="false" />
+    <Property Name="userNom" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+    <Property Name="userPrenom" Type="String" MaxLength="150" FixedLength="false" Unicode="false" />
+    <Property Name="userMail" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+    <Property Name="userMotdepasse" Type="String" MaxLength="150" FixedLength="false" Unicode="false" />
+    <Property Name="token" Type="Guid" />
+    <Property Name="dateToken" Type="DateTime" Precision="3" />
+    <Property Name="logoUrl" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="redactSkype" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+    <Property Name="redactVolume" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+    <Property Name="redactModePaiement" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+    <Property Name="redactReferenceur" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+    <Property Name="redactThemes" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+    <Property Name="redactNiveau" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+    <Property Name="redactPhone" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+    <Property Name="redactTarif" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+    <Property Name="redactVolumeRestant" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="COMMANDEs" Relationship="redactapplicationModel.FK_COMMANDE_REDACTEUR" FromRole="UTILISATEUR" ToRole="COMMANDE" />
+    <NavigationProperty Name="UserRoles" Relationship="redactapplicationModel.FK_UserRole_UTILISATEUR" FromRole="UTILISATEUR" ToRole="UserRole" />
+  </EntityType>
+  <Association Name="FK_COMMANDE_COMMANDE_TYPE">
+    <End Type="redactapplicationModel.COMMANDE_TYPE" Role="COMMANDE_TYPE" Multiplicity="0..1" />
+    <End Type="redactapplicationModel.COMMANDE" Role="COMMANDE" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="COMMANDE_TYPE">
+        <PropertyRef Name="commandeTypeId" />
+      </Principal>
+      <Dependent Role="COMMANDE">
+        <PropertyRef Name="commandeTypeId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_COMMANDE_CONTENU_TYPE">
+    <End Type="redactapplicationModel.CONTENU_TYPE" Role="CONTENU_TYPE" Multiplicity="0..1" />
+    <End Type="redactapplicationModel.COMMANDE" Role="COMMANDE" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="CONTENU_TYPE">
+        <PropertyRef Name="contenuTypeId" />
+      </Principal>
+      <Dependent Role="COMMANDE">
+        <PropertyRef Name="consigne_type_contenuId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_COMMANDE_PROJETS">
+    <End Type="redactapplicationModel.PROJET" Role="PROJET" Multiplicity="0..1" />
+    <End Type="redactapplicationModel.COMMANDE" Role="COMMANDE" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="PROJET">
+        <PropertyRef Name="projetId" />
+      </Principal>
+      <Dependent Role="COMMANDE">
+        <PropertyRef Name="commandeProjetId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_COMMANDE_REDACTEUR">
+    <End Type="redactapplicationModel.UTILISATEUR" Role="UTILISATEUR" Multiplicity="0..1" />
+    <End Type="redactapplicationModel.COMMANDE" Role="COMMANDE" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="UTILISATEUR">
+        <PropertyRef Name="userId" />
+      </Principal>
+      <Dependent Role="COMMANDE">
+        <PropertyRef Name="commandeRedacteurId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_COMMANDE_STATUT_COMMANDE">
+    <End Type="redactapplicationModel.STATUT_COMMANDE" Role="STATUT_COMMANDE" Multiplicity="0..1" />
+    <End Type="redactapplicationModel.COMMANDE" Role="COMMANDE" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="STATUT_COMMANDE">
+        <PropertyRef Name="statutCommandeId" />
+      </Principal>
+      <Dependent Role="COMMANDE">
+        <PropertyRef Name="commandeStatutId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_COMMANDE_THEMES">
+    <End Type="redactapplicationModel.THEME" Role="THEME" Multiplicity="0..1" />
+    <End Type="redactapplicationModel.COMMANDE" Role="COMMANDE" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="THEME">
+        <PropertyRef Name="themeId" />
+      </Principal>
+      <Dependent Role="COMMANDE">
+        <PropertyRef Name="commandeThemeId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_COMMANDE_UTILISATEUR">
+    <End Type="redactapplicationModel.UTILISATEUR" Role="UTILISATEUR" Multiplicity="0..1" />
+    <End Type="redactapplicationModel.COMMANDE" Role="COMMANDE" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="UTILISATEUR">
+        <PropertyRef Name="userId" />
+      </Principal>
+      <Dependent Role="COMMANDE">
+        <PropertyRef Name="commandeReferenceurId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_UserRole_ROLE">
+    <End Type="redactapplicationModel.ROLE" Role="ROLE" Multiplicity="0..1" />
+    <End Type="redactapplicationModel.UserRole" Role="UserRole" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="ROLE">
+        <PropertyRef Name="roleId" />
+      </Principal>
+      <Dependent Role="UserRole">
+        <PropertyRef Name="idRole" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_UserRole_UTILISATEUR">
+    <End Type="redactapplicationModel.UTILISATEUR" Role="UTILISATEUR" Multiplicity="0..1" />
+    <End Type="redactapplicationModel.UserRole" Role="UserRole" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="UTILISATEUR">
+        <PropertyRef Name="userId" />
+      </Principal>
+      <Dependent Role="UserRole">
+        <PropertyRef Name="idUser" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+</Schema>

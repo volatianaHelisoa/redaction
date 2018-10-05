@@ -1,0 +1,45 @@
+﻿   @model RedactApplication.Models.COMMANDEViewModel
+@{
+    ViewBag.Title = "Modifier Commande";
+    if (Model != null)
+    {
+        ViewBag.commandeId = Model.commandeId;
+    }
+   
+ }          
+
+
+<div class="medium-popup">
+    @using (Html.BeginForm("RefuserCommande", "Commandes", FormMethod.Post, new { @hash = ViewBag.hashCmde }))
+    {
+        <input type="hidden" name="idCommande" value="@Model.commandeId">
+        <section class="commande-view">                        
+            <div class="wrap">
+                <h1>Commande n° @Model.commandeREF</h1>
+                <div class="commande-review">
+                    <span>
+                        <strong>Site : </strong>@Html.DisplayFor(model => Model.projet)
+                    </span>
+                    <span>
+                        <strong>Thème : </strong> @Html.DisplayFor(model => Model.thematique)
+                    </span>
+                    <span>
+                        <strong>Type de Textes :</strong> @Html.DisplayFor(model => Model.commandeType)
+                    </span>
+                    <span>
+                        <strong>Nombre de mots : </strong>  @Html.DisplayFor(model => Model.nombre_mots)
+                    </span>
+                
+                    <span>
+                        <strong>Remarques : </strong>  @Html.TextAreaFor(model => Model.remarques)
+                    </span>
+                    
+                </div>
+            </div>
+        </section>
+        <section class="clearfix submit-area">
+            <input type="submit" value="Envoyer" class="btn btn-primary">
+            @Html.ActionLink("Retour", "ListCommandes", "Commandes", new { @class = "btn btn-warning" })
+        </section>
+    }
+</div>

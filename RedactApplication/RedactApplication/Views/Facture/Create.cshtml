@@ -1,0 +1,156 @@
+﻿
+@model RedactApplication.Models.FACTUREViewModel
+
+@{
+    ViewBag.Title = "Créer facture";
+    Layout = "~/Views/Shared/LayoutConnected.cshtml";
+
+}
+
+@if (ViewBag.succes != null)
+{
+    if (ViewBag.succes == 1)
+    {
+        <script>
+            $("#addUserPopUp").modal();
+            $("div#addUserPopUp").css("display", "block");
+        </script>
+    }
+    else if (ViewBag.succes == 2)
+    {
+        <script>
+            $("#errorLimitUserPopUp").modal();
+            $("div#errorLimitUserPopUp").css("display", "block");
+        </script>
+    }
+    else if (ViewBag.succes == 3)
+    {
+        <script>
+            $("#errorValidDataUserPopUp").modal();
+            $("div#errorValidDataUserPopUp").css("display", "block");
+        </script>
+    }
+}
+
+@section Scripts{
+    <link rel="stylesheet" href="~/Content/css/bootstrap-datepicker3.css" />
+    <script type="text/javascript" src="~/Scripts/js/bootstrap-datepicker.min.js"></script>
+    <link rel="stylesheet" href="~/Content/css/elements/factures.css">
+
+
+    <script type="text/javascript">
+        jQuery(document).ready(function () {
+            var date = new Date();
+            date.setDate(date.getDate());
+            var dateDebut = $('input[name="dateDebut"]'); //our date input has the name "date"
+            var container = $('.bootstrap-iso form').length > 0 ? $('.bootstrap-iso form').parent() : "body";
+            var options = {
+                format: 'dd/mm/yyyy',
+                container: container,
+                todayHighlight: true,
+                autoclose: true,
+                weekStart: 1
+            };
+            dateDebut.datepicker(options);
+
+
+            var date_input_fin = $('input[name="dateFin"]'); //our date input has the name "date"
+            var container = $('.bootstrap-iso form').length > 0 ? $('.bootstrap-iso form').parent() : "body";
+            var options_fin = {
+                format: 'dd/mm/yyyy',
+                container: container,
+                todayHighlight: true,
+                autoclose: true,
+                weekStart: 1
+            };
+            date_input_fin.datepicker(options_fin);
+
+        });
+
+
+
+    </script>
+}
+
+@if (Session["name"] != null && @Session["role"] != null && @Session["role"].ToString() != "5")
+{
+
+    <main id="wrapper">
+        <div id="single-container">
+            <div class="onglets ease-in-out">
+                <ul>
+                    <li> @Html.ActionLink("Dashboard", "Dashboard", new { controller = "Home" }) </li>
+                    @if (@Session["role"] != null && @Session["role"].ToString() != "2" && @Session["role"].ToString() != "1")
+                    {
+                        <li> @Html.ActionLink("Utilisateurs", "ListeUser", new { controller = "Home" }) </li>
+                    }
+                    <li>@Html.ActionLink("Commandes", "ListCommandes", new { controller = "Commandes" })</li>
+                    @if (@Session["role"] != null && @Session["role"].ToString() != "1")
+                    {
+                        <li>@Html.ActionLink("Factures", "ListFacture", new { controller = "Facture" }, new { @class = "active" })</li>
+                    }
+
+
+                </ul>
+            </div>
+            <div class="card back-office with-shadow">
+                <div class="head">
+                    <i class="icon icon-create-facture"></i>
+                    <h1>Créer facture</h1>
+                    <p>Veuillez remplir les champs Requis (*) et appuyez sur Enregistrer pour créer une facture</p>
+                </div>
+
+                @using (Html.BeginForm("CreateFacture", "Facture", FormMethod.Post, new { @class = "form-horizontal", role = "form", @id = "createfacture" }))
+                {
+                    @Html.AntiForgeryToken()
+                    if (ViewBag.ErrorMessage != null)
+                    {
+                        <section class="clearfix">
+                            <label class="error-msg text-centered">Aucune commande liée à ce redacteur pour cette période.</label>
+                        </section>
+                    }
+
+                    <section class="clearfix">
+
+                        <label for="" class="text-centered" style=" margin: 0 auto; display: block; text-align: center; max-width: 320px;">
+                            Choisir Redacteur (*)
+                            @Html.DropDownListFor(x => Model.listRedacteurId, new SelectList(Model.ListRedacteur, "Value", "Text"), htmlAttributes: new { id = "SelectItemRedacteur", @required = true })
+                        </label>
+
+                    </section>
+                    <section class="clearfix">
+                        <label for="" class="col-50 pull-left">
+                            <span style="display: inline-block; vertical-align: middle; margin-right: 8px;">De</span>
+
+                            @Html.TextBoxFor(x => x.dateDebut, "{0:dd/MM/yyyy}", new { @style = "display: inline-block; width: calc(100% - 30px);", type = "text" })
+                            @Html.ValidationMessageFor(m => m.dateDebut)
+                        </label>
+                        <label for="" class="col-50 pull-right">
+                            <span style="display: inline-block; vertical-align: middle; margin-right: 8px;">Au</span>
+                            @Html.TextBoxFor(x => x.dateFin, "{0:dd/MM/yyyy}", new { @style = "display: inline-block; width: calc(100% - 30px);", type = "text" })
+                            @Html.ValidationMessageFor(m => m.dateFin)
+                        </label>
+                    </section>
+                    <section class="clearfix submit-area">
+                        <button type="submit" value="Sauver" class="btn btn-success">Sauver</button>
+                        @Html.ActionLink("Annuler", "ListFacture", "Facture", new { }, new { @class = "btn btn-warning" })
+                    </section>
+                }
+            </div>
+        </div>
+
+    </main>
+
+
+    <!--  Dialogue succès ajout user   -->
+    <div id="addUserPopUp">
+
+    </div>
+
+    <!--  Dialogue error valid data   -->
+    <div id="errorValidDataUserPopUp">
+
+    </div>
+}
+else
+{ Response.Redirect("~/Login/Accueil"); }

@@ -1,0 +1,93 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex,nofollow" />
+    <link rel="stylesheet" href="~/Content/bootstrap.css">
+
+    <!-- TOUJOURS APPELER -->
+    <link href="~/Content/font-awesome.css" rel="stylesheet" />
+    <link rel="stylesheet" href="~/Content/css/base/reset.css">
+    <link rel="stylesheet" href="~/Content/css/base/common.css">
+    <link rel="stylesheet" href="~/Content/css/elements/forms.css">
+    <link rel="stylesheet" href="~/Content/css/jquery.dataTables.css">
+    <link rel="stylesheet" href="~/Content/css/layout/layout.css">
+    <title>Media click App </title>
+    @RenderSection("css", required: false)
+
+    @Scripts.Render("~/bundles/jquery")
+    <script src="~/Scripts/jquery-ui-1.12.1.js"></script>
+
+
+</head>
+<body>
+    <header>
+        <div id="top-bar" class="clearfix with-shadow">
+            <div class="pull-left">
+                <a href="javascript:void(0)" class="logo">
+                    <img src="~/images/logo_mc_large.png" alt="MediaClick" srcset="">
+                </a>
+            </div>
+            <div id="divrole" data-value="@Session["role"]"></div>
+            <div class="pull-right">
+                <div class="notifications">
+                    @Html.Partial("~/Views/Shared/_MessagesList.cshtml")
+                </div>
+
+                <div href="javascript:void(0)" class="profil">
+                    <span id="user-name">@Session["name"] @Session["surname"] </span>
+                    <span id="user-avatar">
+                        @if (Session["logoUrl"] != null)
+                        {
+                            <img src="@Session["logoUrl"]" alt="@Session["name"]" title="@Session["name"]" />
+                        }
+                        else
+                        { <img src="~/images/avatar.png" alt="" srcset="" />}
+                    </span>
+                </div>
+                <div class="profil-menu with-shadow">
+                    <div class="flex-content flex-jsbet-acenter profil-setting">
+                        <span>
+                            @if (Session["logoUrl"] != null)
+                            {
+                                <img src="@Session["logoUrl"]" alt="@Session["name"]" title="@Session["name"]" class="user-photo" />
+                            }
+                            else
+                            {
+                                <img src="~/images/avatar.png" alt="" srcset="" class="user-photo" />
+                            }
+                        </span>
+                        <div>
+                            <span class="user-name">@Session["name"] @Session["surname"]</span>
+                            <a href="~/Home/DetailsRedacteurs/@Session["UserId"]" class="user-mail link">@Session["mail"]</a>
+                            <a href="~/Home/EditUser/@Session["UserId"]" class="btn btn-success btn-small" title="Modifier">Modifier</a>
+
+                        </div>
+                    </div>
+                    <button class="logout" onclick="@("window.location.href='" + @Url.Action("LogoutPage", "Login") + "'");">Deconnexion</button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+
+    @RenderBody()
+    <footer></footer>
+    @Scripts.Render("~/bundles/bootstrap")
+    @RenderSection("scripts", required: false)
+    @RenderSection("AddToHead", required: false)
+  
+    <script src="~/Scripts/codescript.js"></script>
+    <script src="~/Scripts/GestionVue.js"></script>
+
+    <script src="~/Scripts/jquery.signalR-2.2.3.min.js"></script>
+    <script src="~/SignalR/hubs"></script>
+    <script src="~/Scripts/codescriptnotification.js"></script>
+
+
+
+
+</body>
+
+</html>

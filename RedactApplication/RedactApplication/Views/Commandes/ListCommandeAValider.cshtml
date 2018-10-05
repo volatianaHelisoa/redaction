@@ -1,0 +1,165 @@
+﻿
+@{
+    ViewBag.Title = "ListCommandes";
+    Layout = "~/Views/Shared/LayoutConnected.cshtml";
+
+}
+
+@section css
+{
+    <link href="@Url.Content("~/Content/css/jquery-ui.css")" rel="stylesheet" />
+    <link rel="stylesheet" href="~/Content/css/elements/commandes.css">
+}
+
+@section Scripts
+{
+    <script src="@Url.Content("~/Scripts/jquery-ui-1.12.1.js")"></script>
+    <script src="@Url.Content("~/Scripts/jquery.dataTables.js")"></script>
+    <script src="@Url.Content("~/Scripts/dataTables.js")"></script>
+
+    <script>
+        $("ul.LinkSearchClear").css("display", "none");
+    </script>
+}
+
+@if (Session["name"] != null)
+{
+
+    <main id="wrapper">
+        <div id="single-container">
+            <div class="onglets ease-in-out">
+                <ul>
+                    @if (@Session["role"] != null && @Session["role"].ToString() != "2")
+                    {
+                        <li> @Html.ActionLink("Utilisateurs", "ListeUser", new { controller = "Home" }) </li>
+                    }
+                    <li>@Html.ActionLink("Commandes", "ListCommandes", new { controller = "Commandes" }, new { @class = "active" })</li>
+                    <li>@Html.ActionLink("Factures", "ListFacture", new { controller = "Facture" })</li>
+                    <li>@Html.ActionLink("Templates", "ListTemplate", new { controller = "Template" })</li>
+                </ul>
+            </div>
+            <div class="head-list">
+                @if (@Session["role"] != null && @Session["role"].ToString() == "2")
+                {
+                    <div class="resume with-shadow">
+                        <ul>
+                            <li><a onclick="@(" window.location.href='" + @Url.RouteUrl("Home", new { controller = "Commandes", action = "ListCommandes" }) + "' ");">Commande en cours : <strong>@ViewBag.commandesEnCours</strong></a></li>
+                            <li><a onclick="@(" window.location.href='" + @Url.RouteUrl("Home", new { controller = "Commandes", action = "ListCommandes" }) + "' ");">Commande en attente : <strong>@ViewBag.commandesEnAttente</strong></a></li>
+                            <li><a onclick="@(" window.location.href='" + @Url.RouteUrl("Home", new { controller = "Commandes", action = "ListCommandes" }) + "' ");">Commande en retard : <strong>@ViewBag.commandesEnRetard</strong></a></li>
+                            <li><a onclick="@(" window.location.href='" + @Url.RouteUrl("Home", new { controller = "Commandes", action = "ListCommandes" }) + "' ");">Commande livrée : <strong>@ViewBag.commandesLivrer</strong></a></li>
+                            <li><a onclick="@(" window.location.href='" + @Url.RouteUrl("Home", new { controller = "Commandes", action = "ListCommandes" }) + "' ");">Commande à facturer : <strong>@ViewBag.commandesFacturer</strong></a></li>
+                        </ul>
+                    </div>
+                }
+
+            </div>
+            <div class="card back-office with-shadow">
+                <div class="action-bar flex-content flex-jsbet-acenter">
+                    <div>
+
+                        @using (Html.BeginForm("CommandesSearch", "Commandes", FormMethod.Post, new { @class = "usr-srch" }))
+                        {
+                            <div class="usr-srch--input-wrapper">
+                                @Html.AntiForgeryToken()
+                                <i class="fa fa-times-circle cancelText"></i>
+                                <input class="usr-srch--input" type="search" placeholder="Rechercher" name="searchValue" id="ValUserSearch" title="Search by name,surname,email">
+                            </div>
+
+                        }
+
+                    </div>
+                    <div class="submit-area">
+                        <input type="button" value="Commande à valider" class="btn btn-warm btn-medium" onclick="@(" window.location.href='" + @Url.RouteUrl("Home", new { controller = "Commandes", action = "ListCommandeAValider" }) + "' ");">
+                        @if (@Session["role"] != null && @Session["role"].ToString() != "2")
+                        {
+                            <input type="button" value="Créer commande" class="btn btn-success btn-medium" onclick="@(" window.location.href='" + @Url.RouteUrl("Home", new { controller = "Commandes", action = "Create" }) + "' ");">
+                        }
+                    </div>
+                </div>
+                <div class="filters flex-content flex-jsbet-acenter">
+                    <div class="flex-content flex-jsbet-acenter">
+                        Sélection
+                        <span onclick="CheckedCmdeClick()">Tous</span>
+                        <span onclick="DecheckedCmdeClick()">Aucun</span>
+                        <button class="btn btn-small" onclick="DeleteAllCommandeSelected(@ViewBag.nbrow)"><i class="fa fa-trash"></i> Supprimer la sélection</button>
+                    </div>
+
+                </div>
+                <table id="myDataTable">
+                    <thead>
+                        <tr>
+                            <th>
+                                <input type="checkbox" class="checkbox" onclick="ClickAllCommandeInListCommande()" id="checkAllCmde" />
+                            </th>
+                            <th>#</th>
+                            <th>Demandeur</th>
+                            <th>Redacteur</th>
+                            <th>Date de la commande</th>
+                            <th>Date de la livraison</th>
+                            <th>Projet</th>
+                            <th>Thématique</th>
+                            <th>Type de textes</th>
+                            <th>Etat commande </th>
+                            <th>Notification paiement</th>
+                            <th class="option">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody class="t1">
+                        @if (ViewBag.listeCommandeVms != null)
+                        {
+                         
+                            foreach (var item in ViewBag.listeCommandeVms)
+                            {
+                                <tr>
+                                    <td><input type="checkbox" class="checkbox" name="selectedCmde" value="@item.commandeId" /></td>
+                                    <td>@item.commandeREF</td>
+                                    <td>@item.commandeDemandeur</td>
+                                    <td>@item.commandeRedacteur</td>
+                                    <td>@item.date_cmde</td>
+                                    <td>@item.date_livraison</td>
+                                    <td>@item.projet </td>
+                                    <td>@item.thematique</td>
+                                    <td>@item.commandeType</td>
+
+                                    <td>@item.statut_cmde</td>
+
+                                    @if (@item.etat_paiement == true)
+                                    {
+                                        <td> Payé</td>
+                                    }
+                                    else
+                                    {
+                                        <td>Non payé</td>
+                                    }
+
+                                    <td class="col-option">
+                                        <!--ViewBag.numpage/ViewBag.nbrow-->
+                                         <div class="item">
+                                            <div class="option">                                           
+                                                <a href="~/Commandes/DetailsCommandeAValider/@item.commandeId" title="Détails Commande"><i class="fa fa-eye"></i></a
+                                            </div>
+                                         </div>
+                                    </td>
+                                </tr>
+                                
+                            }
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+    <div id="DeleteDatadialog" style="display: none" class="modal-popup">
+        @Html.Partial("~/Views/Commandes/ErrorNoSelection.cshtml")
+    </div>
+    <div id="SearchUserNoResultat" style="display: none" class="modal-popup">
+        @Html.Partial("~/Views/Shared/SearchNoResultat.cshtml")
+    </div>
+    </main>
+}
+else
+{ Response.Redirect("~/Login/Accueil"); }
+
+
+
+  

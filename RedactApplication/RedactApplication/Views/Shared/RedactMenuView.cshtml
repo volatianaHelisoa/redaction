@@ -1,0 +1,34 @@
+﻿@if (@Session["role"] != null && @Session["role"].ToString() == "1")
+{
+    <div class="libelle contact-menu">
+        <a href="~/Contact/ListeContact" class="admin-link">Contact management</a>
+    </div>
+}
+@if (@Session["role"] != null && @Session["role"].ToString() == "2")
+{
+    <div class="libelle campaign-menu ">
+        <a href="~/Campaign/ListCampaign" class="admin-link">Campaign management</a>
+    </div>
+}
+
+@if (@Session["role"] != null && @Session["role"].ToString() == "4")
+{
+    if (@Model == "Contact")
+    {
+        <div class="libelle contact-menu">
+            <a href="~/Contact/ListeContact" class="admin-link">Contact management</a>
+        </div>
+        <div class="libelle campaign-menu no-active">
+            <a href="~/Campaign/ListCampaign" class="admin-link">Campaign management</a>
+        </div>
+    }
+    else
+    {
+        <div class="libelle contact-menu no-active">
+            <a href="~/Contact/ListeContact" class="admin-link">Contact management</a>
+        </div>
+        <div class="libelle campaign-menu ">
+            <a href="~/Campaign/ListCampaign" class="admin-link">Campaign management</a>
+        </div>
+    }
+}

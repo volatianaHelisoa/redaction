@@ -1,0 +1,22 @@
+﻿
+
+@{
+    ViewBag.Title = "Confirmation du modification de l'utlisateur";
+
+}
+<div class="flex-content flex-jcenter-acenter flex-col pop-up">
+    <div class="popup-container with-shadow">
+        <div class="head gradient-blue">
+            <h1>Terminé</h1>
+        </div>
+        <div class="content-section text-centered icon-bottom">
+            <i class="pop-icon green-bg"></i>
+            <p>L'utilisateur a été mis à jour avec succès!</p>
+
+           
+                <input type="submit" value="OK" class="btn btn-primary" onclick="@("window.location.href='" + @Url.Action("ListTemplate", "Template", new { hash = ViewBag.hashUser }) + "' ");">
+            
+        </div>
+    </div>
+
+</div>

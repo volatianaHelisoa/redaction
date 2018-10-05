@@ -1,0 +1,267 @@
+﻿
+@{
+    ViewBag.Title = "ListCommandes";
+    Layout = "~/Views/Shared/LayoutConnected.cshtml";
+
+}
+
+@section css
+{
+    <link href="@Url.Content("~/Content/css/jquery-ui.css")" rel="stylesheet" />
+    <link rel="stylesheet" href="~/Content/css/elements/commandes.css">
+}
+
+@section Scripts
+{
+    <script src="@Url.Content("~/Scripts/jquery-ui-1.12.1.js")"></script>
+    <script src="@Url.Content("~/Scripts/jquery.dataTables.js")"></script>
+    <script src="@Url.Content("~/Scripts/dataTables.js")"></script>
+
+    <script>
+        $("ul.LinkSearchClear").css("display", "none");
+    </script>
+
+
+}
+
+@if (Session["name"] != null && @Session["role"] != null  && @Session["role"].ToString() != "5")
+{
+
+    <main id="wrapper">
+        <div id="single-container">
+            <div class="onglets ease-in-out">
+                <ul>
+                    <li> @Html.ActionLink("Dashboard", "Dashboard", new { controller = "Home" }) </li>
+                    @if (@Session["role"] != null && @Session["role"].ToString() != "2" && @Session["role"].ToString() != "1")
+                    {
+                        <li> @Html.ActionLink("Utilisateurs", "ListeUser", new { controller = "Home" }) </li>
+                    }
+                    <li>@Html.ActionLink("Commandes", "ListCommandes", new { controller = "Commandes" }, new { @class = "active" })</li>
+                    @if (@Session["role"] != null && @Session["role"].ToString() != "1")
+                    {
+                        <li>@Html.ActionLink("Factures", "ListFacture", new { controller = "Facture" })</li>
+
+                    }
+                </ul>
+            </div>
+            
+            <div class="card back-office with-shadow">
+                <div class="action-bar flex-content flex-jsbet-acenter">
+                    <div>
+
+                        @using (Html.BeginForm("CommandesSearch", "Commandes", FormMethod.Post, new { @class = "usr-srch" }))
+                        {
+                            <div class="usr-srch--input-wrapper">
+                                @Html.AntiForgeryToken()
+                                <i class="fa fa-times-circle cancelText"></i>
+                                <input class="usr-srch--input" type="search" placeholder="Rechercher" name="searchValue" id="ValUserSearch" title="Rechercher ...">
+                            </div>
+
+                        }
+
+                    </div>
+                    <div class="submit-area">
+
+                        @if (@Session["role"] != null && @Session["role"].ToString() != "2")
+                        {
+                            <input type="button" value="Créer commande" class="btn btn-success btn-medium" onclick="@(" window.location.href='" + @Url.RouteUrl("Home", new { controller = "Commandes", action = "Create" }) + "' ");">
+                        }
+                    </div>
+                </div>
+                <div class="filters flex-content flex-jsbet-acenter">
+                    @if (@Session["role"] != null && @Session["role"].ToString() != "2")
+                    {
+                        <div class="flex-content flex-jsbet-acenter">
+                            Sélection
+                            <span onclick="CheckedCmdeClick()">Tous</span>
+                            <span onclick="DecheckedCmdeClick()">Aucun</span>
+                            <button class="btn btn-small" onclick="DeleteAllCommandeSelected(@ViewBag.nbrow)"><i class="fa fa-trash"></i> Supprimer la sélection</button>
+                        </div>
+                    }
+                </div>
+                <table id="myDataTable">
+                    <thead>
+                        <tr>
+                            @if (@Session["role"] != null && @Session["role"].ToString() != "2")
+                            {
+                                <th>
+                                    <input type="checkbox" class="checkbox" onclick="ClickAllCommandeInListCommande()" id="checkAllCmde" />
+                                </th>
+                            }
+                            <th>#</th>
+                            <th>Demandeur</th>
+                            <th>Redacteur</th>
+                            <th>Date de la commande</th>
+                            <th>Date de la livraison</th>
+                            <th>Projet</th>
+                            <th>Site</th>
+                            <th>Thématique</th>
+                            <th>Type de textes</th>
+                            <th>Tags</th>
+                            <th>Etat </th>
+                         
+                            <th class="option">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody class="t1">
+                        @if (ViewBag.listeCommandeVms != null)
+                        {
+
+                            foreach (var item in ViewBag.listeCommandeVms)
+                            {
+                                <tr>
+                                    @if (@Session["role"] != null && @Session["role"].ToString() != "2")
+                                    {
+                                        <td><input type="checkbox" class="checkbox" name="selectedCmde" value="@item.commandeId" /></td>
+                                    }
+                                    <td>@item.commandeREF</td>
+                                    <td>@item.commandeDemandeur</td>
+                                    <td>@item.commandeRedacteur</td>
+                                    <td>@item.date_cmde.ToShortDateString()</td>
+
+                                    <td>@item.date_livraison.ToShortDateString()</td>
+                                    <td>@item.projet </td>
+                                    <td>@item.site</td>
+                                    <td>@item.thematique</td>
+                                    <td>@item.commandeType</td>
+                                    <td>@item.tag</td>
+                                    <td>@item.statut_cmde</td>
+
+                                   
+
+                                    <td class="col-option">
+                                        <!--ViewBag.numpage/ViewBag.nbrow-->
+                                        <div class="item">
+                                            <div class="option">
+                                                @if (@Session["role"] != null && @Session["role"].ToString() == "2")
+                                                {
+                                                    <a href="~/Commandes/DetailsCommandeAValider/@item.commandeId" title="Détails"><i class="fa fa-eye"></i></a>
+                                                }
+                                                else
+                                                {
+                                                    <a href="~/Commandes/DetailsCommande/@item.commandeId" title="Détails"><i class="fa fa-eye"></i></a>
+                                                }
+
+                                                @if ((@item.statut_cmde == "En cours" || @item.statut_cmde == "A corriger") && @Session["role"] != null && @Session["role"].ToString() == "2")
+                                                {
+                                                    <a href="~/Commandes/Edit/@item.commandeId" title="Editer"><i class="fa fa-edit"></i></a>
+                                                }
+                                                @if (@Session["role"] != null && @Session["role"].ToString() != "2" && (@item.statut_cmde == "Validé" || @item.statut_cmde == "Refusé" || @item.statut_cmde == "Annulé"))
+                                                {
+                                                    <a onclick="DeleteCommandeClick('@item.commandeId')" title="Supprimer"><i class="fa fa-trash"></i></a>
+                                                }
+                                                @if (Session["role"] != null && Session["role"].ToString() != "2" && (@item.statut_cmde == "En cours" || @item.statut_cmde == "A corriger" || @item.statut_cmde == "En attente"))
+                                                {
+
+                                                    <a href="~/Commandes/CommandeCancel/@item.commandeId" title="Annuler"><i class="fa fa-undo"></i></a>
+                                                }
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+
+                            }
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div id="DeleteDatadialog" style="display: none" class="modal-popup">
+            @Html.Partial("~/Views/Commandes/ErrorNoSelection.cshtml")
+        </div>
+        <div id="SearchUserNoResultat" style="display: none" class="modal-popup">
+            @Html.Partial("~/Views/Shared/SearchNoResultat.cshtml")
+        </div>
+        <!--  Dialogue de confirmation suppression d'utilisateur  -->
+        <div id="deleteAllUserPoPup" style="display: none" class="modal-popup">
+            @Html.Partial("~/Views/Commandes/DeleteCommande.cshtml")
+        </div>
+
+    </main>
+}
+else
+{ Response.Redirect("~/Login/Accueil"); }
+<script>
+    /*pour la suppression des utilisateurs séléctionnés*/
+    var DeleteCommandeClick = function (user) {
+        //alert(user);
+        if (user !== '') {
+
+
+            $.ajax({
+                type: 'POST',
+                url: '/Commandes/SelecteAllCommandeToDelete',
+                data: { hash: user },
+                error: function (ex) {
+                    alert('Error: ' + ex.statusText);
+                },
+                success: function () {
+                    $("#deleteAllUserPoPup").modal();
+                },
+                async: true,
+                processData: true
+            });
+        }
+    }
+
+    var DeleteAllCommandeSelected = function (nbrow) {
+        var ListUserId = '';
+        $('input[name="selectedCmde"]:checked').each(function () {
+            ListUserId += $(this).val() + ',';
+        });
+        if (ListUserId != '') {
+            $.ajax({
+                type: 'POST',
+                url: '/Commandes/SelecteAllCommandeToDelete',
+                data: { hash: ListUserId.substring(0, (ListUserId.length - 1)) },
+                error: function (ex) {
+                    //alert('Error: ' + ex.statusText);
+                },
+                success: function () {
+                    $("#deleteAllUserPoPup").modal();
+                },
+                async: true,
+                processData: true
+            });
+        } else {
+            $("#DeleteDatadialog").modal();
+        }
+    }
+
+    var ListUserData = function () {
+        var selectBox = document.getElementById("nbrowpage");
+        var nbrow = selectBox.options[selectBox.selectedIndex].value;
+        $.ajax({
+            type: 'POST',
+            url: '/Commandes/ReInitPagination',
+            data: { hash: "paginationChange" },
+            success: function (data) {
+                window.location.href = nbrow;
+            }
+        });
+    }
+
+    var CancelCommandeClick = function (commande) {
+        //alert(user);
+        if (commande !== '') {
+
+            $.ajax({
+                type: 'POST',
+                url: '/Commandes/CommandeCancel',
+                data: { hash: commande },
+                error: function (ex) {
+                    alert('Error: ' + ex.statusText);
+                },
+                success: function () {
+                    $("#cancelCommandePoPup").modal();
+                },
+                async: true,
+                processData: true
+            });
+        }
+    }
+
+
+</script>
+

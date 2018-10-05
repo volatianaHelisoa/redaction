@@ -1,0 +1,507 @@
+﻿body {
+}
+
+.centrerTexteEntete {
+    text-align: center;
+}
+
+ .centrerAuthentification {
+    text-align: center;
+    border:1px solid black;
+    width: 35%;
+    margin: 0 auto;
+}
+
+  .centrerAuthentification input{
+    margin: 0 auto;
+}
+
+  /*GESTION DIVISION*/
+#contextMenu {
+    position: absolute;
+    display: none;
+    max-width: 243px;
+    z-index: 1;
+}
+
+#CreateNewDivDialog {
+  position: absolute;
+  left:0;
+  right:0;
+  margin:0 auto;
+  max-width:400px;
+  top:50%;
+  display:none;
+  z-index:1050;
+}
+#CreateNewDivDialog > ul {
+    /*padding:30px;*/
+}
+
+#saveDivisionSucces {
+    position: absolute;
+    left:0;
+    right:0;
+    margin:0 auto;
+    max-width:400px;
+    top:50%;
+    display:none;
+    z-index:1050;
+}
+
+#contextMenuDivision {
+  position: absolute;
+  display:none;
+  z-index: 1;
+}
+
+#CreateDivisionRacine {
+  position: absolute;
+  left:0;
+  right:0;
+  margin:0 auto;
+  max-width:400px;
+  top:50%;
+  display:none;
+  z-index:1050;
+}
+
+#CreateDivisionRacine {
+    padding:30px;
+}
+
+#editDivisionDialog {
+  position: absolute;
+  left:0;
+  right:0;
+  margin:0 auto;
+  max-width:400px;
+  top:50%;
+  display:none;
+  z-index:1050;
+}
+#editDivisionDialog > ul {
+    /*padding:30px;*/
+}
+
+#deleteAllChildDivision {
+  position: absolute;
+  left:0;
+  right:0;
+  margin:0 auto;
+  max-width:400px;
+  top:50%;
+  display:none;
+    z-index:1050;
+}
+#deleteAllChildDivision > ul {
+    /*padding:30px;*/
+}
+
+#deleteChildDivSucce {
+  position: absolute;
+  left:0;
+  right:0;
+  margin:0 auto;
+  max-width:400px;
+  top:50%;
+  display:none;
+  z-index:1050;
+}
+#deleteChildDivSucce > ul {
+    
+}
+#deleteChildDivSucce .done-request {
+	text-align:center;
+	padding:10px 0;
+}
+#deleteChildDivSucce .done-request h3{
+	margin-top:0;
+}
+
+#deleteDivisionAndChilds {
+  position: absolute;
+  left:0;
+  right:0;
+  margin:0 auto;
+  max-width:400px;
+  top:50%;
+  display:none;
+  z-index:1050;
+}
+
+#editDivisionSucces {
+  position: absolute;
+  left:0;
+  right:0;
+  margin:0 auto;
+  max-width:400px;
+  top:50%;
+  display:none;
+}
+
+#modeDivisionContact {
+  position: absolute;
+  left:0;
+  right:0;
+  margin:0 auto;
+  max-width:400px;
+  top:50%;
+  display:none;
+  z-index:2;
+}
+
+#modeDivisionContact.move{
+    position: absolute;
+    left: 0;
+    right: 0;
+    margin: 0 auto;
+    max-width: 400px;
+    top: 19%;
+    display: none;
+    z-index: 1
+}
+
+.add_marg{
+    margin-top:10px !important;
+    margin-bottom:10px !important;
+}
+#limiteError {
+    position: absolute;
+    left:0;
+    right:0;
+    margin:0 auto;
+    max-width:400px;
+    top:50%;
+    display:none;
+    text-align:center;
+    z-index:1050;
+    padding: 9px 0 20px;
+}
+
+
+
+/*GESTION DES CONTACTS*/
+
+.formAvecPhone {
+    display:none;
+}
+
+#deleteContact {
+    position: absolute;
+    left:0;
+    right:0;
+    margin:0 auto;
+    max-width:400px;
+    top:50%;
+    display:none;
+}
+
+#deleteContact {
+    padding:30px;
+}
+
+/* PAGE CONTACT */
+.fullWidth .rightDivision{
+    padding: 59px 0 0
+}
+
+#createNewDivError,#invalidDivision {
+    position: absolute;
+    left:0;
+    right:0;
+    margin:0 auto;
+    max-width:400px;
+    top:50%;
+    display:none;
+    text-align:center;
+    z-index:1050;
+}
+
+#showMessageCampaign {
+    display:none;
+    text-align:center;
+}
+#deleteAllChildDivisionRoot {
+    display:none
+}
+
+
+
+
+
+
+/***/
+
+/*details contact*/
+#dlgDetailsContact {
+     position: absolute;
+    left: 0;
+    right: 0;
+    margin: 0 auto;
+    top: 0;
+    display: none;
+    text-align: center;
+    height: 100%;
+    background: rgba(255, 255, 255, 1);
+    -webkit-box-shadow: 3px 0 12px rgba(0, 0, 0, 0.2);
+    -moz-box-shadow: 3px 0 12px rgba(0, 0, 0, 0.2);
+    box-shadow: 3px 0 12px rgba(0, 0, 0, 0.2);
+}
+#dlgDetailsContact .rowpad{
+	background:none
+}
+#dlgDetailsContact .center_blc {
+	max-width:800px;
+}
+#dlgDetailsContact .formfields {
+	padding-top:50px
+}
+#dlgDetailsContact .col-info-user input, #dlgDetailsContact .info-conjoint input,#dlgDetailsContact .col-perso-contact.col input,#dlgDetailsContact .col-famille input {
+    border: none;
+    padding: 5px 10px;
+    background: none;
+    border-radius: 2px;
+    display: block;
+}
+.col-info-user label,
+.info-conjoint label {
+    text-align: left;
+    width: 100%;
+	margin-bottom: 8px;
+}
+
+.col-info-user span, .info-conjoint span, .col-perso-contact span, .col-famille span {
+    font-size: 16px;
+    color: #fff;
+    width: 100%;
+    display: block;
+    margin-bottom: 10px;
+}
+.col-info-user .left,
+.col-info-user .right{
+    width: 50%;
+	padding: 20px;
+}
+
+.col-perso-contact h4 {
+    color: #fff;
+    text-transform: uppercase;
+    margin: 0;
+    text-align: left;
+    border-bottom: 1px solid #fff;
+    padding-bottom: 5px;
+}
+.col-famille h4,
+.col-famille .info-conjoint h5{
+	text-align:left;
+	color:#fff
+}
+.col-famille .info-conjoint h5 {
+   color:#fff;
+    font-weight: bold;
+}
+
+/*CREATE CONTACT*/
+
+
+.pagesCreatecontact h4 {
+    font-size: 16px;
+    font-weight: 600;
+    line-height: 40px;
+    margin-top: 20px;
+    position: relative;
+}
+.pagesCreatecontact h4:before {
+    content: "";
+    position: absolute;
+    background: #8c8c8c;
+    width: 100%;
+    height: 1px;
+}
+.pagesCreatecontact h5 {
+    font-size: 14px;
+    font-weight: 600;
+    line-height: 40px;
+    position: relative;
+/*    margin-top: 20px;*/
+}
+.info-enfant {
+    /*margin-left: 30px;*/
+}
+
+
+
+.pagesCreatecontact h5:after,
+.pagesEditcontact h5:after
+ {
+    content: "";
+    position: absolute;
+/*    width: 50px;*/
+    width: 100%;
+    height: 1px;
+    background: #8c8c8c;
+    left: 0;
+    bottom: 8px;
+}
+/*
+.pagesCreatecontact h5:before {
+    content: "";
+    position: absolute;
+    width: 100%;
+    height: 1px;
+    background: #c3c3c3;
+}
+*/
+.btn-suppr-perso-contact {
+    margin-right: 10px;
+}
+.btn-add-suppr {
+    width: 100%;
+    padding: 10px 0;
+}
+.btn-add-suppr .fa {
+    font-size: 13px;
+    display: block;
+    width: 20px;
+    line-height: 20px;
+    text-align: center;
+    margin: 0;
+}
+
+.field-contact .input {
+    margin-bottom: 10px;
+}
+.marge {
+    height: 40px;
+}
+.btn-famille {
+    width: 100%;
+    height: 30px;
+}
+
+
+.btn-famille input[type="button"] {
+    float: right;
+    height: 30px;
+    width: 234px;
+    background-color: #169bd5;
+    border: none;
+    color: #fff;
+    border-radius: 4px;
+    -webkit-border-radius: 4px;
+ -moz-border-radius: 4px;
+ -ms-border-radius: 4px;
+ -o-border-radius: 4px;
+    padding: 0 10px;
+}
+.hide-class{
+    display: none;
+}
+
+
+/*division*/
+
+li.filsClickable {
+    position: relative;
+    margin-left: 53px;
+    padding-left: 25px;
+}
+li.filsClickable::before {
+    content: "";
+    background: #6d6d6d;
+    display: block;
+    width: 8px;
+    height: 8px;
+    position: absolute;
+    top:10px;
+    left: 0;
+    border-radius: 50%;
+    -webkit-border-radius: 50%;
+    -ms-border-radius: 50%;
+}
+
+li.filsClickable::after {
+    content: "";
+    width: 1px;
+    height: 100%;
+    position: absolute;
+    left: 3px;
+    top: 12px;
+    background: #6d6d6d;
+}
+li.filsClickable:last-child::after {
+ display: none
+}
+
+/*dialogue details contact venant de Rado*/
+
+.inline-form .col {
+    width: 33%;
+    float: left;
+    padding: 0 20px;
+}
+.inline-form .col-c-2 {
+   float: left;
+    padding: 0 20px;
+    width: 478px;
+}
+.inline-form .col div {
+    margin-bottom: 16px;
+}
+.inline-form .info-conjoint div {
+    margin-bottom: 0 !important;
+}
+.col h4,
+.col-c-2 h4 {
+    font-size: 16px;
+    font-weight: 600;
+    position: relative;
+    color: #000;
+    text-transform: uppercase;
+    margin: 0 0 30px;
+    border-bottom: 1px solid #000;
+    font-family: 'MavenPro-Regular';
+    padding: 0 0 7px;
+}
+.dialogue-container {
+	padding:0 10px
+}
+.col-perso-contact,
+.col-famille{
+	height:100%;
+}
+.info-enfant h5,
+.autres-perso-contact h5 {
+    font-size: 14px;
+    font-weight: 600;
+    line-height: 40px;
+    position: relative;
+}
+
+.innerform-container.dialogue-container .center_blc {
+    max-width: 100%;
+}
+#dlgDetailsContact label span {
+    max-width: inherit;
+    width: 146px;
+    color: #000000;
+}
+#dlgDetailsContact .inline-form {
+	max-height: 500px;
+    overflow-y: scroll;
+}
+::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background-color: #fff;
+    border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+    border-radius: 10px;
+    background-color: #fff;
+}

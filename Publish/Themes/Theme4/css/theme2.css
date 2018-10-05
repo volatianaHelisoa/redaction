@@ -1,0 +1,144 @@
+* {
+    box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    -ms-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+}
+body {
+    margin: 0;
+    padding:0;
+    font-family: 'Roboto', Arial, sans-serif;
+    color: #585858;
+    font-size: 14px;
+    line-height: 21px;
+}
+p {
+    margin: 0 0 27px;
+    text-align: justify;
+}
+h2 { 
+    color: #151515;
+    font-size: 18px;
+}
+h3 {
+    font-weight: normal;
+    color: black;
+}
+a {
+    text-decoration: none;
+}
+
+.clearfix {
+    float: none;
+    display: block;
+    clear: both;
+}
+.clearfix::after,
+.clearfix::before {
+    content: '';
+    display: table;
+    clear: both;
+}
+
+.grey-bg {
+    background-color: #e4e4e4;
+    color: #222;
+}
+.template {
+    background: #f5f5f5
+}
+.template .wrapper{
+    max-width: 971px;
+    display: block;
+    margin: 0 auto;
+    background: white;
+}
+#topbar {
+    padding: 20px 40px;
+}
+#topbar.centered {
+    text-align: center;
+    background: #ffffff;
+    color: #232A46;
+}
+.t-logo,
+.t-logo img,
+.t-logo .site-url {
+    display: inline-block;
+    vertical-align: middle;
+}
+
+.t-logo img {
+    max-width: 100px;
+}
+
+.t-logo .site-url {
+    color: #232A46;
+    margin-left: 10px;
+}
+
+.template #banner {
+    max-height: 360px;
+    overflow: hidden;
+}
+
+.template #banner img {
+    display: block;
+    width: 100%;
+    height: auto;
+}
+.template.theme #photo-l-texte {
+    padding-right: 20px;
+}
+
+.template.theme #photo-l-texte .texte {
+    padding-left: 20px;
+    padding-top: 20px;
+}
+
+.template.theme #contenu .col-50 {
+    flex:1;
+}
+.template.theme #contenu .texte > h1 {
+    font-size: 20px;
+    line-height: 30px;
+    color: #505773;
+    margin: 0 0 15px;
+}
+.template.theme #photo-l-texte .photo {
+    overflow: hidden;
+    margin-right: 20px;
+    position: relative;
+    float: left;
+    max-width: 40%;
+}
+.template.theme #photo-l-texte .photo img {
+    width: 100%;
+    display: block;
+    height: auto;
+}
+
+#full-text {
+    padding: 20px 25px;
+}
+
+.template.theme #f4-footer {
+    background-color: #232A46;
+    padding:40px;
+    text-align: center;
+    color: white;
+    font-size: 12px;
+}
+#f4-footer a {
+    color: white;
+}
+
+#f4-footer .sep{
+    font-style: normal;
+    padding: 0 30px 0 20px;
+}
+
+.photo img{
+	    width: 100%;
+    height: auto;
+}

@@ -1,0 +1,57 @@
+﻿@model RedactApplication.Models.MODELEViewModel
+@{
+
+    Layout = "~/Views/Shared/LayoutTemplate.cshtml";
+
+}
+@section Scripts{
+
+}
+<div class="template t-4">
+    <div class="wrapper">
+        <!-- Bloc header -->
+        <header>
+            <div id="topbar" class="centered">
+                <a href="javacsript:void(0)" class="t-logo">
+                    <img src="@Model.logoUrl.Trim()" alt="" srcset="">
+                    <span class="site-url">@Model.site_url</span>
+                </a>
+            </div>
+        </header>
+        <!-- Fin Bloc header -->
+        <!-- Bloc de contenu -->
+        <main>
+            @if (Model.photoALaUneUrl != null)
+            { 
+                <div id="banner">
+                <img src="@Model.photoALaUneUrl" alt="" srcset="">
+                </div>
+            }
+            <div id="contenu">
+                <div class="container">
+                    <section id="photo-l-texte" class="row">
+                        <div class="col-50 photo">
+                            <img src="@Model.menu2_paragraphe1_photoUrl" alt="" srcset="">
+                        </div>
+                        <div class="col-50 texte">
+                            <h1>
+                                @Model.menu2_paragraphe1_titre
+                            </h1>
+                            <p> @Model.menu2_contenu1</p>
+                        </div>
+                    </section>
+
+                    <section id="full-text" class="grey-bg">
+                        <h2> @Model.menu2_paragraphe2_titre</h2>
+                        <p> @Model.menu2_contenu2</p>
+                    </section>
+                </div>
+            </div>
+        </main>
+        <footer id="f4-footer">
+            <nav class="footer-nav">
+                <span>Copyright 2018 - @Model.site_url	<em class="sep">|</em> 	<a href="#">Mentions légales</a></span>
+            </nav>
+        </footer>
+    </div>
+</div>

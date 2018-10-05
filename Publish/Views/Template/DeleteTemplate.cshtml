@@ -1,0 +1,25 @@
+﻿
+@{
+    ViewBag.Title = "DeleteTemplate";
+}
+
+<div class="flex-content flex-jcenter-acenter flex-col pop-up">
+    <div class="popup-container with-shadow">
+        <div class="head gradient-blue">
+            <h1>Confirmation</h1>
+        </div>
+        <div class="content-section text-centered icon-bottom">
+            <i class="pop-icon green-bg"></i>
+            <p>Voulez-vous vraiment supprimer la sélection ?</p>
+            @using (Html.BeginForm("ListTemplate", "Template", FormMethod.Post))
+            {
+                @Html.ActionLink("Supprimer", "DeleteAllTemplateSelected", new { controller = "Template" }, new { @class = "btn btn-primary" })
+                <input type="submit" value="Annuler" class="btn btn-warning" onclick="DecheckedCmdeClick()">
+            }
+
+        </div>
+    </div>
+
+</div>
+
+

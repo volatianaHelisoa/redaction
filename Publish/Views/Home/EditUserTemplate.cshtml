@@ -1,0 +1,156 @@
+﻿@model RedactApplication.Models.UTILISATEURViewModel
+@{
+    ViewBag.Title = "Utilisateur";
+
+    if (Model != null)
+    {
+        ViewBag.userId = Model.userId;
+    }
+
+
+    Layout = "~/Views/Shared/LayoutConnected.cshtml";
+}
+@section Scripts{
+
+    <script type="text/javascript">
+        function checkStrength(s) { var a = 0; return s.length >= 8 ? (a += 1, $("#pass-length").removeClass(), $("#pass-length").addClass("valid")) : ($("#result").addClass("short"), $("#pass-length").removeClass(), $("#pass-length").addClass("invalid")), s.match(/([a-z].*[A-Z])|([A-Z].*[a-z])/) && s.length > 0 ? (a += 1, $("#pass-min-maj").removeClass(), $("#pass-min-maj").addClass("valid")) : ($("#pass-min-maj").removeClass(), $("#pass-min-maj").addClass("invalid")), s.match(/([0-9])/) && null != s.length ? (a += 1, $("#pass-number").removeClass(), $("#pass-number").addClass("valid")) : ($("#pass-number").removeClass(), $("#pass-number").addClass("invalid")), s.match(/([!,%,&,#,$,^,;,*,?,_,~])/) && null != s.length ? (a += 1, $("#pass-special").removeClass(), $("#pass-special").addClass("valid")) : ($("#pass-special").removeClass(), $("#pass-special").addClass("invalid")), s.match(/(.*[!,%,&,#,$,^,;,*,?,_,~].*[!,%,&,#,$,^,;,*,?,_,~])/) && null != s.length && (a += 1), a < 2 ? ($("#result").removeClass(), $("#result").addClass("faible"), "Faible") : 2 == a ? ($("#result").removeClass(), $("#result").addClass("bon"), "Bon") : ($("#result").removeClass(), $("#result").addClass("fort"), "Fort") }
+        function checkEquality() {
+            var s = $("#userMotdepasse").val(),
+                a = $("#userMotdepasseConfirme").val();
+            if (a && s == a) {
+                console.log("pass");
+                $("#mdp-equality").html('<i class="fa fa-info-circle"></i>  Vos mots de passe concordent');
+            }
+            else {
+                $("#mdp-equality").html('<i class="fa fa-info-circle"></i>  Les deux mots de passes ne sont pas identiques');
+            }
+        }
+        $("#userMotdepasse").keyup(function () { $("#result").html(checkStrength($("#userMotdepasse").val())) });
+        $(".pass-field").keyup(function () { checkEquality() });
+    </script>
+
+    <link rel="stylesheet" href="~/Content/css/elements/profil.css">
+}
+@if (ViewBag.succes != null)
+{
+    if (ViewBag.succes == 1)
+    {
+        <script>
+            $("#EditUserPopUp").modal();
+            $("div#EditUserPopUp").css("display", "block");
+        </script>
+    }
+}
+
+
+    <main id="wrapper">
+        <div id="single-container">
+            <div class="onglets ease-in-out">
+                <ul>
+                    <li> @Html.ActionLink("Dashboard", "ListTemplate", new { controller = "Template" }) </li>
+                    <li> @Html.ActionLink("Creation Site", "ChoiceTemplate", new { controller = "Template" })</li>
+                    @if (Session["name"] != null && @Session["role"] != null && @Session["role"].ToString() == "5")
+                    {
+                        <li> @Html.ActionLink("Utilisateurs", "ListeUserTemplate", new { controller = "Home" }, new { @class = "active" }) </li>
+                    }
+                    </ul>
+            </div>
+            <div class="card back-office with-shadow">
+                <div class="head">
+                    <h1>Editer utilisateur</h1>
+                    <p>Veuillez remplir les champs Requis (*) et appuyez sur Enregistrer pour éditer un utilisateur</p>
+                </div>
+
+                @if (ViewBag.ErrorUserCreation != null)
+                {
+                    <label class="error-msg ltl-consign text-centered">Cet adresse éléctronique existe déjà.</label>
+                }
+
+
+                @using (Html.BeginForm("ModifierUserTemplate", "Home", FormMethod.Post, new { @class = "formfields", enctype = "multipart/form-data" }))
+                {
+                    <fieldset>
+                        <input type="hidden" value="@Model.userId" name="idUser">
+                        <div class="head">
+                            <div class="flex-content flex-jcenter-acenter edit-avatar">
+                                <span class="profil-thumb">
+
+                                    @if (!string.IsNullOrEmpty(Model.logoUrl))
+                                    {
+                                        <img id="new-profil-preview" src="@Model.logoUrl" alt="@Model.userNom" title="@Model.userNom" />
+                                    }
+                                    else
+                                    { <img id="new-profil-preview" src="~/images/avatar.png" alt="" srcset="" />}
+                                </span>
+                                <div class="flex-content flex-col change-avatar">
+
+                                    <span class="file-name">Votre avatar</span>
+                                    @Html.TextBoxFor(m => m.logoUrl, new { type = "file", @class = "fileTriger", name = "file", id = "user-profil", accept = "image/*" })
+                                    <div class="input-custom">
+                                        <label for="user-profil" class="label-file">Choisir</label>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Champs -->
+                        <section class="clearfix">
+                            <label for="" class="col-50 pull-left">
+                                Nom(*)
+                                @Html.TextBoxFor(x => x.userNom, new { @required = true })
+                            </label>
+                            <label for="" class="col-50 pull-right">
+                                Prénom
+                                @Html.TextBoxFor(x => x.userPrenom, new { @required = true })
+                            </label>
+                            <label for="" class="col-100 ">
+                                E-mail(*)
+                                @Html.TextBoxFor(x => x.userMail, new { @required = true, @type = "email" })
+                                @if (ViewBag.ErrorUserValidation != null)
+                                {
+                                    <label class="error-msg ltl-consign input-error">Adresse mail invalide.</label>
+                                }
+
+                            </label>
+                            <label for="" class="col-50 pull-left">
+                                Nouveau mot de passe
+
+                                @Html.PasswordFor(x => x.userMotdepasse, new { @placeholder = "Nouveau mot de passe ", @minlength = "8", @class = "pass-field" })
+
+                            </label>
+                            <label for="" class="col-50 pull-right">
+                                Confirmer mot de passe
+                                @Html.PasswordFor(x => x.userMotdepasseConfirme, new { @placeholder = "Confirmer mot de passe", @minlength = "8", @class = "pass-field" })
+                            </label>
+                            <div id="mdp-equality"></div>
+                            <ul class="policies">
+                                <li id="pass-length">Au moins caractère 8</li>
+                                <li id="pass-min-maj">Utilisez des MAJ et des MIN</li>
+                                <li id="pass-special">Utilisez des caractères spéciaux</li>
+                                <li id="pass-number">Pensez à ajouter des chiffres</li>
+                            </ul>
+                            <div id="result"></div>
+
+                        </section>
+
+                        <section class="clearfix submit-area" id="toast">
+                            <input type="submit" value="Enregistrer" class="btn btn-success">
+                            @Html.ActionLink("Annuler", "ListTemplate", "Template", new { }, new { @class = "btn btn-warning" })
+
+                        </section>
+
+                    </fieldset>
+                }
+            </div>
+        </div>
+    </main>
+
+
+
+    <!--  Dialogue succès edit user   -->
+    <div id="EditUserPopUp" style="display:none" class="popup-notif">
+        @Html.Partial("~/Views/Home/EditUserConfirmation.cshtml")
+    </div>
+
+

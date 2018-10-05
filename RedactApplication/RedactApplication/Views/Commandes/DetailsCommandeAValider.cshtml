@@ -1,0 +1,153 @@
+﻿@model RedactApplication.Models.COMMANDEViewModel
+
+@{
+    ViewBag.Title = "Details";
+    Layout = "~/Views/Shared/LayoutConnected.cshtml";
+}
+
+@section Scripts{
+    <link rel="stylesheet" href="~/Content/css/elements/commandes.css">
+}
+
+@if (Session["name"] != null && @Session["role"] != null && @Session["role"].ToString() != "5")
+{
+
+
+    <main id="wrapper">
+        <div id="single-container">
+            <div class="onglets ease-in-out">
+                <ul>
+                    <li> @Html.ActionLink("Dashboard", "Dashboard", new { controller = "Home" }) </li>
+                    @if (@Session["role"] != null && @Session["role"].ToString() != "2" && @Session["role"].ToString() != "1")
+                    {
+                        <li> @Html.ActionLink("Utilisateurs", "ListeUser", new { controller = "Home" }) </li>
+                    }
+                    <li>@Html.ActionLink("Commandes", "ListCommandes", new { controller = "Commandes" }, new { @class = "active" })</li>
+                    @if (@Session["role"] != null && @Session["role"].ToString() != "1")
+                    {
+                        <li>@Html.ActionLink("Factures", "ListFacture", new { controller = "Facture" })</li>
+
+                    }
+
+
+
+                </ul>
+            </div>
+            <div class="card back-office with-shadow">
+                <div class="head">
+                    <h1>Commande n° @Model.commandeREF</h1>
+                </div>
+
+                <!-- Champs -->
+                <div class="container clearfix">
+                    <section class="commande-resume">
+                        <div class="section-title">
+                            <span>Récapitulatif</span>
+                        </div>
+                        <div class="wrap">
+                            <div class="flex-content flex-jsbet-astart">
+                                <div>
+                                    <span class="project-id"><strong>Projet :</strong> @Html.DisplayFor(model => model.projet)</span>
+                                    <span><strong>Demandeur :</strong>@Html.DisplayFor(model => model.commandeDemandeur)</span>
+                                    <span><strong>Redacteur  :</strong>@Html.DisplayFor(model => model.commandeRedacteur)</span>
+                                    <span><strong>Date de Commande :</strong>@Html.DisplayFor(model => model.date_cmde)</span>
+                                    <span>
+                                        <strong>Date de livraison :</strong> @Html.DisplayFor(model => model.date_livraison)
+                                        @if (Model.dateLivraisonReel > Model.date_livraison)
+                                        {
+                                            <span>Livraison en retard (prévue le @Model.date_livraison)</span>
+                                        }
+                                    </span>
+                                    <span><strong>Ordre de priorité :</strong> @Html.DisplayFor(model => model.ordrePriorite)</span>
+                                    <span><strong>Site :</strong> @Html.DisplayFor(model => model.site)</span>
+                                </div>
+                                <div>
+                                    <span><strong>Thème :</strong> @Html.DisplayFor(model => model.thematique)</span>
+                                    <span><strong>Type de contenu :</strong>  @Html.DisplayFor(model => model.commandeType)</span>
+                                    <span><strong>Mot clé principal :</strong> @Html.DisplayFor(model => model.mot_cle_pricipal)</span>
+                                    <span><strong>Mot clé secondaire :</strong>@Html.DisplayFor(model => model.mot_cle_secondaire)</span>
+                                    <span><strong>Texte d'ancrage :</strong>@Html.DisplayFor(model => model.texte_ancrage)</span>
+                                    <span><strong>Nombre de mots :</strong>@Html.DisplayFor(model => model.nombre_mots)</span>
+                                </div>
+                            </div>
+                            @*<div>
+                                <table>
+                                    <tr>
+                                        <td><strong>Consignes:</strong></td>
+                                        <td></td>
+                                    </tr>
+                                </table>
+                            </div>*@
+                        </div>
+                        <span id="remarques">
+                            <div class="section-title">
+                                <span><i class="fa fa-exclamation-circle"></i>  Consignes et remarques</span>
+                            </div>
+                            <div class="contenu">
+                                <p>@Html.DisplayFor(model => model.consigne_references)</p>
+                                <p>@Html.DisplayFor(model => model.consigneType)</p>
+                                <p>@Html.DisplayFor(model => model.consigne_autres)</p>
+                                @if (Model.remarques != null)
+                                {
+                                    <p>
+                                        <span><strong>Remarques :</strong> @Html.DisplayFor(model => model.remarques)</span>
+                                    </p>
+                                }
+                            </div>
+                        </span>
+                    </section>
+                </div>
+
+                <div class="card-footer text-centered" id="toast">
+                    @if (Model.statut_cmde == "En attente")
+                    {
+                        <button type="submit" class="btn btn-primary" onclick="@("window.location.href='" + @Url.Action("AcceptCommande", "Commandes", new { hash = Model.commandeId }) + "' ");">Accepter</button>
+                        <button type="submit" class="btn btn-warning" onclick="RefuserCommandeClick(' @Model.commandeId ')">Refuser</button>
+                    }
+                    else
+                    {
+                        @Html.ActionLink("Retour", "ListCommandes", "Commandes", new { }, new { @class = "btn btn-primary" })
+
+                    }
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <div id="refuserCommandePoPup" style="display: none" class="popup-notif">
+        @Html.Partial("~/Views/Commandes/CommandeRefuser.cshtml")
+    </div>
+}
+else
+{ Response.Redirect("~/Login/Accueil"); }
+
+
+
+
+
+<script>
+
+    var RefuserCommandeClick = function (commande) {
+        //alert(user);
+        if (commande !== '') {
+
+            $.ajax({
+                type: 'POST',
+                url: '/Commandes/CommandeRefuser',
+                data: { hash: commande },
+                error: function (ex) {
+                    alert('Error: ' + ex.statusText);
+                },
+                success: function () {
+                    $("#refuserCommandePoPup").modal();
+                },
+                async: true,
+                processData: true
+            });
+        }
+    }
+
+
+
+</script>
+

@@ -1,0 +1,69 @@
+.change-avatar {
+    text-transform: uppercase;
+    margin-left: 30px;
+}
+.change-avatar .btn{
+    margin-top: 10px;
+    min-width: inherit;
+    padding: 12px 15px;
+    color: #979797;
+}
+.edit-avatar {
+    padding: 0px 0 20px;
+}
+
+#user-profil-detail {
+    font-size: 16px;
+    line-height: normal;
+    font-family: 'RR', Arial, Helvetica, sans-serif;
+}
+
+#user-profil-detail .item {
+	display: block;
+	padding-bottom: 20px;
+}
+
+#CheckEditRedacteur .item {
+	display: block;
+}
+
+.user-info#CheckEditRedacteur strong,
+#user-profil-detail strong {
+    font-weight: normal;
+    margin: 0 30px 0 0;
+	color: #26b5ff;
+    min-width: 90px;
+    display: inline-block;
+    vertical-align: middle;
+}
+
+#user-profil-detail span {
+    font-family: 'RL', Arial, Helvetica, sans-serif;
+}
+
+.user-info#CheckEditRedacteur label {
+    background: #f7f7f7;
+    padding: 10px 20px;
+    font-family: 'RR';
+    font-weight: normal;
+}
+ 
+.profil-thumb { 
+    width: 85px; 
+    height: 85px; 
+    display: block; 
+    overflow: hidden; 
+    border-radius: 50% 
+} 
+#new-profil-preview { 
+    width: 85px; 
+    height: 85px; 
+    object-fit: cover; 
+} 
+.file-name {
+    max-width: 180px;
+    text-overflow: ellipsis;
+    overflow: hidden;
+	text-transform: inherit;
+	white-space: nowrap;
+}

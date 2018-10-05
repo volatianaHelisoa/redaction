@@ -1,0 +1,174 @@
+﻿@model RedactApplication.Models.TEMPLATEViewModel
+@{
+    ViewBag.Title = "CreateTemplate";
+    Layout = "~/Views/Shared/LayoutConnected.cshtml";
+}
+
+@section Scripts{
+
+
+    <script>
+        $(document).ready(function () {
+
+            $('#ftpList').click(function () {
+                var url = $("#url").val();
+                var ftpUser = $("#ftpUser").val();
+                var ftpPassword = $("#ftpPassword").val();
+                var ftp_obj = { "url": url, "ftpUser": ftpUser, "ftpPassword": ftpPassword };
+                var el = $('select[name="ftpdirs"]');
+                $.ajax({
+                    url: '/Template/RefreshFtp',
+                    type: "POST",
+                    data: ftp_obj,
+                    cache: false,
+                    async: true,
+                    success: function (resp) {
+                      
+                        var data = resp.split(",");
+                       
+                        var htmlOptions = [];
+                        if (data.length) {
+                            for (item in data) {
+                                html = '<option value="' + data[item] + '">' + data[item] + '</option>';
+                                htmlOptions[htmlOptions.length] = html;
+                            }
+
+                            // here you will empty the pre-existing data from you selectbox and will append the htmlOption created in the loop result
+                            el.empty().append(htmlOptions.join(''));
+                        }
+
+                    }
+                });               
+            });
+
+            $("#THEME_theme_name").autocomplete({
+
+                source: function (request, response) {
+                    $.ajax({
+
+                        type: 'GET',
+                        url: '/Template/AutocompleteThemeSuggestions',
+                        contentType: "application/json; charset=utf-8",
+                        dataType: "json",
+
+                        data: {
+                            term: request.term
+                        },
+                        success: function (data) {
+                            console.log(data);
+                            response($.map(data, function (val, item) {
+
+                                return {
+                                    value: val.Text,
+                                    text: val.Value
+                                }
+                            }))
+                        },
+                        error: function (error) {
+                            console.log(error);
+                        }
+                    })
+                },
+                select: function (event, ui) {
+                    $("#tag").val(ui.item.text);
+                    console.log($("#tag").val(ui.item.text));
+                },
+                minLength: 1
+            });
+
+        });
+    </script>
+}
+
+
+    <main id="wrapper">
+        <div id="single-container">
+            <div class="card back-office with-shadow">
+                <div class="head">
+                    <i class="icon icon-create-command"></i>
+                    <h1>Créer modèle</h1>
+                    <p>Veuillez remplir les champs Requis et appuyez sur Enregistrer pour éditer un modèle</p>
+
+                </div>
+
+                @using (Html.BeginForm("SaveTemplate", "Template", FormMethod.Post, new { role = "form", @id = "createtemplate" }))
+                {
+                    @Html.AntiForgeryToken()
+                    <!-- Champs -->
+                    <section class="clearfix">
+                        <label for="" class="col-50 pull-left">
+                            Projet
+                            @Html.DropDownListFor(x => Model.listprojetId, new SelectList(Model.ListProjet, "Value", "Text"), htmlAttributes: new { @id = "SelectItemProjet", @required = true })
+                            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#createprojet">Nouveau projet</button>
+                        </label>
+                        <label for="" class="col-50 pull-right">
+                            Thématique
+                            @*@Html.DropDownListFor(x => Model.listThemeId, new SelectList(Model.ListTheme, "Value", "Text"), htmlAttributes: new { id = "SelectItemTheme", @required = true })*@
+                            @Html.EditorFor(model => model.THEME.theme_name, new { htmlAttributes = new { } })
+                        </label>
+
+                    </section>
+                    <section class="clearfix">
+
+                        <label for="" class="col-100">
+                            FTP Hote
+                            @Html.TextBoxFor(x => x.url, new { @required = true, @name = "name" })
+                        </label>
+                        <label for="" class="col-50 pull-left">
+                            Utilisateur
+                            @Html.TextBoxFor(x => x.ftpUser, new { @name = "name", @required = true })
+                        </label>
+                        <label for="" class="col-50 pull-right">
+                            Mot de passe
+                            @Html.TextBoxFor(x => x.ftpPassword, new { required = true, @name = "name" })
+                        </label>
+                        <input type="button" value="Récupérer FTP liste" id="ftpList" />
+                        <select id="ftpdir" name="ftpdirs"></select>
+                    </section>
+                    <section class="clearfix submit-area">
+                        <input type="submit" value="Enregistrer" class="btn btn-success" />
+
+                        @Html.ActionLink("Annuler", "ChoiceTemplate", "Template", new { @class = "btn btn-warning" })
+                    </section>
+                }
+            </div>
+        </div>
+
+        <div id="createprojet" class="modal modal-popup">
+            <div class="flex-content flex-jcenter-acenter flex-col pop-up">
+                <div class="popup-container with-shadow">
+                    <div class="head gradient-blue">
+                        <h1>Nouveau projet</h1>
+                    </div>
+                    <div class="content-section text-centered icon-bottom">
+
+                        @using (Html.BeginForm("CreateProjet", "Template", FormMethod.Post))
+                        {
+
+                            <label for="" class="col-100 ">
+                                Nom du projet(*)
+                                @Html.TextBoxFor(x => x.PROJET.projet_name, new { @required = true })
+                            </label>
+
+                            <input type="submit" value="Enregistrer" class="btn btn-primary ">
+                            @Html.ActionLink("Annuler", "CreateTemplate", new { controller = "Template" }, new { @class = "btn btn-warning" })
+                        }
+
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+
+    </main>
+
+
+
+
+
+
+
+
+
+

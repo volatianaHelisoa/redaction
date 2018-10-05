@@ -1,0 +1,174 @@
+* {
+    box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    -ms-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+}
+body {
+    margin: 0;
+    padding:0;
+    font-family: 'Roboto', Arial, sans-serif;
+    color: #434546;
+    font-size: 14px;
+    line-height: 21px;
+}
+p {
+    margin: 0 0 22px;
+}
+a {
+    text-decoration: none;
+}
+ 
+/**/
+.clearfix {
+    float: none;
+    display: block;
+    clear: both;
+}
+.clearfix::after,
+.clearfix::before {
+    content: '';
+    display: table;
+    clear: both;
+}
+.grey-bg {
+    background-color: #f7f7f7;
+}
+ 
+.theme .wrapper{
+    max-width: 1170px;
+    display: block;
+    margin: 0 auto;
+}
+#topbar {
+    padding: 10px 0;
+}
+#topbar.centered {
+    text-align: center;
+}
+.t-logo,
+.t-logo img,
+.t-logo .site-url {
+    display: inline-block;
+    vertical-align: middle;
+    max-height: 50px;
+}
+ 
+.t-logo .site-url {
+    color: white;
+    margin-left: 10px;
+}
+ 
+.template #banner img {
+    display: block;
+    width: 100%;
+    height: auto;
+}
+ 
+nav.menu {
+    float: right;
+}
+nav.menu li {
+    display: inline-block;
+    vertical-align: middle;
+    padding: 0 15px;
+}
+nav.menu a {
+    color: #94835e;
+    font-size: 17px;
+}
+nav.menu .current a {
+    color: #ffb907;
+}
+
+nav.menu a:hover {
+    color: #ffb907;
+}
+ 
+/* TEMPLATE 1 */
+.theme header{
+    border: none;
+    background-color: #434546;
+}
+
+.theme header > wrapper {
+    background-color: #434546;
+    color: white;
+}
+ 
+.theme #bloc1 {
+    padding: 40px 0 20px;
+}
+h1 {
+    font-size: 25px;
+    font-weight: normal;
+    color: #ffb907;
+    text-transform: uppercase;
+    line-height: normal;
+    margin: 0 0 14px;
+}
+h2 {
+    font-weight: normal;
+    font-size: 20px;
+    margin: 0 0 10px;
+}
+h3 {
+    font-weight: normal;
+    font-size: 18px;
+    color: #94835e;
+    margin: 0 0 10px;
+}
+h4 {
+    font-size: 18px;
+    color: #171717;
+    margin: 0 0 10px;
+}
+ 
+.theme .texte p{
+    text-align: justify;
+}
+ 
+.theme #bloc1 .photo {
+    float: right;
+    margin: 0 0 20px 40px;
+    position: relative;
+    min-width: 320px;
+}
+
+.theme .photo > img {
+    max-width: 540px;
+}
+ 
+.photo img{
+    width: 100%;
+    height: auto;
+}
+ 
+.theme #bloc2 {
+    background: transparent;
+}
+ 
+.theme #bloc2 .texte {
+    padding: 40px 0;
+}
+ 
+.theme #bloc2 .photo {
+    margin-right: 40px;
+    float: left;
+    margin-top: 40px;
+    margin-bottom: 40px;
+}
+ 
+.theme #bloc2 .photo > img {
+    width: 100%;
+}
+
+.theme #f1-footer {
+    padding: 40px 0;
+    background-color: #434546;
+    text-align: center;
+    color: white
+}
+.theme #f1-footer a{
+    color: white
+}

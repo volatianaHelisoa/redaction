@@ -1,0 +1,12 @@
+﻿Fichier de modèle généré : redactapplicationEntities.edmx.
+Le chargement des métadonnées à partir de la base de données a pris 00:00:00.9910315.
+La génération du modèle a pris 00:00:01.4516560.
+Fichier de modèle généré : redactapplicationEntities.edmx.
+Le chargement des métadonnées à partir de la base de données a pris 00:00:00.5133120.
+La génération du modèle a pris 00:00:00.5216053.
+Fichier de modèle généré : redactapplicationEntities.edmx.
+Le chargement des métadonnées à partir de la base de données a pris 00:00:00.5020893.
+La génération du modèle a pris 00:00:00.5008315.
+Fichier de modèle généré : redactapplicationEntities.edmx.
+Le chargement des métadonnées à partir de la base de données a pris 00:00:00.6296168.
+La génération du modèle a pris 00:00:01.1338937.

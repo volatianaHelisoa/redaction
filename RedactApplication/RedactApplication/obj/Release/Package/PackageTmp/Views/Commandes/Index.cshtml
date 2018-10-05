@@ -1,0 +1,252 @@
+﻿@model RedactApplication.Models.COMMANDEViewModel
+
+@{
+    if (Model != null)
+    {
+        ViewBag.Title = "Commande";
+        ViewBag.UserId = Model.commandeId;
+    }
+    Layout = "~/Views/Shared/LayoutFullPage.cshtml";
+}
+
+@section css
+{
+    <link href="@Url.Content("~/Content/css/jquery-ui.css")" rel="stylesheet" />
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.css">
+    <link href="@Url.Content("~/Content/css/dataTables.css")" rel="stylesheet" />
+    <link href="~/Content/themes/smoothness/jquery-ui.css" rel="stylesheet" />
+}
+
+@section Scripts
+{
+    <script src="@Url.Content("~/Scripts/jquery-ui-1.12.1.js")"></script>
+    <script src="@Url.Content("~/Scripts/jquery.dataTables.js")"></script>
+    <script src="@Url.Content("~/Scripts/dataTables.js")"></script>
+    <script src="@Url.Content("~/Scripts/codescript.js")"></script>
+    <script>
+        $("ul.LinkSearchClear").css("display", "none");
+    </script>
+
+}
+<main class="wrapperpages">
+    <div>
+        <section>
+            <div class="page pagesDivision clear">
+                <section class="column2 rightDivision fullWidth">
+                    <div class="rowpad">
+                        <div>
+                            <div class="admin-link-menu">
+
+                                <a href="~/Home/ListeUser" class="admin-link">Utilisateurs</a>
+                                <a href="~/Commandes/Index" class="admin-link">Commandes</a>
+                            </div>
+                            <!-- end admin menu -->
+                        </div>
+                        <div id="divisionContent">
+                            <div class="breadcrumb">
+                                <span>User management</span>
+                                <hr />
+                            </div>
+
+                            <!-- top panel -->
+                            <div id="inner-top-panel" class="showpanel clear">
+                                <div class="left search-bloc">
+                                    @using (Html.BeginForm("UserSearch", "Home", FormMethod.Post, new { @class = "usr-srch" }))
+                                    {
+                                        <div class="usr-srch--input-wrapper">
+                                            @Html.AntiForgeryToken()
+                                            <i class="fa fa-times-circle cancelText"></i>
+                                            <input class="usr-srch--input" type="search" placeholder="Search" name="searchValue" id="ValUserSearch" title="Search by name,surname,email">
+                                        </div>
+                                        <input class="usr-srch--submit" type="submit" value="&#xf002;" id="UserSearchSubmit">
+                                    }
+                                </div>
+                                <div class="right usr-create">
+                                    <input type="submit" value="Create user" class="green-btn" onclick="@("window.location.href='" + @Url.RouteUrl("Home", new { controller = "Home", action = "GotoCreateUser" }) + "'" window.location.href='" + @Url.RouteUrl("Home", new { controller = "Home", action = "GotoCreateUser" }) + "' ");">
+                                </div>
+                            </div>
+                            <!-- end top panel -->
+                            <div class="select_cat">
+                                <span>Select</span>
+                                <ul>
+                                    <li><a href="#" onclick="CheckedClick()">All</a></li>
+                                    <li><a href="#" onclick="DecheckedClick()">None</a></li>
+                                    <li class="line"></li>
+                                    <li><a href="#" onclick="DeleteAllUserSelected(@ViewBag.nbrow)">Delete selection</a></li>
+                                </ul>
+                                <ul class="LinkSearchClear">
+                                    <li class="line"></li>
+                                    <li><a href="~/Home/ListeUser">Clear</a></li>
+                                </ul>
+                            </div>
+                            <div class="tab_fx tab_fxs">
+                                <table id="myDataTable" class="trig_table table">
+                                    <thead>
+                                        <tr>
+                                            <th>
+                                                <input type="checkbox" class="checkbox" onclick="ClickAllUserInListUser()" id="checkAllUser" />
+                                            </th>
+                                            <th>#</th>
+                                            <th>Nom</th>
+                                            <th>Prénom</th>
+                                            <th>Email</th>
+                                            <th>Skype</th>
+                                            <th>Volume / jour</th>
+                                            <th>Tarif</th>
+                                            <th>Thèmes</th>
+                                            <th>Niveau</th>
+                                            <th>Disponible</th>
+                                            <th>Roles</th>
+                                            <th class="option">Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="t1">
+                                        @if (ViewBag.listeUserVm != null)
+                                        {
+                                            int count = 0;
+                                            foreach (var item in ViewBag.listeUserVm)
+                                            {
+                                                <tr>
+                                                    <td><input type="checkbox" class="checkbox" name="selectedUser" value="@item.userId" /></td>
+                                                    <td>@(count + 1)</td>
+                                                    <td>@item.userNom</td>
+                                                    <td>@item.userPrenom</td>
+                                                    <td>@item.userMail</td>
+                                                    <td>@item.redactSkype</td>
+                                                    <td>@item.redactVolume</td>
+                                                    <td>@item.redactTarif</td>
+                                                    <td>@item.redactThemes</td>
+                                                    <td>@item.redactNiveau</td>
+                                                    <td>
+
+                                                        @if (@item.redactVolumeRestant == "0")
+                                                        {
+                                                            <span>Non</span>
+                                                        }
+                                                        else if (@item.redactVolumeRestant != "0")
+                                                        {
+                                                            <span>Oui</span>
+                                                        }
+
+                                                    </td>
+                                                    <td>
+                                                        <ul>
+                                                            @if (@item.userRole == "1")
+                                                            {
+                                                                <li>Referenceur </li>
+                                                            }
+                                                            @if (@item.userRole == "2")
+                                                            {
+                                                                <li>Redacteur </li>
+                                                            }
+                                                            @if (@item.userRole == "3")
+                                                            {
+                                                                <li> Manager </li>
+                                                            }
+                                                            @if (@item.userRole == "4")
+                                                            {
+                                                                <li>Administrateur </li>
+
+                                                            }
+                                                        </ul>
+                                                    </td>
+                                                    <td>
+                                                        <!--ViewBag.numpage/ViewBag.nbrow-->
+                                                        <div class="option">
+                                                            <a href="~/Home/EditUser/@item.userId" title="Edit user"><i class="fa fa-edit"></i></a>
+                                                            <a href="~/Home/DetailsRedacteurs/@item.userId" title="Détails Redacteur"><i class="fa fa-eye"></i></a>
+                                                            <a href="~/Home/sendMailRecovery/@item.userId" title="Send password recovery Instructions to the user"><i class="fa fa-lock"></i></a>
+                                                            <a onclick="DeleteUserClick('@item.userId')" title="Delete user"><i class="fa fa-trash"></i></a>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                                count++;
+                                            }
+                                            if (ViewBag.listeUserVm.Count == 0)
+                                            {
+                                                <tr><td>No records found.</td></tr>
+                                            }
+                                        }
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </section>
+    </div>
+</main>
+
+<div id="DeleteDatadialog" style="display: none">
+    @Html.Partial("~/Views/Home/ErrorNoSelection.cshtml")
+</div>
+<div id="SearchUserNoResultat" style="display: none">
+    @Html.Partial("~/Views/Home/SearchUserNoResultat.cshtml")
+</div>
+<!--  Dialogue de confirmation suppression d'utilisateur  -->
+<div id="deleteAllUserPoPup" style="display: none">
+    @Html.Partial("~/Views/Home/DeleteUser.cshtml")
+</div>
+
+<script>
+    /*pour la suppression des utilisateurs séléctionnés*/
+    var DeleteUserClick = function (user) {
+        //alert(user);
+        if (user !== '') {
+            alert("ici");
+
+            $.ajax({
+                type: 'POST',
+                url: '/Home/SelecteAllUserToDelete',
+                data: { hash: user },
+                error: function (ex) {
+                    alert('Error: ' + ex.statusText);
+                },
+                success: function () {
+                    $("#deleteAllUserPoPup").modal();
+                },
+                async: true,
+                processData: true
+            });
+        }
+    }
+
+    var DeleteAllUserSelected = function (nbrow) {
+        var ListUserId = '';
+        $('input[name="selectedUser"]:checked').each(function () {
+            ListUserId += $(this).val() + ',';
+        });
+        if (ListUserId != '') {
+            $.ajax({
+                type: 'POST',
+                url: '/Home/SelecteAllUserToDelete',
+                data: { hash: ListUserId.substring(0, (ListUserId.length - 1)) },
+                error: function (ex) {
+                    //alert('Error: ' + ex.statusText);
+                },
+                success: function () {
+                    $("#deleteAllUserPoPup").modal();
+                },
+                async: true,
+                processData: true
+            });
+        } else {
+            $("#DeleteDatadialog").modal();
+        }
+    }
+
+    var ListUserData = function () {
+        var selectBox = document.getElementById("nbrowpage");
+        var nbrow = selectBox.options[selectBox.selectedIndex].value;
+        $.ajax({
+            type: 'POST',
+            url: '/Home/ReInitPagination',
+            data: { hash: "paginationChange" },
+            success: function (data) {
+                window.location.href = nbrow;
+            }
+        });
+    }
+
+</script>

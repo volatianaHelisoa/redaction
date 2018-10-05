@@ -1,0 +1,110 @@
+#clouds,
+#mongolfier {
+    position: absolute;
+}
+#clouds {
+    background: url(../../../images/cloud.png) no-repeat center;
+    width: 85%;
+    height: calc(100% - 100px);
+    margin: auto;
+    top: 50px;
+    background-size: 100%;
+}
+#mongolfier {
+    width: 140px;
+    height: 200px;
+    position: absolute;
+    background: url(../../../images/mongolfier.svg) no-repeat center;
+    left: 20%;
+    bottom: 20%;
+}
+/* USER ENREGISTRÉ */
+.compte-info {
+    text-align: center;
+    margin-top: -80px;
+    margin-bottom: 30px;
+    font-size: 20px;
+    font-family: 'RL', Arial, Helvetica, sans-serif;
+    text-transform: uppercase;
+}
+.compte-info .avatar {
+    display: block;
+    margin: 0 auto 15px;
+    width: 100px;
+}
+
+/* MOT DE PASSE OUBLIÉ */
+#mdp-forgot label {
+    margin-bottom: 30px;
+}
+
+/* Reset password validity */
+#reset-password input[type="password"] {
+    width: 100%;
+    margin-bottom: 10px;
+}
+
+#mdp-equality {
+    font-size: 12px;
+}
+
+#reset-password .policies {
+    text-align: left;
+    margin: 0;
+    padding: 0 0 20px;
+}
+
+#reset-password .policies li {
+    list-style: none;
+}
+
+#reset-password .policies li::before {
+    font-family: FontAwesome;
+    content: '\f058';
+    margin-right: 10px;
+}
+
+#reset-password .policies li.valid {
+    color: #16c43b;
+}
+
+#reset-password .policies li.invalid {
+    color: #ff4026;
+}
+
+#reset-password .policies li.invalid::before {
+    content: '\f057';
+}
+
+#mdp-equality {
+    font-size: 12px;
+    color: #c1c1c1;
+    margin-bottom: 10px;
+}
+
+#result {
+    line-height: 40px;
+}
+
+#result::before {
+    content: '';
+    height: 5px;
+    width: 0;
+    display: block;
+    transition: 300ms ease-in-out all;
+}
+
+#result.faible::before {
+    width: 20%;
+    background-color: #ff4026;
+}
+
+#result.bon::before {
+    width: 60%;
+    background-color: #ff8400;
+}
+
+#result.fort::before {
+    width: 100%;
+    background-color: #16c43b;
+}

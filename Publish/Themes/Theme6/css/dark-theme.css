@@ -1,0 +1,257 @@
+* {
+    box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    -ms-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+}
+body {
+    margin: 0;
+    padding:0;
+    font-family: 'Roboto', Arial, sans-serif;
+    color: #585858;
+    font-size: 14px;
+    line-height: 26px;
+    background: #3c3c3c;
+}
+p {
+    margin: 0 0 22px;
+}
+h2 { color: #8b1e62 }
+a {
+    text-decoration: none;
+}
+
+/**/
+.clearfix {
+    float: none;
+    display: block;
+    clear: both;
+}
+.clearfix::after,
+.clearfix::before {
+    content: '';
+    display: table;
+    clear: both;
+}
+
+.grey-bg {
+    background-color: #f9f9f9;
+}
+.template .wrapper{
+    max-width: 1170px;
+    display: block;
+    margin: 0 auto;
+}
+#topbar.centered {
+    text-align: center;
+}
+.t-logo {
+    padding: 16px 0;
+}
+.t-logo,
+.t-logo img,
+.t-logo .site-url {
+    display: inline-block;
+    vertical-align: middle;
+    max-height: 50px;
+}
+
+.t-logo .site-url {
+    color: #333;
+    margin-left: 10px;
+}
+
+.template #banner img {
+    display: block;
+    width: 100%;
+    height: auto;
+}
+
+nav.menu {
+    float: right;
+}
+nav.menu ul {
+    margin: 0;
+    padding: 0
+}
+nav.menu li {
+    display: inline-block;
+    vertical-align: middle;
+    padding: 0 15px;
+}
+nav.menu a {
+    color: #5b5b5b;
+    font-size: 17px;
+    padding: 25px 0 30px;
+    display: block;
+    position: relative;
+    font-family: 'Oswald', Arial, sans-serif;
+}
+nav.menu .current a {
+    color: #8b1e62;
+}
+
+nav.menu .current a::before {
+    content: '';
+    width: 28px;
+    height: 6px;
+    position: absolute;
+    background: url(active_menu_deco.png)no-repeat center;
+    bottom: 17px;
+    left: 0;
+    right: 0;
+    margin: auto;
+}
+
+/* TEMPLATE 5 */
+.box {
+    background-color: #f9f9f9;
+    border: 1px solid #dedede;
+    padding: 25px
+}
+
+.divider {
+    display: block;
+    background-color: #8b1e62;
+    height: 2px;
+    width: 87px;
+    margin-bottom: 25px;
+    margin-top: 5px;
+}
+
+.template header{
+    border-bottom: 1px solid #ebebeb;
+    background-color: white;
+}
+
+.template #bloc1 {
+    padding: 100px 235px 20px 0;
+    position: relative;
+}
+.template h1 {
+    font-weight: 700;
+    font-size: 22px;
+    margin: -50px 0 20px;
+    background: #8b1e62;
+    display: inline-block;
+    color: white;
+    padding: 30px;
+    max-width: 345px;
+}
+
+.template h2 {
+    font-size: 22px;
+    font-weight: 700;
+    color: #8b1e62;
+    position: relative;
+}
+
+.template h3 {
+    font-size: 18px;
+    font-weight: 700;
+    color: #8b1e62;
+    position: relative;
+}
+
+.template h3::before {
+    content: "";
+    display: inline-block;
+    background-color: #d5911a;
+    width: 16px;
+    height: 16px;
+    margin-right: 20px;
+    border-radius: 50%;
+}
+.template #bloc1 .texte {
+    min-width: 60%;
+    background: white;
+    padding-right: 176px;
+    padding-left: 35px;
+	padding-bottom: 5px;
+    box-shadow: 0px 3px 20px rgba(0, 0, 0, 0.09);
+    -webkit-box-shadow: 0px 3px 20px rgba(0, 0, 0, 0.09);
+    -moz-box-shadow: 0px 3px 20px rgba(0, 0, 0, 0.09);
+    -ms-box-shadow: 0px 3px 20px rgba(0, 0, 0, 0.09);
+}
+
+.template .texte p{
+    text-align: justify;
+}
+
+.template #bloc1 .photo {
+    position: absolute;
+    right: 0;
+    top: 0;
+    max-height: 605px;
+    bottom: 0;
+    margin: auto;
+    padding-top: 50px;
+    overflow: hidden;
+    display: table;
+	background-color: #f7f7f7;
+}
+
+#bloc1 .photo > img {
+    max-width: 350px;
+    display: table-cell;
+    vertical-align: middle;
+}
+
+.template .photo > img {
+    width: 100%
+}
+
+.template .bloc2 {
+    background: white;
+    margin-top: 91px;
+}
+
+.template #bloc2 {
+    padding: 20px 0px 110px;
+}
+
+.template #bloc2 .photo {
+    padding-right: 0;
+    max-width: 40%;
+    margin-top: -66px;
+    float: left;
+    margin-right: 40px;
+	background-color: #f7f7f7;
+}
+
+.template #bloc2 .photo > img {
+    width: 100%;
+    object-fit: cover;
+}
+
+.template #f1-footer {
+    position: relative;
+    padding: 0 0 23px;
+    color: white;
+    border-top: #d5911a solid 6px;
+}
+
+.template #f1-footer > .wrapper {
+    background: #250117;
+    padding: 40px 0;
+    margin-top: -30px;
+}
+
+.template #f1-footer > div {
+    text-align: center;
+}
+
+.template #f1-footer span {
+    font-size: 12px;
+    font-weight: 100;
+}
+
+.template #f1-footer a,
+.template #f1-footer strong {
+    color: #d5911a
+}
+.space {
+    display: block;
+    margin: 25px 0;
+    min-height: 1px;
+}

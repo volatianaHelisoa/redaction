@@ -1,0 +1,46 @@
+﻿
+@{
+    ViewBag.Title = "ListTemplate";
+    Layout = "~/Views/Shared/LayoutConnected.cshtml";
+}
+@section Scripts{
+
+    <script src="~/Scripts/redac-script.js"></script>
+    <link rel="stylesheet" href="~/Content/css/elements/sites-creation.css">
+}
+
+<main id="wrapper">
+    <div id="single-container">
+        <div class="onglets ease-in-out">
+            <ul>
+                <li><a href="" class="active">Creation Site</a></li>
+            </ul>
+        </div>
+        <div class="theme-select grey-bg">
+            <h1>CHOISIR VOTRE THEME</h1>
+            <section class="clearfix container">
+                <div class="row">
+
+                    <a href="~/Template/Theme1" title="Theme 1" class="col-md-3 ">
+                        <div class="thumb with-shadow"><img src="~/images/theme1_thumb.jpg" onclick="@(" window.location.href='" + @Url.RouteUrl("Home", new {controller = "Template", action = "Theme1"}) + "' ");" /></div>
+                        <span>Thème 1</span>
+                    </a>
+                    <a href="~/Template/Theme2" class="col-md-3">
+                        <div class="thumb with-shadow"><img src="~/images/theme2_thumb.jpg" onclick="@(" window.location.href='" + @Url.RouteUrl("Home", new {controller = "Template", action = "Theme2"}) + "' ");" /></div>
+                        <span>Thème 2</span>
+                    </a>
+                    <a href="~/Template/Theme3" class="col-md-3">
+                        <div class="thumb with-shadow"><img src="~/images/theme3_thumb.jpg" onclick="@(" window.location.href='" + @Url.RouteUrl("Home", new {controller = "Template", action = "Theme3"}) + "' ");" /></div>
+                        <span>Thème 3</span>
+                    </a>
+                    <a href="~/Template/Theme4" class="col-md-3">
+                        <div class="thumb with-shadow"><img src="~/images/theme4_thumb.jpg" onclick="@(" window.location.href='" + @Url.RouteUrl("Home", new {controller = "Template", action = "Theme4"}) + "' ");" /></div>
+                        <span>Thème 4</span>
+                    </a>
+                </div>
+            </section>
+
+        </div>
+    </div>
+</main>
+

@@ -1,0 +1,23 @@
+﻿@{
+    ViewBag.Title = "Confirmer création template";
+}
+
+
+<div class="flex-content flex-jcenter-acenter flex-col pop-up">
+    <div class="popup-container with-shadow">
+        <div class="head gradient-blue">
+            <h1>Terminé</h1>
+        </div>
+        <div class="content-section text-centered icon-bottom">
+            <i class="pop-icon green-bg"></i>
+            <p>La template a bien été créee !</p>
+
+            @using (Html.BeginForm("ListTemplate", "Template", FormMethod.Post))
+            {
+                <input type="submit" value="Ok" class="btn btn-primary">
+                @Html.ActionLink("Créer", "Create", "Commandes", new { }, new { @class = "btn btn-warning" })
+            }
+        </div>
+    </div>
+
+</div>

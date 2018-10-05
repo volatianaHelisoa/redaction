@@ -1,0 +1,208 @@
+﻿@model RedactApplication.Models.UTILISATEURViewModel
+@{
+    if (Model != null)
+    {
+        ViewBag.Title = "Utilisateur";
+        ViewBag.UserId = Model.userId;
+    }
+    Layout = "~/Views/Shared/LayoutConnected.cshtml";
+}
+
+@section css
+{
+    <link href="@Url.Content("~/Content/css/jquery-ui.css")" rel="stylesheet" />
+
+    <link href="~/Content/themes/smoothness/jquery-ui.css" rel="stylesheet" />
+    <link rel="stylesheet" href="~/Content/css/elements/commandes.css">
+}
+
+@section Scripts
+{
+    <script src="@Url.Content("~/Scripts/jquery-ui-1.12.1.js")"></script>
+    <script src="@Url.Content("~/Scripts/jquery.dataTables.js")"></script>
+    <link href="@Url.Content("~/Content/css/jquery.dataTables.css")" rel="stylesheet" />
+    <script src="@Url.Content("~/Scripts/dataTables.js")"></script>
+ 
+    <script>
+        $("ul.LinkSearchClear").css("display", "none");
+    </script>
+
+}
+
+@if (Session["name"] != null && @Session["role"] != null && @Session["role"].ToString() != "6")                    
+{
+<main id="wrapper">
+    <div id="single-container">
+        <div class="onglets ease-in-out">           
+            <ul>
+                <li> @Html.ActionLink("Dashboard", "ListTemplate", new { controller = "Template" }) </li>
+                <li> @Html.ActionLink("Creation Site", "ChoiceTemplate", new { controller = "Template" })</li>
+                <li> @Html.ActionLink("Utilisateurs", "ListeUserTemplate", new { controller = "Home" }, new { @class = "active" }) </li>
+            </ul>
+        </div>
+
+        <div class="card back-office with-shadow">
+            <div class="action-bar flex-content flex-jsbet-acenter">
+                <div>
+                    <div class="usr-srch--input-wrapper">
+
+                        <i class="fa fa-times-circle cancelText"></i>
+                        <input class="usr-srch--input" type="search" placeholder="Rechercher" name="searchValue" id="ValUserSearch" title="Search by name,surname,email">
+                    </div>
+
+                </div>
+                <div class="submit-area">
+
+                    <input type="button" value="Créer utilisateur" class="btn btn-success btn-medium" onclick="@("window.location.href='" + @Url.RouteUrl("Home", new { controller = "Home", action = "CreateUser" }) + "'");">
+
+                </div>
+            </div>
+           
+            <div class="filters flex-content flex-jsbet-acenter">
+               
+                    <div class="flex-content flex-jsbet-acenter">
+                        Sélection
+                        <span onclick="CheckedClick()">Tous</span>
+                        <span onclick="DecheckedClick()">Aucun</span>
+                        <button class="btn btn-small" onclick="DeleteAllUserSelected(@ViewBag.nbrow)"><i class="fa fa-trash"></i> Supprimer la sélection</button>
+                    </div>
+              
+                </div>
+           
+           
+            <table id="myDataTable">
+                <thead>
+                    <tr>
+                     
+                            <th>
+                                <input type="checkbox" class="checkbox" onclick="ClickAllUserInListUser()" id="checkAllUser" />
+                            </th>
+                       
+                        <th>#</th>
+                        <th>Nom</th>
+                        <th>Prénom</th>
+                        <th>Email</th>                                
+                        <th>Role</th>
+                        <th class="option">Action</th>
+                    </tr>
+                </thead>
+                <tbody class="t1">
+                    @if (ViewBag.listeUserVm != null)
+                    {
+                        int count = 0;
+                        foreach (var item in ViewBag.listeUserVm)
+                        {
+                    <tr>
+                      
+                            <td><input type="checkbox" class="checkbox" name="selectedUser" value="@item.userId" /></td>
+                        
+                            <td>@(count + 1)</td>
+                            <td>@item.userNom</td>
+                            <td>@item.userPrenom</td>
+                            <td>@item.userMail</td>
+                          
+                            @if (@item.userRole == "5")
+                            {
+                                <td>Administrateur </td>
+                            }
+                            @if (@item.userRole == "6")
+                            {
+                                <td>CEO </td>
+                            }
+                           
+                            <td class="col-option">
+                                <!--ViewBag.numpage/ViewBag.nbrow-->
+                                <div class="item">
+                                    <div class="option">
+                                        <a href="~/Home/EditUserTemplate/@item.userId" title="Editer"><i class="fa fa-edit"></i></a>                                    
+                                        <a onclick="DeleteUserClick('@item.userId')" title="Supprimer"><i class="fa fa-trash"></i></a>                                       
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                            count++;
+                        }
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div id="DeleteDatadialog" style="display: none" class="modal-popup">
+        @Html.Partial("~/Views/Home/ErrorNoSelection.cshtml")
+    </div>
+    <div id="SearchUserNoResultat" style="display: none" class="modal-popup">
+        @Html.Partial("~/Views/Shared/SearchNoResultat.cshtml")
+    </div>
+    <!--  Dialogue de confirmation suppression d'utilisateur  -->
+    <div id="deleteAllUserPoPup" style="display: none" class="modal-popup">
+        @Html.Partial("~/Views/Home/DeleteUser.cshtml")
+    </div>
+
+</main>
+}
+else
+{ Response.Redirect("~/Login/Accueil"); }
+<script>
+    /*pour la suppression des utilisateurs séléctionnés*/
+    var DeleteUserClick = function (user) {
+        //alert(user);
+        if (user !== '') {
+
+            $.ajax({
+                type: 'POST',
+                url: '/Home/SelecteAllUserToDelete',
+                data: { hash: user },
+                error: function (ex) {
+                    alert('Error: ' + ex.statusText);
+                },
+                success: function () {
+                    $("#deleteAllUserPoPup").modal();
+                },
+                async: true,
+                processData: true
+            });
+        }
+    }
+
+    var DeleteAllUserSelected = function (nbrow) {
+        var ListUserId = '';
+        $('input[name="selectedUser"]:checked').each(function () {
+            ListUserId += $(this).val() + ',';
+        });
+        if (ListUserId != '') {
+            $.ajax({
+                type: 'POST',
+                url: '/Home/SelecteAllUserToDelete',
+                data: { hash: ListUserId.substring(0, (ListUserId.length - 1)) },
+                error: function (ex) {
+                    //alert('Error: ' + ex.statusText);
+                },
+                success: function () {
+                    $("#deleteAllUserPoPup").modal();
+                },
+                async: true,
+                processData: true
+            });
+        } else {
+            $("#DeleteDatadialog").modal();
+        }
+    }
+
+    var ListUserData = function () {
+        var selectBox = document.getElementById("nbrowpage");
+        var nbrow = selectBox.options[selectBox.selectedIndex].value;
+        $.ajax({
+            type: 'POST',
+            url: '/Home/ReInitPagination',
+            data: { hash: "paginationChange" },
+            success: function (data) {
+                window.location.href = nbrow;
+            }
+        });
+    }
+
+</script>
+
+
+
+

@@ -1,0 +1,541 @@
+﻿@model RedactApplication.Models.MODELEViewModel
+@{
+
+    Layout = "~/Views/Shared/LayoutTemplate.cshtml";
+
+}
+@section Scripts{
+
+}
+
+
+
+
+
+@if (@Session["TemplateName"] != null && @Session["TemplateName"].ToString() == "Theme1")
+{
+    <div class="template theme">
+        <!-- Bloc header -->
+        <header>
+            <div class="wrapper">
+                <div id="topbar" class="clearfix">
+                    <a href="@Model.site_url" class="t-logo theme">
+                        <img src="@Model.logoUrl.Trim()" alt="@Model.logoUrl.Trim()" srcset="">
+
+                    </a>
+                    <nav class="menu">
+                        <ul>
+                            <li class="current"><a href="/">@Model.menu1_titre</a></li>
+                            @if (@Model.menu2_titre != null)
+                            {
+                                <li><a href="page2.html">@Model.menu2_titre</a></li>
+                            }
+                            @if (@Model.menu3_titre != null)
+                            {
+                                <li><a href="page3.html">@Model.menu3_titre</a></li>
+                            }
+                            @if (@Model.menu4_titre != null)
+                            {
+                                <li><a href="page4.html">@Model.menu4_titre</a></li>
+                            }
+
+                        </ul>
+                    </nav>
+                </div>
+            </div>
+        </header>
+        <!-- Fin Bloc header -->
+        <!-- Bloc de contenu -->
+        @if (@Session["Menu"] != null && @Session["Menu"].ToString() == "1")
+        {
+            <main>
+                <div id="contenu">
+                    <div class="container">
+                        <div class="wrapper">
+                            <section class="row" id="bloc1">
+                                <div class="texte">
+                                    <h1> @Model.menu1_paragraphe1_titre</h1>
+                                    @Html.Raw(Model.menu1_contenu1)
+                                </div>	<a href="/">
+                                <div class="photo">
+                                    <img src="@Model.menu1_paragraphe1_photoUrl" alt="@Model.menu1_paragraphe1_photoUrl" srcset="">
+                                </div>
+                            </section>
+                        </div>
+                        <section class="grey-bg clearfix">
+                            <div class="wrapper" id="bloc2">
+                                <div class="photo">
+                                    <img src="@Model.menu1_paragraphe2_photoUrl" alt="@Model.menu1_paragraphe2_photoUrl" srcset="">
+                                </div>
+                                <div class="texe">
+                                    <h2>@Model.menu1_paragraphe2_titre</h2>
+                                    @Html.Raw(Model.menu1_contenu2)
+                                </div>
+                            </div>
+                        </section>
+                    </div>
+                </div>
+            </main>
+        }
+
+        @if (@Session["Menu"] != null && @Session["Menu"].ToString() == "2")
+        {
+            <main>
+                <div id="contenu">
+                    <div class="container">
+                        <div class="wrapper">
+                            <section class="row" id="bloc1">
+                                <div class="texte">
+                                    <h1> @Model.menu2_paragraphe1_titre</h1>
+                                    @Html.Raw(Model.menu2_contenu1)
+                                </div>
+                                <div class="photo">
+                                    <img src="@Model.menu2_paragraphe1_photoUrl" alt="@Model.menu2_paragraphe1_photoUrl" srcset="">
+                                </div>
+                            </section>
+                        </div>
+                        <section class="grey-bg clearfix">
+                            <div class="wrapper" id="bloc2">
+                                <div class="photo">
+                                    <img src="@Model.menu2_paragraphe2_photoUrl" alt="@Model.menu2_paragraphe2_photoUrl" srcset="">
+                                </div>
+                                <div class="texte">
+                                    <h2>@Model.menu2_paragraphe2_titre</h2>
+                                    @Html.Raw(Model.menu2_contenu2)
+                                </div>
+                            </div>
+                        </section>
+                    </div>
+                </div>
+            </main>
+        }
+        @if (@Session["Menu"] != null && @Session["Menu"].ToString() == "3")
+        {
+            <main>
+                <div id="contenu">
+                    <div class="container">
+                        <div class="wrapper">
+                            <section class="row" id="bloc1">
+                                <div class="texte">
+                                    <h1> @Model.menu3_paragraphe1_titre</h1>
+                                    @Html.Raw(Model.menu3_contenu1)
+                                </div>
+                                <div class="photo">
+                                    <img src="@Model.menu3_paragraphe1_photoUrl" alt="@Model.menu3_paragraphe1_photoUrl" srcset="">
+                                </div>
+                            </section>
+                        </div>
+                        <section class="grey-bg clearfix">
+                            <div class="wrapper" id="bloc2">
+                                <div class="photo">
+                                    <img src="@Model.menu3_paragraphe2_photoUrl" alt="@Model.menu3_paragraphe2_photoUrl" srcset="">
+                                </div>
+                                <div class="texte">
+                                    <h2>@Model.menu3_paragraphe2_titre</h2>
+                                    @Html.Raw(Model.menu3_contenu2)
+                                </div>
+                            </div>
+                        </section>
+                    </div>
+                </div>
+            </main>
+        }
+
+        @if (@Session["Menu"] != null && @Session["Menu"].ToString() == "4")
+        {
+            <main>
+                <div id="contenu">
+                    <div class="container">
+                        <div class="wrapper">
+                            <section class="row" id="bloc1">
+                                <div class="texte">
+                                    <h1> @Model.menu4_paragraphe1_titre</h1>
+                                    @Html.Raw(Model.menu4_contenu1)
+                                </div>
+                                <div class="photo">
+                                    <img src="@Model.menu4_paragraphe1_photoUrl" alt="@Model.menu4_paragraphe1_photoUrl" srcset="">
+                                </div>
+                            </section>
+                        </div>
+                        <section class="grey-bg clearfix">
+                            <div class="wrapper" id="bloc2">
+                                <div class="photo">
+                                    <img src="@Model.menu4_paragraphe2_photoUrl" alt="@Model.menu4_paragraphe2_photoUrl" srcset="">
+                                </div>
+                                <div class="texte">
+                                    <h2>@Model.menu4_paragraphe2_titre</h2>
+                                    @Html.Raw(Model.menu4_contenu2)
+                                </div>
+                            </div>
+                        </section>
+                    </div>
+                </div>
+            </main>
+        }
+
+        <footer id="f1-footer">
+            <span>© Copyright 2018 - <a href="@Model.site_url">@Model.site_url</a></span>
+        </footer>
+    </div>
+}
+
+
+
+@if (@Session["TemplateName"] != null && @Session["TemplateName"].ToString() == "Theme2")
+{
+    <div class="template theme">
+        <!-- Bloc header -->
+        <header>
+            <div id="topbar" class="clearfix">
+                <a href="@Model.site_url" class="t-logo">
+                    <img src="@Model.logoUrl.Trim()" alt="@Model.logoUrl.Trim()" srcset="">
+                </a>
+            </div>
+            <div class="wrapper" style="padding: 0;">
+                <nav class="menu">
+                    <ul>
+                        <li class="current"><a href="/">@Model.menu1_titre</a></li>
+                        @if (@Model.menu2_titre != null)
+                        {
+                            <li><a href="page2.html">@Model.menu2_titre</a></li>
+                        }
+                        @if (@Model.menu3_titre != null)
+                        {
+                            <li><a href="page3.html">@Model.menu3_titre</a></li>
+                        }
+                        @if (@Model.menu4_titre != null)
+                        {
+                            <li><a href="page4.html">@Model.menu4_titre</a></li>
+                        }
+
+                    </ul>
+                </nav>
+            </div>
+        </header>
+        <!-- Fin Bloc header -->
+
+        @if (@Session["Menu"] != null && @Session["Menu"].ToString() == "1")
+        {
+
+            <main>
+                <div id="contenu">
+                    <div class="container">
+                        <div class="wrapper">
+                            <section>
+                                <div class="texte">
+                                    <h1> @Model.menu1_paragraphe1_titre</h1>
+                                    @Html.Raw(Model.menu1_contenu1)
+                                </div>
+                                <div class="photo">
+                                    <img src="@Model.menu1_paragraphe1_photoUrl" alt="@Model.menu1_paragraphe1_photoUrl" srcset="">
+                                </div>
+                            </section>
+
+                            <section>
+                                <div class="texte">
+                                    <h2>@Model.menu1_paragraphe2_titre</h2>
+                                    @Html.Raw(Model.menu1_contenu2)
+                                </div>
+
+                            </section>
+                        </div>
+                    </div>
+                </div>
+            </main>
+        }
+
+        @if (@Session["Menu"] != null && @Session["Menu"].ToString() == "2")
+        {
+            <main>
+                <div id="contenu">
+                    <div class="container">
+                        <div class="wrapper">
+                            <section>
+                                <div class="texte">
+                                    <h1> @Model.menu2_paragraphe1_titre</h1>
+                                    @Html.Raw(Model.menu2_contenu1)
+                                </div>
+                                <div class="photo">
+                                    <img src="@Model.menu2_paragraphe1_photoUrl" alt="@Model.menu2_paragraphe1_photoUrl" srcset="">
+                                </div>
+                            </section>
+
+                            <section>
+                                <div class="texte">
+                                    <h2>@Model.menu2_paragraphe2_titre</h2>
+                                    @Html.Raw(Model.menu2_contenu2)
+                                </div>
+
+                            </section>
+                        </div>
+                    </div>
+                </div>
+            </main>
+        }
+        @if (@Session["Menu"] != null && @Session["Menu"].ToString() == "3")
+        {
+            <main>
+                <div id="contenu">
+                    <div class="container">
+                        <div class="wrapper">
+                            <section>
+                                <div class="texte">
+                                    <h1> @Model.menu3_paragraphe1_titre</h1>
+                                    @Html.Raw(Model.menu3_contenu1)
+                                </div>
+                                <div class="photo">
+                                    <img src="@Model.menu3_paragraphe1_photoUrl" alt="@Model.menu3_paragraphe1_photoUrl" srcset="">
+                                </div>
+                            </section>
+
+                            <section>
+                                <div class="texte">
+                                    <h2>@Model.menu3_paragraphe2_titre</h2>
+                                    @Html.Raw(Model.menu3_contenu2)
+                                </div>
+
+                            </section>
+                        </div>
+                    </div>
+                </div>
+            </main>
+        }
+
+        @if (@Session["Menu"] != null && @Session["Menu"].ToString() == "4")
+        {
+            <main>
+                <div id="contenu">
+                    <div class="container">
+                        <div class="wrapper">
+                            <section>
+                                <div class="texte">
+                                    <h1> @Model.menu4_paragraphe1_titre</h1>
+                                    @Html.Raw(Model.menu1_contenu1)
+                                </div>
+                                <div class="photo">
+                                    <img src="@Model.menu4_paragraphe1_photoUrl" alt="@Model.menu4_paragraphe1_photoUrl" srcset="">
+                                </div>
+                            </section>
+
+                            <section>
+                                <div class="texte">
+                                    <h2>@Model.menu4_paragraphe2_titre</h2>
+                                    @Html.Raw(Model.menu4_contenu2)
+                                </div>
+
+                            </section>
+                        </div>
+                    </div>
+                </div>
+            </main>
+        }
+
+
+        <footer id="f2-footer">
+            <span>© Copyright 2018 - <a href="#">@Model.site_url</a></span>
+        </footer>
+    </div>
+}
+
+
+
+@if (@Session["TemplateName"] != null && @Session["TemplateName"].ToString() == "Theme3")
+
+{
+    <div class="template theme">
+        <header>
+            <div id="topbar" class="clearfix">
+                <img src="@Model.photoALaUneUrl" alt="@Model.photoALaUneUrl" srcset="">
+                <a href="@Model.site_url" class="t-logo">
+                    <img src="@Model.logoUrl.Trim()" alt="@Model.logoUrl.Trim()" srcset="">
+                </a>
+            </div>
+
+        </header>
+        <!-- Fin Bloc header -->
+        <!-- Bloc de contenu -->
+        @if (@Session["Menu"] != null && @Session["Menu"].ToString() == "1")
+        {
+            <main>
+                <div id="contenu">
+                    <div class="wrapper">
+                        <div class="wrap">
+                            <aside class="sidebar-menu">
+                                <nav class="menu">
+                                    <ul>
+                                        <li class="current"><a href="/">@Model.menu1_titre</a></li>
+                                        @if (@Model.menu2_titre != null)
+                                        {
+                                            <li><a href="page2.html">@Model.menu2_titre</a></li>
+                                        }
+                                        @if (@Model.menu3_titre != null)
+                                        {
+                                            <li><a href="page3.html">@Model.menu3_titre</a></li>
+                                        }
+                                        @if (@Model.menu4_titre != null)
+                                        {
+                                            <li><a href="page4.html">@Model.menu4_titre</a></li>
+                                        }
+
+                                    </ul>
+                                </nav>
+                            </aside>
+                            <section>
+                                <div class="photo">
+                                    <img src="@Model.menu1_paragraphe1_photoUrl" alt="@Model.menu1_paragraphe1_photoUrl" srcset="">
+                                </div>
+                                <div class="texte">
+                                    <h1> @Model.menu1_paragraphe1_titre</h1>
+                                    @Html.Raw(Model.menu1_contenu1)
+                                </div>
+                            </section>
+
+
+                        </div>
+                    </div>
+                </div>
+            </main>
+        }
+        @if (@Session["Menu"] != null && @Session["Menu"].ToString() == "2")
+        {
+            <main>
+                <div id="contenu">
+                    <div class="wrapper">
+                        <div class="wrap">
+                            <aside class="sidebar-menu">
+                                <nav class="menu">
+                                    <ul>
+                                        <li class="current"><a href="/">@Model.menu1_titre</a></li>
+                                        @if (@Model.menu2_titre != null)
+                                        {
+                                            <li><a href="page2.html">@Model.menu2_titre</a></li>
+                                        }
+                                        @if (@Model.menu3_titre != null)
+                                        {
+                                            <li><a href="page3.html">@Model.menu3_titre</a></li>
+                                        }
+                                        @if (@Model.menu4_titre != null)
+                                        {
+                                            <li><a href="page4.html">@Model.menu4_titre</a></li>
+                                        }
+
+                                    </ul>
+                                </nav>
+                            </aside>
+                            <section>
+                                <div class="photo">
+                                    <img src="@Model.menu2_paragraphe1_photoUrl" alt="@Model.menu2_paragraphe1_photoUrl" srcset="">
+                                </div>
+                                <div class="texte">
+                                    <h1> @Model.menu2_paragraphe1_titre</h1>
+                                    @Html.Raw(Model.menu2_contenu1)
+                                </div>
+                            </section>
+
+
+                        </div>
+                    </div>
+                </div>
+            </main>
+        }
+        @if (@Session["Menu"] != null && @Session["Menu"].ToString() == "3")
+        {
+            <main>
+                <div id="contenu">
+                    <div class="wrapper">
+                        <div class="wrap">
+                            <aside class="sidebar-menu">
+                                <nav class="menu">
+                                    <ul>
+                                        <li class="current"><a href="/">@Model.menu1_titre</a></li>
+                                        @if (@Model.menu2_titre != null)
+                                        {
+                                            <li><a href="page2.html">@Model.menu2_titre</a></li>
+                                        }
+                                        @if (@Model.menu3_titre != null)
+                                        {
+                                            <li><a href="page3.html">@Model.menu3_titre</a></li>
+                                        }
+                                        @if (@Model.menu4_titre != null)
+                                        {
+                                            <li><a href="page4.html">@Model.menu4_titre</a></li>
+                                        }
+
+                                    </ul>
+                                </nav>
+                            </aside>
+                            <section>
+                                <div class="photo">
+                                    <img src="@Model.menu3_paragraphe1_photoUrl" alt="@Model.menu3_paragraphe1_photoUrl" srcset="">
+                                </div>
+                                <div class="texte">
+                                    <h1> @Model.menu3_paragraphe1_titre</h1>
+                                    @Html.Raw(Model.menu3_contenu1)
+                                </div>
+                            </section>
+
+
+                        </div>
+                    </div>
+                </div>
+            </main>
+        }
+      
+            <footer id="f2-footer">
+                <span>Copyright 2018 - <a href="@Model.site_url">@Model.site_url</a></span>
+            </footer>
+    </div>
+        }
+
+
+        @if (@Session["TemplateName"] != null && @Session["TemplateName"].ToString() == "Theme4")
+
+        {
+
+            <div class="template theme">
+                <div class="wrapper">
+                    <!-- Bloc header -->
+                    <header>
+                        <div id="topbar" class="centered">
+                            <a href="@Model.site_url" class="t-logo">
+                                <img src="@Model.logoUrl.Trim()" alt="@Model.logoUrl.Trim()" srcset="">
+
+                            </a>
+                        </div>
+                    </header>
+                    <!-- Fin Bloc header -->
+                    <!-- Bloc de contenu -->
+                    <main>
+                        <div id="banner">
+                            <img src="@Model.photoALaUneUrl" alt="@Model.photoALaUneUrl" srcset="">
+                        </div>
+
+                        <div id="contenu">
+                            <div class="container">
+                                <section id="photo-l-texte" class="row">
+                                    <div class="col-50 photo">
+                                        <img src="@Model.menu1_paragraphe1_photoUrl" alt="@Model.menu1_paragraphe1_photoUrl" srcset="">
+                                    </div>
+                                    <div class="col-50 texte">
+                                        <h1>
+                                            @Model.menu1_paragraphe1_titre
+                                        </h1>
+                                        @Html.Raw(Model.menu1_contenu1)
+                                    </div>
+                                </section>
+
+                                <section id="full-text" class="grey-bg">
+                                    <h2> @Model.menu1_paragraphe2_titre</h2>
+                                    @Html.Raw(Model.menu1_contenu2)
+                                </section>
+                            </div>
+                        </div>
+                    </main>
+                    <footer id="f4-footer">
+                        <nav class="footer-nav">
+                            <span>Copyright 2018 - <a href="@Model.site_url">@Model.site_url</a></span>
+                        </nav>
+                    </footer>
+                </div>
+            </div>
+        }

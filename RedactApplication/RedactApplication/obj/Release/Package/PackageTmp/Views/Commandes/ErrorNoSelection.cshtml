@@ -1,0 +1,20 @@
+﻿@{
+    ViewBag.Title = "Commandes";
+}
+
+
+<div class="flex-content flex-jcenter-acenter flex-col pop-up">
+    <div class="popup-container with-shadow">
+        <div class="head gradient-blue">
+            <h1>OUPS !</h1>
+        </div>
+        <div class="content-section text-centered icon-bottom">
+            <i class="pop-icon green-bg"></i>
+            <p>Aucune selection trouvée.</p>
+            <form action="" method="post">
+                <button type="submit" class="btn btn-primary" onclick="@(" window.location.href='" + @Url.RouteUrl("Home", new {controller = "Commandes", action = "ListCommandes"}) + "' ");" >OK</button>
+            </form>
+        </div>
+    </div>
+
+</div>

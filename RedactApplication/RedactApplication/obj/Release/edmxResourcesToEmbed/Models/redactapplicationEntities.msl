@@ -1,0 +1,239 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="redactapplicationModelStoreContainer" CdmEntityContainer="redactapplicationEntities">
+    <EntitySetMapping Name="COMMANDEs">
+      <EntityTypeMapping TypeName="redactapplicationModel.COMMANDE">
+        <MappingFragment StoreEntitySet="COMMANDE">
+          <ScalarProperty Name="siteId" ColumnName="siteId" />
+          <ScalarProperty Name="tagId" ColumnName="tagId" />
+          <ScalarProperty Name="remarques" ColumnName="remarques" />
+          <ScalarProperty Name="factureId" ColumnName="factureId" />
+          <ScalarProperty Name="dateLivraisonReel" ColumnName="dateLivraisonReel" />
+          <ScalarProperty Name="commandeREF" ColumnName="commandeREF" />
+          <ScalarProperty Name="dateToken" ColumnName="dateToken" />
+          <ScalarProperty Name="commandeToken" ColumnName="commandeToken" />
+          <ScalarProperty Name="commandeThemeId" ColumnName="commandeThemeId" />
+          <ScalarProperty Name="commandeStatutId" ColumnName="commandeStatutId" />
+          <ScalarProperty Name="commandeProjetId" ColumnName="commandeProjetId" />
+          <ScalarProperty Name="etat_paiement" ColumnName="etat_paiement" />
+          <ScalarProperty Name="contenu_livre" ColumnName="contenu_livre" />
+          <ScalarProperty Name="balise_titre" ColumnName="balise_titre" />
+          <ScalarProperty Name="consigne_autres" ColumnName="consigne_autres" />
+          <ScalarProperty Name="consigne_references" ColumnName="consigne_references" />
+          <ScalarProperty Name="texte_ancrage" ColumnName="texte_ancrage" />
+          <ScalarProperty Name="mot_cle_secondaire" ColumnName="mot_cle_secondaire" />
+          <ScalarProperty Name="mot_cle_pricipal" ColumnName="mot_cle_pricipal" />
+          <ScalarProperty Name="nombre_mots" ColumnName="nombre_mots" />
+          <ScalarProperty Name="commandeTypeId" ColumnName="commandeTypeId" />
+          <ScalarProperty Name="ordrePriorite" ColumnName="ordrePriorite" />
+          <ScalarProperty Name="date_livraison" ColumnName="date_livraison" />
+          <ScalarProperty Name="date_cmde" ColumnName="date_cmde" />
+          <ScalarProperty Name="commandeRedacteurId" ColumnName="commandeRedacteurId" />
+          <ScalarProperty Name="commandeReferenceurId" ColumnName="commandeReferenceurId" />
+          <ScalarProperty Name="commandeId" ColumnName="commandeId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="COMMANDE_TYPE">
+      <EntityTypeMapping TypeName="redactapplicationModel.COMMANDE_TYPE">
+        <MappingFragment StoreEntitySet="COMMANDE_TYPE">
+          <ScalarProperty Name="Type" ColumnName="Type" />
+          <ScalarProperty Name="commandeTypeId" ColumnName="commandeTypeId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="FACTUREs">
+      <EntityTypeMapping TypeName="redactapplicationModel.FACTURE">
+        <MappingFragment StoreEntitySet="FACTURE">
+          <ScalarProperty Name="createurId" ColumnName="createurId" />
+          <ScalarProperty Name="redacteurId" ColumnName="redacteurId" />
+          <ScalarProperty Name="etat" ColumnName="etat" />
+          <ScalarProperty Name="montant" ColumnName="montant" />
+          <ScalarProperty Name="dateFin" ColumnName="dateFin" />
+          <ScalarProperty Name="dateDebut" ColumnName="dateDebut" />
+          <ScalarProperty Name="dateEmission" ColumnName="dateEmission" />
+          <ScalarProperty Name="factureNumero" ColumnName="factureNumero" />
+          <ScalarProperty Name="factureId" ColumnName="factureId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="MODELEs">
+      <EntityTypeMapping TypeName="redactapplicationModel.MODELE">
+        <MappingFragment StoreEntitySet="MODELE">
+          <ScalarProperty Name="menu4_p2_alt" ColumnName="menu4_p2_alt" />
+          <ScalarProperty Name="menu4_p1_alt" ColumnName="menu4_p1_alt" />
+          <ScalarProperty Name="menu3_p2_alt" ColumnName="menu3_p2_alt" />
+          <ScalarProperty Name="menu3_p1_alt" ColumnName="menu3_p1_alt" />
+          <ScalarProperty Name="menu2_p2_alt" ColumnName="menu2_p2_alt" />
+          <ScalarProperty Name="menu2_p1_alt" ColumnName="menu2_p1_alt" />
+          <ScalarProperty Name="menu1_p2_alt" ColumnName="menu1_p2_alt" />
+          <ScalarProperty Name="menu1_p1_alt" ColumnName="menu1_p1_alt" />
+          <ScalarProperty Name="menu4_meta_description" ColumnName="menu4_meta_description" />
+          <ScalarProperty Name="menu3_meta_description" ColumnName="menu3_meta_description" />
+          <ScalarProperty Name="menu2_meta_description" ColumnName="menu2_meta_description" />
+          <ScalarProperty Name="menu1_meta_description" ColumnName="menu1_meta_description" />
+          <ScalarProperty Name="site_url" ColumnName="site_url" />
+          <ScalarProperty Name="photoALaUneUrl" ColumnName="photoALaUneUrl" />
+          <ScalarProperty Name="menu4_paragraphe2_photoUrl" ColumnName="menu4_paragraphe2_photoUrl" />
+          <ScalarProperty Name="menu4_paragraphe1_photoUrl" ColumnName="menu4_paragraphe1_photoUrl" />
+          <ScalarProperty Name="menu4_contenu2" ColumnName="menu4_contenu2" />
+          <ScalarProperty Name="menu4_contenu1" ColumnName="menu4_contenu1" />
+          <ScalarProperty Name="menu4_paragraphe2_titre" ColumnName="menu4_paragraphe2_titre" />
+          <ScalarProperty Name="menu4_paragraphe1_titre" ColumnName="menu4_paragraphe1_titre" />
+          <ScalarProperty Name="menu3_paragraphe2_photoUrl" ColumnName="menu3_paragraphe2_photoUrl" />
+          <ScalarProperty Name="menu3_paragraphe1_photoUrl" ColumnName="menu3_paragraphe1_photoUrl" />
+          <ScalarProperty Name="menu3_contenu2" ColumnName="menu3_contenu2" />
+          <ScalarProperty Name="menu3_contenu1" ColumnName="menu3_contenu1" />
+          <ScalarProperty Name="menu3_paragraphe2_titre" ColumnName="menu3_paragraphe2_titre" />
+          <ScalarProperty Name="menu3_paragraphe1_titre" ColumnName="menu3_paragraphe1_titre" />
+          <ScalarProperty Name="menu2_paragraphe2_photoUrl" ColumnName="menu2_paragraphe2_photoUrl" />
+          <ScalarProperty Name="menu2_paragraphe1_photoUrl" ColumnName="menu2_paragraphe1_photoUrl" />
+          <ScalarProperty Name="menu2_contenu2" ColumnName="menu2_contenu2" />
+          <ScalarProperty Name="menu2_contenu1" ColumnName="menu2_contenu1" />
+          <ScalarProperty Name="menu2_paragraphe2_titre" ColumnName="menu2_paragraphe2_titre" />
+          <ScalarProperty Name="menu2_paragraphe1_titre" ColumnName="menu2_paragraphe1_titre" />
+          <ScalarProperty Name="menu1_paragraphe2_photoUrl" ColumnName="menu1_paragraphe2_photoUrl" />
+          <ScalarProperty Name="menu1_paragraphe1_photoUrl" ColumnName="menu1_paragraphe1_photoUrl" />
+          <ScalarProperty Name="menu1_contenu2" ColumnName="menu1_contenu2" />
+          <ScalarProperty Name="menu1_contenu1" ColumnName="menu1_contenu1" />
+          <ScalarProperty Name="menu1_paragraphe2_titre" ColumnName="menu1_paragraphe2_titre" />
+          <ScalarProperty Name="menu1_paragraphe1_titre" ColumnName="menu1_paragraphe1_titre" />
+          <ScalarProperty Name="menu4_titre" ColumnName="menu4_titre" />
+          <ScalarProperty Name="menu3_titre" ColumnName="menu3_titre" />
+          <ScalarProperty Name="menu2_titre" ColumnName="menu2_titre" />
+          <ScalarProperty Name="menu1_titre" ColumnName="menu1_titre" />
+          <ScalarProperty Name="logoUrl" ColumnName="logoUrl" />
+          <ScalarProperty Name="modeleId" ColumnName="modeleId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="NOTIFICATIONs">
+      <EntityTypeMapping TypeName="redactapplicationModel.NOTIFICATION">
+        <MappingFragment StoreEntitySet="NOTIFICATION">
+          <ScalarProperty Name="message" ColumnName="message" />
+          <ScalarProperty Name="datenotif" ColumnName="datenotif" />
+          <ScalarProperty Name="toId" ColumnName="toId" />
+          <ScalarProperty Name="fromId" ColumnName="fromId" />
+          <ScalarProperty Name="statut" ColumnName="statut" />
+          <ScalarProperty Name="commandeId" ColumnName="commandeId" />
+          <ScalarProperty Name="notificationId" ColumnName="notificationId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="PROJETS">
+      <EntityTypeMapping TypeName="redactapplicationModel.PROJET">
+        <MappingFragment StoreEntitySet="PROJETS">
+          <ScalarProperty Name="projet_name" ColumnName="projet_name" />
+          <ScalarProperty Name="projetId" ColumnName="projetId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="ROLEs">
+      <EntityTypeMapping TypeName="redactapplicationModel.ROLE">
+        <MappingFragment StoreEntitySet="ROLE">
+          <ScalarProperty Name="roleNom" ColumnName="roleNom" />
+          <ScalarProperty Name="roleId" ColumnName="roleId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="STATUT_COMMANDE">
+      <EntityTypeMapping TypeName="redactapplicationModel.STATUT_COMMANDE">
+        <MappingFragment StoreEntitySet="STATUT_COMMANDE">
+          <ScalarProperty Name="statut_cmde" ColumnName="statut_cmde" />
+          <ScalarProperty Name="statutCommandeId" ColumnName="statutCommandeId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="TEMPLATEs">
+      <EntityTypeMapping TypeName="redactapplicationModel.TEMPLATE">
+        <MappingFragment StoreEntitySet="TEMPLATE">
+          <ScalarProperty Name="ip" ColumnName="ip" />
+          <ScalarProperty Name="modeleId" ColumnName="modeleId" />
+          <ScalarProperty Name="html" ColumnName="html" />
+          <ScalarProperty Name="userId" ColumnName="userId" />
+          <ScalarProperty Name="dateCreation" ColumnName="dateCreation" />
+          <ScalarProperty Name="ftpPassword" ColumnName="ftpPassword" />
+          <ScalarProperty Name="ftpUser" ColumnName="ftpUser" />
+          <ScalarProperty Name="url" ColumnName="url" />
+          <ScalarProperty Name="themeId" ColumnName="themeId" />
+          <ScalarProperty Name="projetId" ColumnName="projetId" />
+          <ScalarProperty Name="templateId" ColumnName="templateId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="THEMES">
+      <EntityTypeMapping TypeName="redactapplicationModel.THEME">
+        <MappingFragment StoreEntitySet="THEMES">
+          <ScalarProperty Name="theme_name" ColumnName="theme_name" />
+          <ScalarProperty Name="themeId" ColumnName="themeId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="USER_THEME">
+      <EntityTypeMapping TypeName="redactapplicationModel.USER_THEME">
+        <MappingFragment StoreEntitySet="USER_THEME">
+          <ScalarProperty Name="themeId" ColumnName="themeId" />
+          <ScalarProperty Name="userId" ColumnName="userId" />
+          <ScalarProperty Name="userThemeId" ColumnName="userThemeId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="UserRoles">
+      <EntityTypeMapping TypeName="redactapplicationModel.UserRole">
+        <MappingFragment StoreEntitySet="UserRole">
+          <ScalarProperty Name="idUser" ColumnName="idUser" />
+          <ScalarProperty Name="idRole" ColumnName="idRole" />
+          <ScalarProperty Name="idUserRole" ColumnName="idUserRole" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="UTILISATEURs">
+      <EntityTypeMapping TypeName="redactapplicationModel.UTILISATEUR">
+        <MappingFragment StoreEntitySet="UTILISATEUR">
+          <ScalarProperty Name="redactVolumeRestant" ColumnName="redactVolumeRestant" />
+          <ScalarProperty Name="redactTarif" ColumnName="redactTarif" />
+          <ScalarProperty Name="redactPhone" ColumnName="redactPhone" />
+          <ScalarProperty Name="redactNiveau" ColumnName="redactNiveau" />
+          <ScalarProperty Name="redactThemes" ColumnName="redactThemes" />
+          <ScalarProperty Name="redactReferenceur" ColumnName="redactReferenceur" />
+          <ScalarProperty Name="redactModePaiement" ColumnName="redactModePaiement" />
+          <ScalarProperty Name="redactVolume" ColumnName="redactVolume" />
+          <ScalarProperty Name="redactSkype" ColumnName="redactSkype" />
+          <ScalarProperty Name="logoUrl" ColumnName="logoUrl" />
+          <ScalarProperty Name="dateToken" ColumnName="dateToken" />
+          <ScalarProperty Name="token" ColumnName="token" />
+          <ScalarProperty Name="userMotdepasse" ColumnName="userMotdepasse" />
+          <ScalarProperty Name="userMail" ColumnName="userMail" />
+          <ScalarProperty Name="userPrenom" ColumnName="userPrenom" />
+          <ScalarProperty Name="userNom" ColumnName="userNom" />
+          <ScalarProperty Name="userId" ColumnName="userId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="REDACT_THEME">
+      <EntityTypeMapping TypeName="redactapplicationModel.REDACT_THEME">
+        <MappingFragment StoreEntitySet="REDACT_THEME">
+          <ScalarProperty Name="redactId" ColumnName="redactId" />
+          <ScalarProperty Name="themeId" ColumnName="themeId" />
+          <ScalarProperty Name="redactThemeId" ColumnName="redactThemeId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="TAGS">
+      <EntityTypeMapping TypeName="redactapplicationModel.TAG">
+        <MappingFragment StoreEntitySet="TAGS">
+          <ScalarProperty Name="type" ColumnName="type" />
+          <ScalarProperty Name="tagId" ColumnName="tagId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="SITES">
+      <EntityTypeMapping TypeName="redactapplicationModel.SITE">
+        <MappingFragment StoreEntitySet="SITES">
+          <ScalarProperty Name="site_name" ColumnName="site_name" />
+          <ScalarProperty Name="siteId" ColumnName="siteId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+  </EntityContainerMapping>
+</Mapping>

@@ -1,0 +1,22 @@
+﻿
+@{
+    ViewBag.Title = "Suppression Template Confirmation";
+   
+}
+
+
+
+<div class="flex-content flex-jcenter-acenter flex-col pop-up">
+    <div class="popup-container with-shadow">
+        <div class="head gradient-blue">
+            <h1>Terminé</h1>
+        </div>
+        <div class="content-section text-centered icon-bottom">
+            <i class="pop-icon green-bg"></i>
+            <p>La template été supprimée avec succès !</p>           
+            <input type="submit" value="Ok" class="btn btn-primary" onclick="@("window.location.href='" + @Url.RouteUrl("Home", new {controller = "Template", action = "ListTemplate"}) + "'");">
+                     
+        </div>
+    </div>
+
+</div>

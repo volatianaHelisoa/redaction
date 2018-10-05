@@ -1,0 +1,245 @@
+﻿@model RedactApplication.Models.COMMANDEViewModel
+
+@{
+    ViewBag.Title = "Details";
+    Layout = "~/Views/Shared/LayoutConnected.cshtml";
+}
+
+@section Scripts{
+    <script type="text/javascript" src="~/Scripts/js/clipboard.min.js"></script>
+    <link rel="stylesheet" href="~/Content/css/elements/commandes.css">
+    <script type="text/javascript">
+        jQuery(document).ready(function () {
+
+            var clipboard = new ClipboardJS('.btn-copy', {
+                text: function () {
+                    var htmlBlock = document.querySelector('.commande-contenu');
+                    var balise_titre = $("#balise_titre").text();
+
+                    var res = "<h1>" + balise_titre + "</h1>" + htmlBlock.innerHTML;
+                    var contenu = res.replace(/(style="([^"]*)")/g, "");
+                    return contenu;
+                }
+            });
+            clipboard.on('success', function (e) {
+                console.log(e);
+            });
+            clipboard.on('error', function (e) {
+                console.log(e);
+            });
+
+        });
+
+    </script>
+
+}
+@if (Session["name"] != null && @Session["role"] != null && @Session["role"].ToString() != "5")
+{
+    <main id="wrapper">
+        <div id="single-container">
+            <div class="onglets ease-in-out">
+                <ul>
+                    <li> @Html.ActionLink("Dashboard", "Dashboard", new { controller = "Home" }) </li>
+                    @if (@Session["role"] != null && @Session["role"].ToString() != "2" && @Session["role"].ToString() != "1")
+                    {
+                        <li> @Html.ActionLink("Utilisateurs", "ListeUser", new { controller = "Home" }) </li>
+                    }
+                    <li>@Html.ActionLink("Commandes", "ListCommandes", new { controller = "Commandes" }, new { @class = "active" })</li>
+                    @if (@Session["role"] != null && @Session["role"].ToString() != "1")
+                    {
+                        <li>@Html.ActionLink("Factures", "ListFacture", new { controller = "Facture" })</li>
+
+                    }
+
+                </ul>
+            </div>
+            <div class="card back-office with-shadow">
+                <div class="head">
+                    <h1>Commande n° @Model.commandeREF</h1>
+                </div>
+
+                <!-- Champs -->
+                <div class="container clearfix">
+                    <div class="row">
+                        <section class="col-md-7 commande-view">
+                            <div class="section-title">
+                                <span>Livrable</span>
+                            </div>
+                            <div class="wrap">
+                                @if (@Session["role"] != null && @Session["role"].ToString() != "2")
+                                {
+                                    <div class="commande-not-delivered">
+
+                                        @if (Model.statut_cmde == "En cours" || Model.statut_cmde == "En attente")
+                                        {
+                                            <span>Livraison prévue le  @Model.date_livraison.Value.ToString("dd/MM/yyyy") </span>
+                                            <div class="flex-content flex-jsbet-acenter option">
+                                                <a class="item" onclick="@("window.location.href='" + @Url.Action("RelanceSMS", "Commandes", new {hash = Model.commandeId}) + "' ");">
+                                                    <span class="icon btn-warm"><i class="fa fa-paper-plane fa-2x"></i></span>
+                                                    Relancer par SMS
+                                                </a>
+                                                <a class="item" onclick="@("window.location.href='" + @Url.Action("RelanceMail", "Commandes", new {hash = Model.commandeId}) + "' ");">
+                                                    <span class="icon btn-primary"><i class="fa fa-envelope-open fa-2x"></i></span>
+                                                    Relancer par mail
+                                                </a>
+                                                <a class="item" onclick="@("window.location.href='" + @Url.Action("CommandeCancel", "Commandes", new {hash = Model.commandeId}) + "' ");">
+                                                    <span class="icon btn-warning"><i class="fa fa-undo fa-2x"></i></span>
+                                                    Annulation
+                                                </a>
+                                            </div>
+                                        }
+                                        else if (Model.statut_cmde == "A corriger")
+                                        {
+                                            <span>Vous avez demandé une correction de la livraison prévue le  @Model.date_livraison.Value.ToString("dd/MM/yyyy").</span>
+                                        }
+
+                                        else if (Model.statut_cmde == "Annulé" || Model.statut_cmde == "Refusé")
+                                        {
+                                            <span>Livraison prévue le  @Model.date_livraison.Value.ToString("dd/MM/yyyy") a été annulée ou refusée.</span>
+                                        }
+
+                                    </div>
+                                }
+                                @if (Model.statut_cmde == "Livré" || Model.statut_cmde == "Validé" || Model.statut_cmde == "Refusé")
+                                {
+                                    <span>
+                                        <strong>Titre : </strong> <span id="balise_titre">
+                                            @Html.DisplayFor(model => model.balise_titre)
+                                        </span>
+                                    </span>
+                                    <div>
+                                        <strong>Contenu : </strong>
+                                        <div class="commande-contenu">
+                                            @Html.Raw(Model.contenu_livre)
+                                        </div>
+
+                                        <div class="contenu-footer flex-content flex-jsbet-acenter">
+                                            <span> @ViewBag.ContentLength  sur @Html.DisplayFor(model => model.nombre_mots) mot(s) utilisé(s)</span>
+                                            <button class="btn-copy" data-clipboard-action="copy" data-clipboard-target=".commande-contenu">Copier</button>
+                                        </div>
+                                    </div>
+                                }
+                            </div>
+                        </section>
+                        <section class="col-md-5 commande-resume">
+                            <div class="section-title">
+                                <span>Récapitulatif</span>
+                            </div>
+                            <div class="wrap with-shadow">
+                                <span class="project-id"><strong>Projet :</strong>@Html.DisplayFor(model => model.projet)</span>
+                                <span><strong>Demandeur :</strong>@Html.DisplayFor(model => model.commandeDemandeur)</span>
+                                <span><strong>Redacteur  :</strong>@Html.DisplayFor(model => model.commandeRedacteur)</span>
+                                <span><strong>Date de Commande :</strong>@Html.DisplayFor(model => model.date_cmde)</span>
+                                <span>
+                                    <strong>Date de livraison :</strong> @Html.DisplayFor(model => model.date_livraison)
+                                    @if (Model.dateLivraisonReel > Model.date_livraison)
+                                    {
+                                        <span>Livraison en retard (prévue le @Model.date_livraison)</span>
+                                    }
+                                </span>
+                                <span><strong>Ordre de priorité :</strong> @Html.DisplayFor(model => model.ordrePriorite)</span>
+                                <span><strong>Site :</strong> @Html.DisplayFor(model => model.site)</span>
+                                <span><strong>Tag :</strong> @Html.DisplayFor(model => model.tag)</span>
+                                <span><strong>Thème :</strong> @Html.DisplayFor(model => model.thematique)</span>
+                                <span><strong>Type de contenu :</strong>  @Html.DisplayFor(model => model.commandeType)</span>
+                                <span><strong>Mot clé principal :</strong> @Html.DisplayFor(model => model.mot_cle_pricipal)</span>
+                                <span><strong>Mot clé secondaire :</strong>@Html.DisplayFor(model => model.mot_cle_secondaire)</span>
+                                <span><strong>Texte d'ancrage :</strong>@Html.DisplayFor(model => model.texte_ancrage)</span>
+
+                                @if (Model.remarques != null)
+                                {
+                                    <span>
+                                        <strong>Remarques :</strong> @Html.DisplayFor(model => model.remarques)
+                                    </span>
+                                }
+                            </div>
+
+                        </section>
+                        <div class="sep"></div>
+                        <section class="clearfix submit-area" id="toast">
+
+                            @if (Model.statut_cmde == "Livré" && Model.statut_cmde != "Annulé")
+                            {
+
+                                @Html.ActionLink("Accepter", "ValidCommande", "Commandes", new { @hash = Model.commandeId }, new { @class = "btn btn-success small" })
+
+                                <button type="submit" class="btn btn-warm small" onclick="UpdateCommandeClick(' @Model.commandeId ')">A corriger</button>
+
+                                <button type="submit" class="btn btn-warning small" onclick="RefuserCommandeClick(' @Model.commandeId ')">Refuser</button>
+
+                                @Html.ActionLink("Retour", "ListCommandes", "Commandes", new { }, new { @class = "btn btn-primary small" })
+                            }
+                            else if (Model.statut_cmde != "Livré")
+                            {
+                                @Html.ActionLink("Retour", "ListCommandes", "Commandes", new { }, new { @class = "btn btn-primary" })
+                            }
+                        </section>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </main>
+
+    <!--  Dialogue de modification   -->
+    <div id="updateCommandePoPup" style="display: none" class="popup-notif">
+        @Html.Partial("~/Views/Commandes/CommandeUpdateNote.cshtml")
+    </div>
+
+    <div id="refuserCommandePoPup" style="display: none" class="popup-notif">
+        @Html.Partial("~/Views/Commandes/CommandeRefuser.cshtml")
+    </div>
+}
+else
+{ Response.Redirect("~/Login/Accueil"); }
+
+
+<script>
+    /*pour la modifier commande*/
+    var UpdateCommandeClick = function (commande) {
+        //alert(user);
+        if (commande !== '') {
+
+            $.ajax({
+                type: 'POST',
+                url: '/Commandes/CommandeUpdateNote',
+                data: { hash: commande },
+                error: function (ex) {
+                    alert('Error: ' + ex.statusText);
+                },
+                success: function () {
+                    $("#updateCommandePoPup").modal();
+                },
+                async: true,
+                processData: true
+            });
+        }
+    }
+
+
+    var RefuserCommandeClick = function (commande) {
+        //alert(user);
+        if (commande !== '') {
+
+            $.ajax({
+                type: 'POST',
+                url: '/Commandes/CommandeRefuser',
+                data: { hash: commande },
+                error: function (ex) {
+                    alert('Error: ' + ex.statusText);
+                },
+                success: function () {
+                    $("#refuserCommandePoPup").modal();
+                },
+                async: true,
+                processData: true
+            });
+        }
+    }
+
+
+
+</script>
+
+
+
