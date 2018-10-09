@@ -1,20 +1,16 @@
 ﻿@model RedactApplication.Models.MODELEViewModel
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="en">
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="robots" content="noindex,nofollow" />
 
-    <title>@Model.meta_title </title>
-    <meta description="@Model.meta_description" />
-    <link rel="icon" href="@Model.favicone">
-  
-    @if (@Session["Color"] != null)
-    {
-        <link rel="stylesheet" href="@Session["Color"]">
-    }
+    <title>@Model.menu1_titre </title>
 
+
+
+    <link rel="stylesheet" href="css/templates-style.css">
     <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,700" rel="stylesheet">
 
 </head>

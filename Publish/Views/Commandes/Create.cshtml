@@ -57,7 +57,7 @@
 
 
             $("#SelectItemRedacteur").prop('disabled', 'disabled');
-            $("#SelectItemTheme").change(function () {
+            $("#thematique").focusout(function () {
 
                 var dID = $(this).val();
 
@@ -101,6 +101,41 @@
                     });
             });
 
+
+            $("#thematique").autocomplete({
+
+                source: function (request, response) {
+                    $.ajax({
+
+                        type: 'GET',
+                        url: '/Commandes/AutocompleteThemeSuggestions',
+                        contentType: "application/json; charset=utf-8",
+                        dataType: "json",
+
+                        data: {
+                            term: request.term
+                        },
+                        success: function (data) {
+                            console.log(data);
+                            response($.map(data, function (val, item) {
+
+                                return {
+                                    value: val.Text,
+                                    text: val.Value
+                                }
+                            }))
+                        },
+                        error: function (error) {
+                            console.log(error);
+                        }
+                    })
+                },
+                select: function (event, ui) {
+                    $("#thematique").val(ui.item.text);
+                    console.log($("#thematique").val(ui.item.text));
+                },
+                minLength: 1
+            });
 
 
             $("#tag").autocomplete({
@@ -234,7 +269,7 @@
 
                     <label for="" class="col-50 pull-left">
                         Thématique (*)
-                        @Html.DropDownListFor(x => Model.listThemeId, new SelectList(Model.ListTheme, "Value", "Text"), htmlAttributes: new { id = "SelectItemTheme", @required = true })
+                        @Html.EditorFor(model => model.thematique, new { htmlAttributes = new { } })
                     </label>
                     <label for="" class="col-50 pull-right">
                         Rédacteur (*)

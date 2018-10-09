@@ -9,9 +9,7 @@
 
     <script>
         $(document).ready(function () {
-            
-            $('select[name="ftpdirs"]').hide();
-            $(".save-template").hide();                
+
             $('#ftpList').click(function () {
                 var url = $("#url").val();
                 var ftpUser = $("#ftpUser").val();
@@ -25,8 +23,7 @@
                     cache: false,
                     async: true,
                     success: function (resp) {
-                        el.show();
-                        $(".save-template").show();              
+                      
                         var data = resp.split(",");
                        
                         var htmlOptions = [];
@@ -35,6 +32,8 @@
                                 html = '<option value="' + data[item] + '">' + data[item] + '</option>';
                                 htmlOptions[htmlOptions.length] = html;
                             }
+
+                            // here you will empty the pre-existing data from you selectbox and will append the htmlOption created in the loop result
                             el.empty().append(htmlOptions.join(''));
                         }
 
@@ -100,12 +99,9 @@
                         <label for="" class="col-50 pull-left">
                             Projet
                             @Html.DropDownListFor(x => Model.listprojetId, new SelectList(Model.ListProjet, "Value", "Text"), htmlAttributes: new { @id = "SelectItemProjet", @required = true })
+                            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#createprojet">Nouveau projet</button>
                         </label>
-                        <label class="col-50 pull-right">
-                            Ajouter un nouveau projet
-                            <button type="button" class="btn btn-primary" style="margin: 11px 0 40px;" data-toggle="modal" data-target="#createprojet"><i class="fa fa-plus"></i>  Nouveau projet</button>
-                        </label>
-                        <label for="" class="col-50 pull-left">
+                        <label for="" class="col-50 pull-right">
                             Thématique
                             @*@Html.DropDownListFor(x => Model.listThemeId, new SelectList(Model.ListTheme, "Value", "Text"), htmlAttributes: new { id = "SelectItemTheme", @required = true })*@
                             @Html.EditorFor(model => model.THEME.theme_name, new { htmlAttributes = new { } })
@@ -113,29 +109,25 @@
 
                     </section>
                     <section class="clearfix">
-                        <label for="" class="col-50 pull-left">
-                            <i class="fa fa-desktop"></i>  IP
-                            @Html.TextBoxFor(x => x.ip, new { @required = true })
-                        </label>
-                        <label for="" class="col-50 pull-right">
-                            <i class="fa fa-upload"></i> FTP Hote
-                            @Html.TextBoxFor(x => x.url, new { @required = true})
+
+                        <label for="" class="col-100">
+                            FTP Hote
+                            @Html.TextBoxFor(x => x.url, new { @required = true, @name = "name" })
                         </label>
                         <label for="" class="col-50 pull-left">
-                            <i class="fa fa-user"></i>  Utilisateur
+                            Utilisateur
                             @Html.TextBoxFor(x => x.ftpUser, new { @name = "name", @required = true })
                         </label>
                         <label for="" class="col-50 pull-right">
-                            <i class="fa fa-lock"></i>  Mot de passe
+                            Mot de passe
                             @Html.TextBoxFor(x => x.ftpPassword, new { required = true, @name = "name" })
                         </label>
-                        <div class="ftp-area">
-                            <input type="button" value="Récupérer dossiers FTP" id="ftpList" />
-                            <select id="ftpdir" name="ftpdirs"></select>
-                        </div>
+                        <input type="button" value="Récupérer FTP liste" id="ftpList" />
+                        <select id="ftpdir" name="ftpdirs"></select>
                     </section>
-                    <section class="clearfix submit-area save-template">
+                    <section class="clearfix submit-area">
                         <input type="submit" value="Enregistrer" class="btn btn-success" />
+
                         @Html.ActionLink("Annuler", "ChoiceTemplate", "Template", new { @class = "btn btn-warning" })
                     </section>
                 }

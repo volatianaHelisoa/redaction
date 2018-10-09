@@ -745,3 +745,7 @@ a.back-link i {
 .ftp-area select {
     flex: 3;
 }
+
+#volumePopup .popup-container {
+    width: 530px;
+}

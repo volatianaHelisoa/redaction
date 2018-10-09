@@ -298,7 +298,7 @@ namespace RedactApplication.Models
                         new SelectListItem
                         {
                             Value = n.userId.ToString(),
-                            Text = n.userNom
+                            Text = n.userNom + " " + n.userPrenom
                         }).ToList();
                 var redacteurItem = new SelectListItem()
                 {
@@ -310,7 +310,28 @@ namespace RedactApplication.Models
             }
         }
 
-       
+        public IEnumerable<SelectListItem> GetListAllRedacteurItem()
+        {
+            using (var context = new redactapplicationEntities())
+            {
+                var redacteurs = from c in context.UTILISATEURs
+                                 from p in context.UserRoles
+                                 where p.idUser == c.userId && p.idRole == 2
+                                 select c;
+
+                List<SelectListItem> listredacteur = redacteurs
+                    .OrderBy(n => n.userNom)
+                    .Select(n =>
+                        new SelectListItem
+                        {
+                            Value = n.userId.ToString(),
+                            Text = n.userNom + " " + n.userPrenom
+                        }).ToList();
+
+                return new SelectList(listredacteur, "Value", "Text");
+            }
+        }
+
 
         public IEnumerable<SelectListItem> GetListRedacteurItem(string themes)
         {
@@ -374,6 +395,24 @@ namespace RedactApplication.Models
                 };
                 listTag.Insert(0, typeItem);
                 return new SelectList(listTag, "Value", "Text");
+            }
+        }
+
+        public IEnumerable<SelectListItem> GetListThemeItem(string term)
+        {
+            using (var context = new redactapplicationEntities())
+            {
+                var tags = context.THEMES.Where(x => x.theme_name.StartsWith(term));
+                List<SelectListItem> listTheme = tags
+                    .OrderBy(n => n.theme_name)
+                    .Select(n =>
+                        new SelectListItem
+                        {
+                            Value = n.themeId.ToString(),
+                            Text = n.theme_name
+                        }).ToList();
+
+                return new SelectList(listTheme, "Value", "Text");
             }
         }
 

@@ -31,7 +31,9 @@
             </div>
             <div id="divrole" data-value="@Session["role"]"></div>
             <div class="pull-right">
-              
+                <div class="notifications">
+                    @Html.Partial("~/Views/Shared/_MessagesList.cshtml")
+                </div>
 
                 <div href="javascript:void(0)" class="profil">
                     <span id="user-name">@Session["name"] @Session["surname"] </span>
@@ -59,7 +61,7 @@
                         <div>
                             <span class="user-name">@Session["name"] @Session["surname"]</span>
                             <a href="~/Home/DetailsRedacteurs/@Session["UserId"]" class="user-mail link">@Session["mail"]</a>
-                            <a href="~/Home/EditUserTemplate/@Session["UserId"]" class="btn btn-success btn-small" title="Modifier">Modifier</a>
+                            <a href="~/Home/EditUser/@Session["UserId"]" class="btn btn-success btn-small" title="Modifier">Modifier</a>
 
                         </div>
                     </div>
@@ -79,9 +81,9 @@
     <script src="~/Scripts/codescript.js"></script>
     <script src="~/Scripts/GestionVue.js"></script>
 
-    @*<script src="~/Scripts/jquery.signalR-2.2.3.min.js"></script>
+    <script src="~/Scripts/jquery.signalR-2.2.3.min.js"></script>
     <script src="~/SignalR/hubs"></script>
-    <script src="~/Scripts/codescriptnotification.js"></script>*@
+    <script src="~/Scripts/codescriptnotification.js"></script>
 
 
 

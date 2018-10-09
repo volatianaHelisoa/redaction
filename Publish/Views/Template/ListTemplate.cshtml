@@ -15,19 +15,11 @@
     </script>
 }
 
-
+@if (Session["name"] != null && @Session["role"] != null && @Session["role"].ToString() == "5")
+{
     <main id="wrapper">
         <div id="single-container">
-            <div class="onglets ease-in-out">
-                <ul>
-                    <li> @Html.ActionLink("Dashboard", "ListTemplate", new { controller = "Template" }, new { @class = "active" })</li>
-                    <li> @Html.ActionLink("Creation Site", "ChoiceTemplate", new { controller = "Template" })</li>
-                    @if (Session["name"] != null && @Session["role"] != null && @Session["role"].ToString() != "6")
-                    {
-                        <li> @Html.ActionLink("Utilisateurs", "ListeUserTemplate", new { controller = "Home" }) </li>
-                    }
-                    </ul>
-            </div>
+
 
             <div class="card back-office with-shadow">
                 <div class="action-bar flex-content flex-jsbet-acenter">
@@ -41,12 +33,12 @@
                             </div>
                         }
                     </div>
+                  
+                        <div class="submit-area">
 
-                    <div class="submit-area">
-
-                        <input type="submit" value="Créer une template" class="btn btn-success btn-medium" onclick="@("window.location.href='" + @Url.RouteUrl("Home", new { controller = "Template", action = "ChoiceTemplate" }) + "'");">
-                    </div>
-
+                            <input type="submit" value="Créer une template" class="btn btn-success btn-medium" onclick="@("window.location.href='" + @Url.RouteUrl("Home", new { controller = "Template", action = "ChoiceTemplate" }) + "'");">
+                        </div>
+                    
                 </div>
                 <div class="filters flex-content flex-jsbet-acenter">
 
@@ -68,7 +60,6 @@
                             </th>
                             <th>#</th>
                             <th>Date de création</th>
-                            <th>IP</th>
                             <th>Projet</th>
                             <th>Thèmatique</th>
                             <th>URL</th>
@@ -85,28 +76,27 @@
 
                             foreach (var item in ViewBag.listeTemplateVm)
                             {
-                                <tr>
-                                    <td><input type="checkbox" class="checkbox" name="selectedTemplate" value="@item.templateId" /></td>
-                                    <td>@(count + 1)</td>
-                                    <td>@item.dateCreation.ToShortDateString()</td>
-                                    <td>@item.ip</td>
-                                    <td>@item.PROJET.projet_name</td>
-                                    <td>@item.THEME.theme_name</td>
-                                    <td>@item.MODELE.site_url</td>
+                        <tr>
+                            <td><input type="checkbox" class="checkbox" name="selectedTemplate" value="@item.templateId" /></td>
+                            <td>@(count + 1)</td>
+                            <td>@item.dateCreation.ToShortDateString()</td>
+                            <td>@item.PROJET.projet_name</td>
+                            <td>@item.THEME.theme_name</td>
+                            <td>@item.MODELE.site_url</td>
+                           
+                            <td>@item.ftpUser</td>
+                            <td>@item.ftpPassword</td>
+                            <td>@item.UTILISATEUR.userNom @item.UTILISATEUR.userPrenom</td>
+                            <td class="col-option">
+                                <div class="item">
+                                    <div class="option">
+                                        <a href="http://@item.MODELE.site_url" title="Voir"><i class="fa fa-eye"></i></a>
+                                        <a onclick="DeleteTemplateClick('@item.templateId')" title="Supprimer template"><i class="fa fa-trash"></i></a>
 
-                                    <td>@item.ftpUser</td>
-                                    <td>@item.ftpPassword</td>
-                                    <td>@item.UTILISATEUR.userNom @item.UTILISATEUR.userPrenom</td>
-                                    <td class="col-option">
-                                        <div class="item">
-                                            <div class="option">
-                                                <a href="@Html.Raw(item.url)" title="Voir"><i class="fa fa-eye"></i></a>
-                                                <a onclick="DeleteTemplateClick('@item.templateId')" title="Supprimer template"><i class="fa fa-trash"></i></a>
-
-                                            </div>
-                                        </div>
-                                    </td>
-                                </tr>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
                                 count++;
                             }
                         }
@@ -128,7 +118,9 @@
 
     </main>
 
-
+}
+else
+{ Response.Redirect("~/Login/Accueil"); }
 <script>
     /*pour la suppression des utilisateurs séléctionnés*/
     var DeleteTemplateClick = function (Template) {

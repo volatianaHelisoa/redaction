@@ -715,6 +715,7 @@
     <Content Include="Views\Home\ListeUserTemplate.cshtml" />
     <Content Include="Views\Home\CreateUser.cshtml" />
     <Content Include="Views\Template\Theme5.cshtml" />
+    <Content Include="Views\Commandes\TransfertCommandeConfirmation.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

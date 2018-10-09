@@ -597,9 +597,20 @@ namespace RedactApplication.Controllers
         [AcceptVerbs(HttpVerbs.Get)]
         public JsonResult LoadRedacteurByTheme(string theme)
         {
-            THEME selectedTheme = db.THEMES.SingleOrDefault(x=>x.themeId.ToString() == theme);
+
+            THEME selectedTheme = db.THEMES.SingleOrDefault(x=>x.theme_name.ToLower().StartsWith(theme.ToLower()));
+
+            //var selectedTheme = from t in db.THEMES
+            //                    where t.theme_name.ToLower().StartsWith(theme.ToLower())
+            //                    select t;
+
+            var res = new Commandes().GetListAllRedacteurItem();
+            if (selectedTheme != null)
+                res = (new Commandes().GetListRedacteurItem(selectedTheme.theme_name));
+
+
             //Your Code For Getting Physicans Goes Here
-            var redactList = (selectedTheme != null)?(new Commandes().GetListRedacteurItem(selectedTheme.theme_name)): null;
+            var redactList = res ?? new Commandes().GetListRedacteurItem();           
     
             return Json(redactList, JsonRequestBehavior.AllowGet);
         }
@@ -611,6 +622,14 @@ namespace RedactApplication.Controllers
             var redactList = (redact != null) ? (new Commandes().GetListRedacteurItem().Where(x=>x.Value != redact)) : null;
 
             return Json(redactList, JsonRequestBehavior.AllowGet);
+        }
+
+        [Authorize]
+        [HttpGet]
+        public JsonResult AutocompleteThemeSuggestions(string term)
+        {
+            var suggestions = new Commandes().GetListThemeItem(term);
+            return Json(suggestions, JsonRequestBehavior.AllowGet);
         }
 
         [Authorize]
@@ -642,6 +661,7 @@ namespace RedactApplication.Controllers
                 commandeVm.ListTag = val.GetListTagItem();
                 commandeVm.ListStatut = val.GetListStatutItem();
                 commandeVm.ListOtherRedacteur = val.GetListRedacteurItem();
+
                 string theme = "";
                 if (commande.commandeProjetId != null)
                     commandeVm.listprojetId = (Guid)commande.commandeProjetId;
@@ -701,6 +721,7 @@ namespace RedactApplication.Controllers
 
                 if (commande.TAG != null)
                     commandeVm.tag = commande.TAG.type;
+
                 commandeVm.statut_cmde = statutcmde;
                 Session["cmdeEditModif"] = null;
                 commandeVm.commandeREF = commande.commandeREF;
@@ -798,6 +819,8 @@ namespace RedactApplication.Controllers
             var selectedReferenceurId = Guid.Parse(HttpContext.User.Identity.Name);
             var selectedSite = model.site;
 
+            var selectedThematique = model.thematique;
+
             model.mot_cle_secondaire =
                 StatePageSingleton.SanitizeString(Sanitizer.GetSafeHtmlFragment(model.mot_cle_secondaire));
             model.texte_ancrage = StatePageSingleton.SanitizeString(Sanitizer.GetSafeHtmlFragment(model.texte_ancrage));
@@ -821,8 +844,8 @@ namespace RedactApplication.Controllers
             {
                 newcommande.PROJET = db.PROJETS.Find(selectedProjetId);
                 newcommande.commandeProjetId = selectedProjetId;
-                newcommande.THEME = db.THEMES.Find(selectedThemeId);
-                newcommande.commandeThemeId = selectedThemeId;
+                //newcommande.THEME = db.THEMES.Find(selectedThemeId);
+               // newcommande.commandeThemeId = selectedThemeId;
                 newcommande.REFERENCEUR = db.UTILISATEURs.Find(selectedReferenceurId);
                 newcommande.commandeReferenceurId = selectedReferenceurId;
                 newcommande.REDACTEUR = db.UTILISATEURs.Find(selectedRedacteurId);
@@ -844,6 +867,20 @@ namespace RedactApplication.Controllers
                     StatePageSingleton.SanitizeString(Sanitizer.GetSafeHtmlFragment(model.texte_ancrage));
                 newcommande.nombre_mots = model.nombre_mots;
                 newcommande.consigne_references = model.consigne_references;
+
+                if (!string.IsNullOrEmpty(selectedThematique))
+                {
+                    THEME currentTheme = db.THEMES.FirstOrDefault(x => x.theme_name.Contains(selectedThematique.TrimEnd()));
+                    if (currentTheme == null)
+                    {
+                        currentTheme = new THEME { themeId = Guid.NewGuid(), theme_name = selectedThematique };
+                        db.THEMES.Add(currentTheme);
+                        db.SaveChanges();
+                    }
+                    newcommande.commandeThemeId = currentTheme.themeId;
+                    newcommande.THEME = currentTheme;
+                }
+
                 if (!string.IsNullOrEmpty(selectedTag))
                 {
                     TAG currentTag = db.TAGS.FirstOrDefault(x => x.type.Contains(selectedTag.TrimEnd()));
@@ -1179,9 +1216,125 @@ namespace RedactApplication.Controllers
             return View("ErrorException");
         }
 
-       
 
-    public ActionResult CommandeRefuser(Guid hash)
+        [HttpPost]
+        [Authorize]
+        [ValidateInput(false)]
+        [MvcApplication.CheckSessionOut]
+        public ActionResult CommandeTransfert(Guid idCommande, COMMANDEViewModel model)
+        {
+            Guid user = Guid.Parse(HttpContext.User.Identity.Name);
+
+            var newcommande = db.COMMANDEs.Find(idCommande);
+
+            if (Request.Url != null)
+            {
+                var url = Request.Url.Scheme;
+                if (Request.Url != null)
+                {
+
+                    string callbackurl = Request.Url.Host != "localhost"
+                        ? Request.Url.Host
+                        : Request.Url.Authority;
+                    var port = Request.Url.Port;
+                    if (!string.IsNullOrEmpty(port.ToString()) && Request.Url.Host != "localhost")
+                        callbackurl += ":" + port;
+
+                    url += "://" + callbackurl;
+                }
+
+
+                StringBuilder mailBody = new StringBuilder();
+                if (newcommande.REDACTEUR != null)
+                {
+                    mailBody.AppendFormat(
+                        "Monsieur / Madame " + CultureInfo.CurrentCulture.TextInfo.ToTitleCase(newcommande.REDACTEUR.userNom
+                            .ToLower()));
+                    mailBody.AppendFormat("<br />");
+                    mailBody.AppendFormat(
+                        "<p>Cette commande a été transférée vers un autre rédacteur.Veuillez contacter le responsable pour plus de détails.</p>");
+                    mailBody.AppendFormat("<br />");
+                  
+                    mailBody.AppendFormat("Cordialement,");
+                    mailBody.AppendFormat("<br />");
+                    mailBody.AppendFormat("Media click App .");
+
+                    bool isSendMail = MailClient.SendMail(newcommande.REDACTEUR.userMail,
+                        mailBody.ToString(), "Media click App  - tranfert commande.");
+                    if (isSendMail)
+                    {
+                        newcommande.commandeToken = newcommande.commandeId;
+                        newcommande.dateToken = DateTime.Now;
+                        newcommande.commandeRedacteurId = model.listOtherRedacteurId;
+
+                        int result = SendMailCreateCommande(newcommande,url);
+
+                        result += db.SaveChanges();
+                        if (result > 0)
+                        {
+                            string notif = "Commande tranférée vers un autre rédacteur.";
+                            if (SendNotification(newcommande, newcommande.commandeReferenceurId, newcommande.commandeRedacteurId, notif) > 0)
+                                return View("TransfertCommandeConfirmation");
+
+                        }
+                    }
+                }
+            }
+            return View("ErrorException");
+
+
+        }
+
+        private int SendMailCreateCommande(COMMANDE newcommande,string url)
+        {
+            StringBuilder mailBody = new StringBuilder();
+            if (newcommande.REDACTEUR != null)
+            {
+                mailBody.AppendFormat(
+                    "Monsieur / Madame " + CultureInfo.CurrentCulture.TextInfo.ToTitleCase(newcommande.REDACTEUR.userNom
+                        .ToLower()));
+                mailBody.AppendFormat("<br />");
+                mailBody.AppendFormat(
+                    "<p>Vous venez de recevoir une de commande de " + newcommande.REFERENCEUR.userNom + " " + newcommande.REFERENCEUR.userPrenom + " le " + DateTime.Now + ".Veuillez cliquer sur le lien suivant pour accepter ou refuser la commande.</p>");
+                mailBody.AppendFormat("<br />");
+                mailBody.AppendFormat(url + "/Commandes/CommandeWaitting?token=" + newcommande.commandeId);
+                mailBody.AppendFormat("<br />");
+                mailBody.AppendFormat("Cordialement,");
+                mailBody.AppendFormat("<br />");
+                mailBody.AppendFormat("Media click App .");
+
+                bool isSendMail = MailClient.SendMail(newcommande.REDACTEUR.userMail,
+                    mailBody.ToString(), "Media click App - nouvelle commande.");
+                if (isSendMail)
+                {
+                    newcommande.commandeToken = newcommande.commandeId;
+                    newcommande.dateToken = DateTime.Now;
+                    int result = db.SaveChanges();
+                    if (result > 0)
+                    {
+                        string notif = "Vous venez de recevoir une de commande de " + newcommande.REFERENCEUR.userNom + " " + newcommande.REFERENCEUR.userPrenom + " le " + DateTime.Now + ".Veuillez accepter ou refuser la commande.";
+
+                        if (SendNotification(newcommande, newcommande.commandeReferenceurId, newcommande.commandeRedacteurId, notif) > 0)
+                            return result;
+
+                        return 0;    
+
+                    }
+
+                }
+            }
+            return 0;
+
+        }
+
+
+
+
+
+
+
+
+        public ActionResult CommandeRefuser(Guid hash)
         {
             Guid user = Guid.Parse(HttpContext.User.Identity.Name);
             ViewBag.hashCmde = hash;

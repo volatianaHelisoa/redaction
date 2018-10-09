@@ -17,8 +17,7 @@
     <div id="single-container">
         <div class="onglets ease-in-out">
             <ul>
-                <li> @Html.ActionLink("Dashboard", "ListTemplate", new { controller = "Template" }) </li>
-                <li> @Html.ActionLink("Creation Site", "ChoiceTemplate", new { controller = "Template" }, new { @class = "active" })</li>
+                <li><a href="" class="active">Creation Site</a></li>
             </ul>
         </div>
         <div class="theme-select grey-bg">
@@ -31,44 +30,32 @@
                         </div>
                         <div class="row site-identity">
                             <div class="col-md-4 logo-area">
-                                <label for="" class="col-100" style="margin-bottom: 30px;display: flex; justify-content: flex-start; align-items: center;">
+                                <label for="" class="col-100" style="margin-bottom: 30px;">
                                     <span class="thumbnail"></span>
-                                    @Html.TextBoxFor(m => m.logoUrl, new { type = "file", accept = "image/*", name = "file", id = "logoUrl",  required = true })
+
+                                    <strong>Votre logo</strong>
+                                    @Html.TextBoxFor(m => m.logoUrl, new { type = "file", name = "file", id = "logoUrl" })
                                     <div class="input-custom">
-                                        <label for="logoUrl" class="btn btn-warm btn-small">Choisir le logo</label>
+                                        <label for="logoUrl" class="btn btn-warm btn-small">Choisir</label>
                                     </div>
                                 </label>
                                 <label for="" class="col-100">
-                                    <i class="fa fa-link"></i>  L'url de votre site
-                                    @Html.TextBoxFor(m => m.site_url, new { placeholder = "www.example.com",  required = true, type = "url" })
+                                    <i class="fa fa-link"></i>  Site
+                                    @Html.TextBoxFor(m => m.site_url, new { placeholder = "example.com" })
                                 </label>
                             </div>
                             <div class="col-md-8">
                                 <label for="" class="col-100 banner-area">
-                                    @Html.TextBoxFor(x => x.photoALaUneUrl, new { type = "file", accept = "image/*", name = "files", id = "photoALaUneUrl", required = true })
+                                    @Html.TextBoxFor(x => x.photoALaUneUrl, new { type = "file", name = "files", id = "photoALaUneUrl" })
                                     <div class="action">
                                         <i class="fa fa-camera"></i>  Photo à la une
                                         <div class="input-custom">
-                                            <label for="photoALaUneUrl" class="btn btn-primary btn-small"><i class="fa fa-download"></i> Choisir</label>
+                                            <label for="photoALaUneUrl" class="btn btn-primary btn-small">Choisir</label>
                                         </div>
                                     </div>
                                     <span class="thumbnail-photo"></span>
                                 </label>
-                            </div>                            
-                        </div>
-
-                        <div class="col-50 pull-left favicon-select" style="margin-top: 30px;">
-                            <label for="" class="col-100">
-                                Choisir un favicon
-                                @Html.TextBoxFor(m => m.favicone, new { type = "file", accept = "image/*", name = "file", id = "favicone" })
-                                <div class="favicon-input-wrapper">
-                                    <div class="input-custom">
-                                        <label for="favicone" class="btn btn-warm btn-small">Parcourir</label>
-                                    </div>
-                                    
-                                    <span class="thumbnail"></span>
-                                </div>
-                            </label>
+                            </div>
                         </div>
 
                         <div class="content-to-show clearfix">
@@ -77,24 +64,21 @@
                                     <div class="clearfix">
                                         <label for="" class="col-md-12">
                                             Titre accueil
-                                            @Html.TextBoxFor(x => x.menu1_titre, new { placeholder = "Titre accueil", required = true })
+                                            @Html.TextBoxFor(x => x.menu1_titre, new { placeholder = "Titre accueil" })
                                         </label>
+
                                         <label for="" class="col-md-12 photo-field">
-                                            Méta description
-                                            @Html.TextBoxFor(x => x.menu1_meta_description, new { required = true })
-                                        </label>
-                                        <label for="" class="col-md-12 photo-field">
-                                            @Html.TextBoxFor(x => x.menu1_paragraphe1_photoUrl, new { type = "file", accept = "image/*", name = "files", id = "menu1_paragraphe1_photoUrl" })
+                                            @Html.TextBoxFor(x => x.menu1_paragraphe1_photoUrl, new { type = "file", name = "files", id = "menu1_paragraphe1_photoUrl" })
                                             <div class="input-custom">
                                                 <dd><i class="fa fa-image"></i>Photo 1</dd>
-                                                <label for="menu1_paragraphe1_photoUrl" class="btn btn-primary btn-small"><i class="fa fa-download"></i> Choisir</label>
+                                                <label for="menu1_paragraphe1_photoUrl" class="btn btn-primary btn-small">Choisir</label>
                                             </div>
                                             <span class="thumbnail-photo"></span>
                                         </label>
 
                                         <label for="" class="col-md-12">
                                             Titre paragraphe 1
-                                            @Html.TextBoxFor(x => x.menu1_paragraphe1_titre, new { required = true })
+                                            @Html.TextBoxFor(x => x.menu1_paragraphe1_titre)
                                         </label>
 
                                         <label for="" class="col-md-12">
@@ -108,6 +92,15 @@
                                             @Html.TextBoxFor(x => x.menu1_paragraphe2_titre)
                                         </label>
 
+
+                                        @*<label for="" class="col-md-12 photo-field">
+                                            @Html.TextBoxFor(x => x.menu1_paragraphe2_photoUrl, new { type = "file", name = "files", id = "menu1_paragraphe2_photoUrl" })
+                                            <div class="input-custom">
+                                                <dd><i class="fa fa-image"></i>  Photo 2</dd>
+                                                <label for="menu1_paragraphe2_photoUrl" class="btn btn-primary btn-small">Choisir</label>
+                                            </div>
+                                            <span class="thumbnail-photo"></span>
+                                        </label>*@
                                         <label for="" class="col-md-12">
                                             Contenu 2
                                             @Html.TextAreaFor(x => x.menu1_contenu2)
@@ -122,8 +115,8 @@
                     </section>
 
                     <section class="clearfix submit-area" id="toast">
-                        <input type="submit" value="Suivant" class="btn btn-success">
-                        @Html.ActionLink("Annuler", "ChoiceTemplate", "Template", new { }, new { @class = "btn btn-warning" })
+                        <input type="submit" value="Enregistrer" class="btn btn-success">
+                        @Html.ActionLink("Annuler", "ListTemplate", "Template", new { }, new { @class = "btn btn-warning" })
                     </section>
                 </div>
             }

@@ -82,10 +82,16 @@
                                                     <span class="icon btn-primary"><i class="fa fa-envelope-open fa-2x"></i></span>
                                                     Relancer par mail
                                                 </a>
+
+                                                <a href="" title="Transferer commande" class="item" data-toggle="modal" data-target="#volumePopup">
+                                                    <span class="icon btn-success"><i class="fa fa-arrow-right fa-2x"></i></span>
+                                                    Transferer commande
+                                                </a>
                                                 <a class="item" onclick="@("window.location.href='" + @Url.Action("CommandeCancel", "Commandes", new {hash = Model.commandeId}) + "' ");">
                                                     <span class="icon btn-warning"><i class="fa fa-undo fa-2x"></i></span>
                                                     Annulation
                                                 </a>
+
                                             </div>
                                         }
                                         else if (Model.statut_cmde == "A corriger")
@@ -179,6 +185,32 @@
 
             </div>
         </div>
+        @using (Html.BeginForm("CommandeTransfert", "Commandes", FormMethod.Post, new { role = "form", @id = "createcommande" }))
+        {
+        @Html.AntiForgeryToken()
+            <div id="volumePopup" style="" class="modal modal-popup in" aria-hidden="false">
+                <div class="flex-content flex-jcenter-acenter flex-col pop-up">
+                    <div class="popup-container with-shadow">
+                        <div class="content-section text-centered icon-bottom">
+                            <input type="hidden" name="idCommande" value="@Model.commandeId">
+                            <h2>Voulez-vous vraiment transférer cette commade ?</h2>
+                            <p> Confirmer le transfert en choisisssant un autre redacteur. </p>
+                            <label>
+
+                                @Html.DropDownListFor(x => Model.listOtherRedacteurId, new SelectList(Model.ListOtherRedacteur, "Value", "Text"), htmlAttributes: new { id = "SelectItemOtherRedacteur", placeholder = "Choisir Rédacteur" })
+                            </label>
+                            <section>
+                                <button type="submit" class="btn btn-warning" onclick="@("window.location.href='" + @Url.RouteUrl("Home", new { controller = "Commandes", action = "Choisir" }) + "'");">Changer rédacteur</button>
+
+                                <button type="button" class="btn btn-success" data-dismiss="modal">Annuler</button>
+                            </section>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        }
+
     </main>
 
     <!--  Dialogue de modification   -->
