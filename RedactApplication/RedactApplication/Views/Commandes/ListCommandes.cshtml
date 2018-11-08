@@ -90,13 +90,12 @@
                             }
                             <th>#</th>
                             <th>Demandeur</th>
-                            <th>Redacteur</th>
-                            <th>Date de la commande</th>
-                            <th>Date de la livraison</th>
+                            <th>Redacteur</th>                           
+                            <th>Livraison</th>
                             <th>Projet</th>
                             <th>Site</th>
                             <th>Thématique</th>
-                            <th>Type de textes</th>
+                            <th>Type</th>
                             <th>Tags</th>
                             <th>Etat </th>
                          
@@ -116,9 +115,7 @@
                                     }
                                     <td>@item.commandeREF</td>
                                     <td>@item.commandeDemandeur</td>
-                                    <td>@item.commandeRedacteur</td>
-                                    <td>@item.date_cmde.ToShortDateString()</td>
-
+                                    <td>@item.commandeRedacteur</td>                  
                                     <td>@item.date_livraison.ToShortDateString()</td>
                                     <td>@item.projet </td>
                                     <td>@item.site</td>

@@ -108,6 +108,8 @@ namespace RedactApplication.Controllers
             return factureVm;
         }
 
+
+
         // GET: Facture/Create
         public ActionResult Create()
         {
@@ -115,6 +117,23 @@ namespace RedactApplication.Controllers
             FACTUREViewModel factureVm = SetFactureViewModel();
             return View(factureVm);
         }
+
+        [AcceptVerbs(HttpVerbs.Get)]
+        public JsonResult LoadCommandeStart(string redact)
+        {
+            //Your Code For Getting Physicans Goes Here
+            var commandeList = (redact != null) ? (new Commandes().GetListCommande().Where(x => x.commandeRedacteurId.ToString() == redact && (x.statut_cmde != null &&
+                                                                  x.statut_cmde.Contains("Validé")))) : null;
+
+          
+            
+             var MinDate = commandeList.Min(cv => cv.date_livraison);
+
+            return Json(MinDate, JsonRequestBehavior.AllowGet);
+        }
+
+
+
         public byte[] GetPDF(string pHTML)
         {
             byte[] bPDF = null;

@@ -20,6 +20,11 @@ using Twilio.Types;
 using System.Text.RegularExpressions;
 using System.Data.Entity.Validation;
 using System.Configuration;
+using System.IO;
+using System.Web.Script.Serialization;
+using Newtonsoft.Json.Linq;
+using System.Threading.Tasks;
+using System.Net.Http;
 
 namespace RedactApplication.Controllers
 {
@@ -60,6 +65,107 @@ namespace RedactApplication.Controllers
             commandeVm.ListOtherRedacteur = val.GetListRedacteurItem();
             return View("Create",commandeVm);
             
+        }
+
+       
+        public async Task<ActionResult> GenerateMotCle(COMMANDEViewModel commandeVm)
+        {
+            //Lancer une commande de guide
+            int guide_id = GetGuideID();
+            string url = "https://yourtext.guru/api/guide/"+guide_id;
+           
+            var guide = await GetGuideAssetAsync(guide_id);
+            Session["keys"] = guide;
+            
+            //else
+            Commandes val = new Commandes();
+            commandeVm.ListProjet = val.GetListProjetItem();
+            commandeVm.ListTheme = val.GetListThemeItem();
+            commandeVm.ListRedacteur = val.GetListRedacteurItem();
+            commandeVm.ListCommandeType = val.GetListCommandeTypeItem();
+            commandeVm.ListTag = val.GetListTagItem();
+            commandeVm.ListOtherRedacteur = val.GetListRedacteurItem();
+            return View("Create", commandeVm);
+        }
+
+        private async Task<string> GetGuideAssetAsync(int guide_id)
+        {
+            string url = "https://yourtext.guru/api/guide/" + guide_id;
+            var request = (HttpWebRequest)WebRequest.Create(url);
+           
+            //string result = "";
+            Task<string> result;
+            string usernamePassword = "claude@digital-impulse.be" + ":" + "nreb48t7";
+            //Obtenir le guide
+            if (request != null)
+            {
+                request.ContentType = "application/json";
+                request.Method = "GET";
+                UTF8Encoding enc = new UTF8Encoding();
+                request.Headers.Add("Authorization", "Basic " + Convert.ToBase64String(enc.GetBytes(usernamePassword)));
+                request.Headers.Add("KEY", "$2y$10$GiIWImgbCnujDhIyDXFfcO0nTAUU6UIGem45JA/IBbg/4zaGy7vHm");
+                var res = "";
+
+                //await Task.Delay(180000); //3mn       
+                var response = (HttpWebResponse) request.GetResponse();
+                await Task.Delay(200000);
+                using (StreamReader streamReader = new StreamReader(response.GetResponseStream()))
+                {
+                    res = streamReader.ReadToEnd();                  
+                    Session["keys"] = res;
+                    Console.WriteLine(String.Format("Response: {0}", res));
+                }
+
+
+
+
+            
+
+
+                return res;
+            }
+            return null;
+        }
+
+        private int GetGuideID()
+        {
+            int guide_id = 0;
+            string url = "https://yourtext.guru/api/guide/";
+            var request = (HttpWebRequest)WebRequest.Create(url);
+            request.ContentType = "application/json";
+            request.Method = "POST";
+            string usernamePassword = "claude@digital-impulse.be" + ":" + "nreb48t7";
+
+            if (request != null)
+            {
+                UTF8Encoding enc = new UTF8Encoding();
+                request.Headers.Add("Authorization", "Basic " + Convert.ToBase64String(enc.GetBytes(usernamePassword)));
+                request.Headers.Add("KEY", "$2y$10$GiIWImgbCnujDhIyDXFfcO0nTAUU6UIGem45JA/IBbg/4zaGy7vHm");              
+
+                using (var streamWriter = new StreamWriter(request.GetRequestStream()))
+                {
+                    string json = new JavaScriptSerializer().Serialize(new
+                    {
+                        query = "credit rapide",
+                        lang = "fr_fr",
+                        type = "premium"
+                    });
+
+                    streamWriter.Write(json);
+                }
+
+                var response = (HttpWebResponse)request.GetResponse();
+
+                using (var streamReader = new StreamReader(response.GetResponseStream()))
+                {
+                    var result = streamReader.ReadToEnd();
+                    Console.WriteLine(String.Format("Response: {0}", result));
+                    JObject obj = JObject.Parse(result);
+                    guide_id = (int)obj["guide_id"];
+                }               
+            }
+
+            return guide_id;
         }
 
         private STATUT_COMMANDE GetStatut(string statut)
@@ -115,22 +221,10 @@ namespace RedactApplication.Controllers
                     var currentStatus = GetStatut(statut);
 
                     if (statut.Contains("retard"))                      
-                        listeDataCmde = listeDataCmde.Where(x => x.date_livraison <= now ).ToList();
-
-                    //listeDataCmde = listeDataCmde.Where(x => x.date_cmde >= startOfMonth &&
-                    //                                       x.date_cmde <= lastDay &&
-                    //                                       x.date_livraison <= now &&
-                    //                                       x.commandeStatutId == currentStatus.statutCommandeId).ToList();
-                    //if (statut.Contains("all"))
-                    //    listeDataCmde = listeDataCmde.Where(x => x.date_cmde >= startOfMonth &&
-                    //                                         x.date_cmde <= lastDay).ToList();
-                    //else
-                    //    listeDataCmde = listeDataCmde.Where(x => x.date_cmde >= startOfMonth &&
-                    //                                            x.date_cmde <= lastDay && x.commandeStatutId == currentStatus.statutCommandeId).ToList();
+                        listeDataCmde = listeDataCmde.Where(x => x.date_livraison <= now ).ToList();                 
 
                     else if (!statut.Contains("all") && !statut.Contains("retard"))                        
-                        listeDataCmde = listeDataCmde.Where(x => x.commandeStatutId == currentStatus.statutCommandeId).ToList();
-                  
+                        listeDataCmde = listeDataCmde.Where(x => x.commandeStatutId == currentStatus.statutCommandeId).ToList();                  
                 }
 
                 ViewBag.listeCommandeVms = listeDataCmde.Distinct().ToList();
@@ -219,9 +313,9 @@ namespace RedactApplication.Controllers
                 _userId = Guid.Parse(HttpContext.User.Identity.Name);
             }
 
-            return Json(new Notifications().GetAllMessages(_userId), JsonRequestBehavior.AllowGet);
-            
+            return Json(new Notifications().GetAllMessages(_userId), JsonRequestBehavior.AllowGet);            
         }
+
         private int GetVolumeEnCours(Guid? redactId, DateTime? date_livraison)
         {
             var redact = db.UTILISATEURs.Find(redactId);
@@ -789,8 +883,7 @@ namespace RedactApplication.Controllers
 
         // GET: COMMANDEs/Create
         public ActionResult Create()
-        {
-           
+        {           
             Commandes val = new Commandes();
             COMMANDEViewModel commandeVm = new COMMANDEViewModel();
             commandeVm.ListProjet = val.GetListProjetItem();
@@ -801,6 +894,187 @@ namespace RedactApplication.Controllers
             commandeVm.ListOtherRedacteur = val.GetListRedacteurItem();
             return View(commandeVm);
         }
+
+        // POST: COMMANDEs/Create
+        // Afin de déjouer les attaques par sur-validation, activez les propriétés spécifiques que vous voulez lier. 
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult CreateNewCommande(COMMANDEViewModel model, FormCollection collection)
+        {
+            if (Session["cmdeEditModif"] != null)
+                model = (COMMANDEViewModel)Session["cmdeEditModif"];
+
+            var selectedProjetId = model.listprojetId;
+            var selectedThemeId = model.listThemeId;
+            var selectedRedacteurId = model.listRedacteurId;
+            var selectedCommandeTypeId = model.listCommandeTypeId;
+            var selectedTag = model.tag;
+            var selectedReferenceurId = Guid.Parse(HttpContext.User.Identity.Name);
+            var selectedSite = model.site;
+
+            var selectedThematique = model.thematique;
+
+            model.mot_cle_secondaire =
+                StatePageSingleton.SanitizeString(Sanitizer.GetSafeHtmlFragment(model.mot_cle_secondaire));
+            model.texte_ancrage = StatePageSingleton.SanitizeString(Sanitizer.GetSafeHtmlFragment(model.texte_ancrage));
+            model.consigne_references =
+                StatePageSingleton.SanitizeString(Sanitizer.GetSafeHtmlFragment(model.consigne_references));
+            model.consigne_autres =
+                StatePageSingleton.SanitizeString(Sanitizer.GetSafeHtmlFragment(model.consigne_autres));
+            bool notifSms = false;
+            if (!string.IsNullOrEmpty(collection["checkResp"]))
+            {
+                string checkResp = collection["checkResp"];
+                notifSms = checkResp == "on";
+                Session["notifSms"] = notifSms;
+            }
+
+            COMMANDE newcommande = new COMMANDE();
+
+
+            var commande = db.COMMANDEs.Count(x => x.commandeProjetId == selectedProjetId && x.commandeThemeId == selectedThemeId && x.commandeTypeId == model.listCommandeTypeId && x.date_livraison == model.date_livraison);
+
+            if (commande <= 0)
+            {
+                newcommande.PROJET = db.PROJETS.Find(selectedProjetId);
+                newcommande.commandeProjetId = selectedProjetId;            
+                newcommande.REFERENCEUR = db.UTILISATEURs.Find(selectedReferenceurId);
+                newcommande.commandeReferenceurId = selectedReferenceurId;
+                newcommande.REDACTEUR = db.UTILISATEURs.Find(selectedRedacteurId);
+                newcommande.commandeRedacteurId = selectedRedacteurId;
+
+                string etat = "Traitement";
+                var statut = db.STATUT_COMMANDE.SingleOrDefault(x => x.statut_cmde.Contains(etat));
+                newcommande.commandeStatutId = statut.statutCommandeId;
+
+                newcommande.COMMANDE_TYPE = db.COMMANDE_TYPE.Find(selectedCommandeTypeId);
+                newcommande.commandeTypeId = selectedCommandeTypeId;
+
+
+                newcommande.mot_cle_pricipal =
+                    StatePageSingleton.SanitizeString(Sanitizer.GetSafeHtmlFragment(model.mot_cle_pricipal));
+                newcommande.mot_cle_secondaire =
+                    StatePageSingleton.SanitizeString(Sanitizer.GetSafeHtmlFragment(model.mot_cle_secondaire));
+                newcommande.texte_ancrage =
+                    StatePageSingleton.SanitizeString(Sanitizer.GetSafeHtmlFragment(model.texte_ancrage));
+                newcommande.nombre_mots = model.nombre_mots;
+                newcommande.consigne_references = model.consigne_references;
+
+                if (!string.IsNullOrEmpty(selectedThematique))
+                {
+                    THEME currentTheme = db.THEMES.FirstOrDefault(x => x.theme_name.Contains(selectedThematique.TrimEnd()));
+                    if (currentTheme == null)
+                    {
+                        currentTheme = new THEME { themeId = Guid.NewGuid(), theme_name = selectedThematique };
+                        db.THEMES.Add(currentTheme);
+                        db.SaveChanges();
+                    }
+                    newcommande.commandeThemeId = currentTheme.themeId;
+                    newcommande.THEME = currentTheme;
+                }
+
+                if (!string.IsNullOrEmpty(selectedTag))
+                {
+                    TAG currentTag = db.TAGS.FirstOrDefault(x => x.type.Contains(selectedTag.TrimEnd()));
+                    if (currentTag == null)
+                    {
+                        currentTag = new TAG { tagId = Guid.NewGuid(), type = selectedTag };
+                        db.TAGS.Add(currentTag);
+                        db.SaveChanges();
+                    }
+                    newcommande.tagId = currentTag.tagId;
+                    newcommande.TAG = currentTag;
+                }
+
+                if (!string.IsNullOrEmpty(selectedSite))
+                {
+                    SITE currentSite = db.SITES.FirstOrDefault(x => x.site_name.Contains(selectedSite.TrimEnd()));
+                    if (currentSite == null)
+                    {
+                        currentSite = new SITE { siteId = Guid.NewGuid(), site_name = selectedSite };
+                        db.SITES.Add(currentSite);
+                        db.SaveChanges();
+                    }
+                    newcommande.siteId = currentSite.siteId;
+                    newcommande.SITE = currentSite;
+                }
+
+                newcommande.consigne_autres = StatePageSingleton.SanitizeString(Sanitizer.GetSafeHtmlFragment(model.consigne_autres));
+                newcommande.ordrePriorite = model.ordrePriorite;
+                newcommande.date_livraison = model.date_livraison;
+                newcommande.date_cmde = DateTime.Now;
+                int? maxRef = db.COMMANDEs.Max(u => u.commandeREF);
+                newcommande.commandeREF = (maxRef != null) ? maxRef + 1 : 1;
+                newcommande.commandeId = Guid.NewGuid();
+
+                COMMANDEViewModel cmd = SetCommandeViewModelDetails(newcommande);
+
+                bool limit = IsLimiteVolumeEnCours(newcommande.commandeRedacteurId, model.date_livraison, newcommande.nombre_mots); //total volume journalier en cours
+
+
+                if (limit && Session["VolumeInfo"] == null)
+                {
+                    Session["VolumeInfo"] = "Le volume journalier pour le rédacteur " + newcommande.REDACTEUR.userNom + " est atteint. Vous confirmez l'envoi de la commande ? ";
+
+                    Session["cmdeEditModif"] = cmd;
+                    return View("Create", cmd);
+                }
+                if (model.listRedacteurId == Guid.Empty)
+                {
+                    ViewBag.ErrorRedacteur = true;
+                    return View("Create", cmd);
+                }
+
+                Session["cmdeEditModif"] = null;
+                Session["VolumeInfo"] = null;
+
+                db.COMMANDEs.Add(newcommande);
+                db.SaveChanges();
+
+                /*update volume redacteur*/
+                var redact = newcommande.REDACTEUR;
+                int? volumeRestant = 0;
+                if (redact != null)
+                    volumeRestant = GetVolumeRestant(newcommande.commandeRedacteurId);
+                redact.redactVolumeRestant = volumeRestant.ToString();
+
+
+                try
+                {
+                    int res = db.SaveChanges();
+                    if (res > 0)
+                    {
+                        return View("CreateCommandeConfirmation");
+                    }
+
+                    else
+                    {
+                        return View("ErrorException");
+                    }
+                }
+                catch (Exception ex)
+                {
+
+                    return RedirectToRoute("Home", new RouteValueDictionary
+                    {
+                        {"controller", "Commandes"},
+                        {"action", "Create"}
+                    });
+                }
+            }
+
+            return View("ErrorException");
+        }
+
+
+
+
+
+
+
+
+
+
 
         // POST: COMMANDEs/Create
         // Afin de déjouer les attaques par sur-validation, activez les propriétés spécifiques que vous voulez lier. 
@@ -833,6 +1107,7 @@ namespace RedactApplication.Controllers
             {
                 string checkResp = collection["checkResp"];
                 notifSms = checkResp == "on";
+                Session["notifSms"] = notifSms;
             }
 
             COMMANDE newcommande = new COMMANDE();
@@ -923,6 +1198,7 @@ namespace RedactApplication.Controllers
                 if (limit && Session["VolumeInfo"] == null)
                 {
                     Session["VolumeInfo"] = "Le volume journalier pour le rédacteur " + newcommande.REDACTEUR.userNom + " est atteint. Vous confirmez l'envoi de la commande ? ";
+                  
                     Session["cmdeEditModif"] = cmd;
                     return View("Create", cmd);
                 }
@@ -937,6 +1213,7 @@ namespace RedactApplication.Controllers
 
                 db.COMMANDEs.Add(newcommande);
                 db.SaveChanges();
+
                 /*update volume redacteur*/
                 var redact = newcommande.REDACTEUR;
                 int? volumeRestant = 0;
@@ -944,13 +1221,17 @@ namespace RedactApplication.Controllers
                      volumeRestant = GetVolumeRestant(newcommande.commandeRedacteurId);
                 redact.redactVolumeRestant = volumeRestant.ToString();
 
+
                 try
                 {
                     int res = db.SaveChanges();
                     if(res > 0)
                     {
-                        if (notifSms)
+                        bool sendsms = Session["notifSms"] != null ? true : false;   
+                     
+                        if (sendsms)
                         {
+                            Session["notifSms"] = null;
                             string msgBody = "Vous avez une nouvelle commande.";
                             var accountSid =
                                 System.Configuration.ConfigurationManager.AppSettings["SMSAccountIdentification"];
@@ -1011,8 +1292,7 @@ namespace RedactApplication.Controllers
                                 mailBody.AppendFormat("<br />");
                                 mailBody.AppendFormat("Media click App .");
 
-                                bool isSendMail = MailClient.SendMail(newcommande.REDACTEUR.userMail,
-                                    mailBody.ToString(), "Media click App - nouvelle commande.");
+                                bool isSendMail =  MailClient.SendMail(newcommande.REDACTEUR.userMail, mailBody.ToString(), "Media click App - nouvelle commande.");
                                 if (isSendMail)
                                 {
                                     newcommande.commandeToken = newcommande.commandeId;
@@ -1142,7 +1422,7 @@ namespace RedactApplication.Controllers
                
             string mailbody = "<p> Votre livraison "+commande.commandeREF + " a été bien validée le " + DateTime.Now.ToString("dd/MM/yyyy") + ", nous vous remercions de votre collaboration.</p>";
                 string mailobject = "Media click App - Validation de la commande";
-            bool isSendMail = SendeMailNotification(commande, mailbody, mailobject);
+            bool isSendMail =  SendeMailNotification(commande, mailbody, mailobject);
 
             if (isSendMail)
             {
@@ -1189,7 +1469,7 @@ namespace RedactApplication.Controllers
           
             string mailbody = "<p> La commande " + commande.commandeREF + " a été annulée par "+commande.REFERENCEUR.userNom +" "+commande.REFERENCEUR.userPrenom+" le "+ DateTime.Now.ToString("dd/MM/yyyy")+" , vous pouvez contacter le responsable pour plus de détails.</p>";
             string mailobject = "Media click App - Annulation de la commande";
-            bool isSendMail = SendeMailNotification(commande, mailbody, mailobject);
+            bool isSendMail =  SendeMailNotification(commande, mailbody, mailobject);
 
             if (isSendMail)
             {
@@ -1259,8 +1539,7 @@ namespace RedactApplication.Controllers
                     mailBody.AppendFormat("<br />");
                     mailBody.AppendFormat("Media click App .");
 
-                    bool isSendMail = MailClient.SendMail(newcommande.REDACTEUR.userMail,
-                        mailBody.ToString(), "Media click App  - tranfert commande.");
+                    bool isSendMail =  MailClient.SendMail(newcommande.REDACTEUR.userMail, mailBody.ToString(), "Media click App  - tranfert commande.");
                     if (isSendMail)
                     {
                         newcommande.commandeToken = newcommande.commandeId;
@@ -1303,8 +1582,7 @@ namespace RedactApplication.Controllers
                 mailBody.AppendFormat("<br />");
                 mailBody.AppendFormat("Media click App .");
 
-                bool isSendMail = MailClient.SendMail(newcommande.REDACTEUR.userMail,
-                    mailBody.ToString(), "Media click App - nouvelle commande.");
+                bool isSendMail = MailClient.SendMail(newcommande.REDACTEUR.userMail,mailBody.ToString(), "Media click App - nouvelle commande.");
                 if (isSendMail)
                 {
                     newcommande.commandeToken = newcommande.commandeId;
@@ -1390,7 +1668,7 @@ namespace RedactApplication.Controllers
                   
                      mailbody = "<p> Votre commande " + commande.commandeREF + " a été refusé, vous pouvez contacter le responsable pour plus de détails.</p>";
                     string mailobject = "Media click App - Refus de la commande";
-                    isSendMail = SendeMailNotification(commande, mailbody, mailobject);
+                isSendMail = SendeMailNotification(commande, mailbody, mailobject);
                 if (isSendMail)
                     SendNotification(commande, commande.commandeReferenceurId, commande.commandeRedacteurId, Regex.Replace(mailbody, "<.*?>", String.Empty));
                 else
@@ -1487,7 +1765,7 @@ namespace RedactApplication.Controllers
             TwilioClient.Init(accountSid, authToken);
             if (commande.REDACTEUR != null)
             {
-                string redactNumber = "+" + commande.REDACTEUR.redactPhone.Trim();
+                string redactNumber = "+261" + commande.REDACTEUR.redactPhone.Trim();
                 var to = new PhoneNumber(redactNumber);
                 var message = MessageResource.Create(
                     to,
@@ -1549,8 +1827,7 @@ namespace RedactApplication.Controllers
                     mailBody.AppendFormat("<br />");
                     mailBody.AppendFormat("Media click App .");
 
-                    bool isSendMail = MailClient.SendMail(newcommande.REDACTEUR.userMail,
-                        mailBody.ToString(), "Media click App  - nouvelle commande.");
+                    bool isSendMail = MailClient.SendMail(newcommande.REDACTEUR.userMail, mailBody.ToString(), "Media click App  - nouvelle commande.");
                     if (isSendMail)
                     {
                         newcommande.commandeToken = newcommande.commandeId;
@@ -1671,6 +1948,25 @@ namespace RedactApplication.Controllers
            
         }
 
+        private int CountWordsModified(string s)
+        {           
+            string myString = Console.ReadLine();
+            int wCount = 0, index = 0;
+
+            while (index < myString.Length)
+            {
+                while (index < myString.Length && !char.IsWhiteSpace(myString[index]))
+                    index++;
+
+                wCount++;
+
+                while (index < myString.Length && char.IsWhiteSpace(myString[index]))
+                    index++;
+            }
+            Console.WriteLine(wCount);
+            return wCount;
+        }
+
         [HttpPost]
         [Authorize]
         [ValidateInput(false)]
@@ -1696,7 +1992,7 @@ namespace RedactApplication.Controllers
                     commande.dateLivraisonReel = DateTime.Now;
                     toId = commande.commandeReferenceurId;
                     string contenu = Regex.Replace(commande.contenu_livre, "<.*?>", string.Empty);
-
+                    int nb_contenu = CountWordsModified(contenu);
 
                     if (contenu.Split(' ').ToList().Count < commande.nombre_mots)
                     {
@@ -1867,8 +2163,7 @@ namespace RedactApplication.Controllers
                                 mailBody.AppendFormat("<br />");
                                 mailBody.AppendFormat("Media click App .");
 
-                                bool isSendMail = MailClient.SendMail(commande.REDACTEUR.userMail,
-                                    mailBody.ToString(), "Media click App  - nouvelle commande.");
+                                bool isSendMail =  MailClient.SendMail(commande.REDACTEUR.userMail, mailBody.ToString(), "Media click App  - nouvelle commande.");
                                 if (isSendMail)
                                 {
                                     string notif = "Vous avez une commande à corriger de " + commande.REFERENCEUR.userNom + " " + commande.REFERENCEUR.userPrenom + " le " + DateTime.Now + ".Veuillez regarder les détails de la commande.";

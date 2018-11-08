@@ -67,6 +67,18 @@
 
         });
 
+        $("#SelectItemRedacteur").change(function () {
+
+            var selectItemRedacteur = $(this).val();
+            $("#selectedRedact").text(selectItemRedacteur);
+            $.getJSON("../Facture/LoadCommandeStart", { redact: selectItemRedacteur },
+                function (data) {
+                    var dateDebut = $("#dateDebut");                  
+                    dateDebut.text(data);
+                 });
+        });
+
+
 
 
     </script>

@@ -207,10 +207,10 @@
                 },
                 minLength: 1
             });
-         
 
-          
-          
+
+
+
 
         });
 
@@ -231,13 +231,13 @@
                         <li> @Html.ActionLink("Utilisateurs", "ListeUser", new { controller = "Home" }) </li>
                     }
                     <li>@Html.ActionLink("Commandes", "ListCommandes", new { controller = "Commandes" }, new { @class = "active" })</li>
-                    @if (@Session["role"] != null &&  @Session["role"].ToString() != "1")
+                    @if (@Session["role"] != null && @Session["role"].ToString() != "1")
                     {
                         <li>@Html.ActionLink("Factures", "ListFacture", new { controller = "Facture" })</li>
 
                     }
 
-                    </ul>
+                </ul>
             </div>
             <div class="card back-office with-shadow">
                 <div class="head">
@@ -251,44 +251,44 @@
                     }
                 </div>
 
-                @using (Html.BeginForm("CreateCommande", "Commandes", FormMethod.Post, new { role = "form", @id = "createcommande" }))
+                @using (Html.BeginForm("CreateNewCommande", "Commandes", FormMethod.Post, new { role = "form", @id = "createcommande" }))
                 {
                     @Html.AntiForgeryToken()
                     <!-- Champs -->
-                <section class="clearfix">
-                    <label for="" class="col-50 pull-left">
-                        Projet (*)
-                        @Html.DropDownListFor(x => Model.listprojetId, new SelectList(Model.ListProjet, "Value", "Text"), htmlAttributes: new { @id = "SelectItemProjet", @required = true })
-                    </label>
-                    <label for="" class="col-50 pull-right">
-                        @if (@Session["role"] != null && @Session["role"].ToString() != "2" && @Session["role"].ToString() != "1" )
-                        {
-                            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#createprojet" style="margin: 34px 0;">Nouveau projet</button>
-                        }
-                    </label>
+                    <section class="clearfix">
+                        <label for="" class="col-50 pull-left">
+                            Projet (*)
+                            @Html.DropDownListFor(x => Model.listprojetId, new SelectList(Model.ListProjet, "Value", "Text"), htmlAttributes: new { @id = "SelectItemProjet", @required = true })
+                        </label>
+                        <label for="" class="col-50 pull-right">
+                            @if (@Session["role"] != null && @Session["role"].ToString() != "2" && @Session["role"].ToString() != "1")
+                            {
+                                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#createprojet" style="margin: 34px 0;">Nouveau projet</button>
+                            }
+                        </label>
 
-                    <label for="" class="col-50 pull-left">
-                        Thématique (*)
-                        @Html.EditorFor(model => model.thematique, new { htmlAttributes = new { } })
-                    </label>
-                    <label for="" class="col-50 pull-right">
-                        Rédacteur (*)
-                        @Html.DropDownListFor(x => Model.listRedacteurId, new SelectList(Model.ListRedacteur, "Value", "Text"), htmlAttributes: new { id = "SelectItemRedacteur", @required = true })
-                    </label>
-                    <label for="" class="col-50 pull-left">
-                        Type de texte (*)
-                        @Html.DropDownListFor(x => Model.listCommandeTypeId, new SelectList(Model.ListCommandeType, "Value", "Text"), htmlAttributes: new { @id = "SelectItemCommandeType", @required = true })
-                    </label>
-                    <label for="" class="col-50 pull-right">
-                        Tag
-                        @Html.EditorFor(model => model.tag, new { htmlAttributes = new { } })
-                    </label>
-                    <label for="" class="col-50 pull-left">
-                        Site
-                        @Html.EditorFor(model => model.site, new { htmlAttributes = new { } })
-                    </label>
+                        <label for="" class="col-50 pull-left">
+                            Thématique (*)
+                            @Html.EditorFor(model => model.thematique, new { htmlAttributes = new { } })
+                        </label>
+                        <label for="" class="col-50 pull-right">
+                            Rédacteur (*)
+                            @Html.DropDownListFor(x => Model.listRedacteurId, new SelectList(Model.ListRedacteur, "Value", "Text"), htmlAttributes: new { id = "SelectItemRedacteur", @required = true })
+                        </label>
+                        <label for="" class="col-50 pull-left">
+                            Type de texte (*)
+                            @Html.DropDownListFor(x => Model.listCommandeTypeId, new SelectList(Model.ListCommandeType, "Value", "Text"), htmlAttributes: new { @id = "SelectItemCommandeType", @required = true })
+                        </label>
+                        <label for="" class="col-50 pull-right">
+                            Tag
+                            @Html.EditorFor(model => model.tag, new { htmlAttributes = new { } })
+                        </label>
+                        <label for="" class="col-50 pull-left">
+                            Site
+                            @Html.EditorFor(model => model.site, new { htmlAttributes = new { } })
+                        </label>
 
-                </section>
+                    </section>
                     <section class="clearfix">
                         <div class="section-title">
                             <span>Mots clés</span>
@@ -303,7 +303,7 @@
                             @Html.TextBoxFor(x => x.mot_cle_secondaire)
                         </label>
                         <label for="" class="col-50 pull-left">
-                            Texte d'ancrage 
+                            Texte d'ancrage
                             @Html.TextBoxFor(x => x.texte_ancrage, new { @name = "name" })
                         </label>
                         <label for="" class="col-50 pull-right">
@@ -342,7 +342,6 @@
                         </label>
                         <span class="pull-left" style="margin-bottom: 20px;">
                             Notification sms
-
                             <input id="SavePass" name="checkResp" type="checkbox" style="display: inline-block; width: auto; vertical-align: middle; margin: 0 0 0 10px;" />
                         </span>
 
@@ -352,73 +351,81 @@
 
                         @Html.ActionLink("Annuler", "ListCommandes", "Commandes", new { @class = "btn btn-warning" })
                     </section>
+
+                    if (Session["VolumeInfo"] != null)
+                    {
+                        <div id="volumePopup" style="" class="modal modal-popup in" aria-hidden="false">
+                            <div class="flex-content flex-jcenter-acenter flex-col pop-up">
+                                <div class="popup-container with-shadow">
+                                    <div class="content-section text-centered icon-bottom">
+                                        <h2>Attention !</h2>
+                                        <p>Le volume journalier pour le rédacteur <span id="selectedRedact"></span> est atteint , votre commande peut être en retard. Confirmer la commande, choisir un autre redacteur ou bien <strong data-dismiss="modal">modifier la commande</strong>. </p>
+                                        <label>
+                                            Choisir Rédacteur
+                                            @Html.DropDownListFor(x => Model.listOtherRedacteurId, new SelectList(Model.ListOtherRedacteur, "Value", "Text"), htmlAttributes: new { id = "SelectItemOtherRedacteur" })
+                                        </label>
+                                        <section>
+                                            <button type="submit" class="btn btn-warning" onclick="@("window.location.href='" + @Url.RouteUrl("Home", new { controller = "Commandes", action = "Choisir" }) + "'");">Changer rédacteur</button>
+                                            <input type="submit" value="Rédacteur actuel" class="btn btn-success" />
+                                            <!-- <button type="button" class="btn btn-success" >Editer</button> -->
+                                        </section>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    }
                 }
             </div>
         </div>
 
-        @if (Session["VolumeInfo"] != null)
-        {
-            <script>
-                $(window).on('load', function () { $('#volumePopup').modal('show'); });
-            </script>
 
-            using (Html.BeginForm("CreateCommande", "Commandes", FormMethod.Post, new { role = "form", @id = "createcommande" }))
-            {@Html.AntiForgeryToken()
-            <div id="volumePopup" style="" class="modal modal-popup in" aria-hidden="false">
-                <div class="flex-content flex-jcenter-acenter flex-col pop-up">
-                    <div class="popup-container with-shadow">
-                        <div class="content-section text-centered icon-bottom">
-                            <h2>Attention !</h2>
-                            <p>Le volume journalier pour le rédacteur <span id="selectedRedact"></span> est atteint , votre commande peut être en retard. Confirmer la commande, choisir un autre redacteur ou bien <strong data-dismiss="modal">modifier la commande</strong>. </p>
-                            <label>
-                                Choisir Rédacteur
-                                @Html.DropDownListFor(x => Model.listOtherRedacteurId, new SelectList(Model.ListOtherRedacteur, "Value", "Text"), htmlAttributes: new { id = "SelectItemOtherRedacteur" })
-                            </label>
-                            <section>
-                                <button type="submit" class="btn btn-warning" onclick="@("window.location.href='" + @Url.RouteUrl("Home", new { controller = "Commandes", action = "Choisir" }) + "'");">Changer rédacteur</button>
-                                <input type="submit" value="Rédacteur actuel" class="btn btn-success" />
-                                <!-- <button type="button" class="btn btn-success" >Editer</button> -->
-                            </section>
-                        </div>
+
+        <div id="createprojet" class="modal modal-popup">
+            <div class="flex-content flex-jcenter-acenter flex-col pop-up">
+                <div class="popup-container with-shadow">
+                    <div class="head gradient-blue">
+                        <h1>Nouveau projet</h1>
                     </div>
-                </div>
-            </div>
+                    <div class="content-section text-centered icon-bottom">
 
-        }
-    }
+                        @using (Html.BeginForm("CreateProjet", "Commandes", FormMethod.Post))
+                        {
 
-
-            <div id="createprojet"  class="modal modal-popup">
-                <div class="flex-content flex-jcenter-acenter flex-col pop-up">
-                    <div class="popup-container with-shadow">
-                        <div class="head gradient-blue">
-                            <h1>Nouveau projet</h1>
-                        </div>
-                        <div class="content-section text-centered icon-bottom">
-
-                            @using (Html.BeginForm("CreateProjet", "Commandes", FormMethod.Post))
-                            {
-                              
                             <label for="" class="col-100 ">
                                 Nom du projet(*)
                                 @Html.TextBoxFor(x => x.projet, new { @required = true })
                             </label>
 
-                                <input type="submit" value="Enregistrer" class="btn btn-primary ">
-                                @Html.ActionLink("Annuler", "Create", new { controller = "Commandes" }, new { @class = "btn btn-warning" })
-                            }
+                            <input type="submit" value="Enregistrer" class="btn btn-primary ">
+                            @Html.ActionLink("Annuler", "Create", new { controller = "Commandes" }, new { @class = "btn btn-warning" })
+                        }
 
-                        </div>
                     </div>
-
                 </div>
 
             </div>
+
+        </div>
+
+
+        <div >           
+                 
+            @using (Html.BeginForm("GenerateMotCle", "Commandes", FormMethod.Post))
+            {
+                <input type="submit" value="Mot clé" class="btn btn-primary ">                           
+            }                   
+        </div>
+
 
 
     </main>
 }
 else
 { Response.Redirect("~/Login/Accueil"); }
+
+<script>
+    $(window).on('load', function () { $('#volumePopup').modal('show'); });
+</script>
+
 
 

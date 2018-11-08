@@ -16,6 +16,7 @@ using RedactApplication.Models;
 using Microsoft.Security.Application;
 using System.Collections;
 using System.Configuration;
+using System.Web.Hosting;
 
 namespace RedactApplication.Controllers
 {
@@ -172,7 +173,22 @@ namespace RedactApplication.Controllers
 
             UserDashboard();
             CommandeDashboard();
+            if (Session["Threading"] == null)
+            {
+                Session["Threading"] = true;
+                Run();
+                Session["Threading"] = null;
+            }
             return View();
+        }
+
+       
+       void Run()
+        {
+         
+           // HostingEnvironment.QueueBackgroundWorkItem(cancellationToken => new Worker().GenerateCommandeKeysAsync(cancellationToken));
+            HostingEnvironment.QueueBackgroundWorkItem(cancellationToken => new Worker().GenerateCommandeOneShotKeysAsync("credit",cancellationToken));
+
         }
 
         [HttpPost]
@@ -1355,7 +1371,10 @@ namespace RedactApplication.Controllers
                 {
                    
                     ViewBag.ErrorUserCreation = true;
-                    return View("GererUtilisateur");
+                    model.ListTheme = val.GetListThemeItem();
+                    Session["userEditModif"] = model;
+
+                    return View("GererUtilisateur", model);
                 }
             }
             catch (Exception ex)
