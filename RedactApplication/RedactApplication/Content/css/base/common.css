@@ -383,3 +383,6 @@ main.full {
 .mce-branding {
     display:none !important;
 }
+.text-centered {
+    text-align: center !important;
+}

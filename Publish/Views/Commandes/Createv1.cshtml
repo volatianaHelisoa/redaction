@@ -1,0 +1,427 @@
+﻿@using RedactApplication.Models
+@model RedactApplication.Models.COMMANDEViewModel
+
+@{
+    ViewBag.Title = "Create";
+    Layout = "~/Views/Shared/LayoutConnected.cshtml";
+
+}
+
+@if (ViewBag.succes != null)
+{
+    if (ViewBag.succes == 1)
+    {
+        <script>
+            $("#addUserPopUp").modal();
+            $("div#addUserPopUp").css("display", "block");
+        </script>
+    }
+    else if (ViewBag.succes == 2)
+    {
+        <script>
+            $("#errorLimitUserPopUp").modal();
+            $("div#errorLimitUserPopUp").css("display", "block");
+        </script>
+    }
+    else if (ViewBag.succes == 3)
+    {
+        <script>
+            $("#errorValidDataUserPopUp").modal();
+            $("div#errorValidDataUserPopUp").css("display", "block");
+        </script>
+    }
+}
+
+@section Scripts{
+    <link rel="stylesheet" href="~/Content/css/bootstrap-datepicker3.css" />
+    <script type="text/javascript" src="~/Scripts/js/bootstrap-datepicker.min.js"></script>
+
+    <link rel="stylesheet" href="~/Content/css/elements/commandes.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-autocomplete/1.0.7/jquery.auto-complete.min.css">
+
+    <script type="text/javascript">
+        jQuery(document).ready(function () {
+            var date = new Date();
+            date.setDate(date.getDate());
+            var date_input = $('input[name="date_livraison"]'); //our date input has the name "date"
+            var container = $('.bootstrap-iso form').length > 0 ? $('.bootstrap-iso form').parent() : "body";
+            var options = {
+                format: 'dd/mm/yyyy',
+                container: container,
+                todayHighlight: true,
+                autoclose: true,
+                weekStart: 1,
+                startDate: date
+            };
+            date_input.datepicker(options);
+
+
+            $("#SelectItemRedacteur").prop('disabled', 'disabled');
+            $("#thematique").focusout(function () {
+
+                var dID = $(this).val();
+
+                $.getJSON("../Commandes/LoadRedacteurByTheme", { theme: dID },
+                    function (data) {
+                        var select = $("#SelectItemRedacteur");
+                        $("#SelectItemRedacteur").prop('disabled', false);
+                        select.empty();
+                        select.append($('<option/>', {
+                            value: 0,
+                            text: "Selectionner redacteur"
+                        }));
+                        $.each(data, function (index, itemData) {
+                            select.append($('<option/>', {
+                                value: itemData.Value,
+                                text: itemData.Text
+                            }));
+                        });
+                    });
+            });
+
+            $("#SelectItemRedacteur").change(function () {
+
+                var selectItemRedacteur = $(this).val();
+                $("#selectedRedact").text(selectItemRedacteur);
+                $.getJSON("../Commandes/LoadOtherRedacteur", { redact: selectItemRedacteur },
+                    function (data) {
+                        var select = $("#SelectItemOtherRedacteur");
+
+                        select.empty();
+                        select.append($('<option/>', {
+                            value: 0,
+                            text: "Choisir un autre redacteur"
+                        }));
+                        $.each(data, function (index, itemData) {
+                            select.append($('<option/>', {
+                                value: itemData.Value,
+                                text: itemData.Text
+                            }));
+                        });
+                    });
+            });
+
+
+            $("#thematique").autocomplete({
+
+                source: function (request, response) {
+                    $.ajax({
+
+                        type: 'GET',
+                        url: '/Commandes/AutocompleteThemeSuggestions',
+                        contentType: "application/json; charset=utf-8",
+                        dataType: "json",
+
+                        data: {
+                            term: request.term
+                        },
+                        success: function (data) {
+                            console.log(data);
+                            response($.map(data, function (val, item) {
+
+                                return {
+                                    value: val.Text,
+                                    text: val.Value
+                                }
+                            }))
+                        },
+                        error: function (error) {
+                            console.log(error);
+                        }
+                    })
+                },
+                select: function (event, ui) {
+                    $("#thematique").val(ui.item.text);
+                    console.log($("#thematique").val(ui.item.text));
+                },
+                minLength: 1
+            });
+
+
+            $("#tag").autocomplete({
+
+                source: function (request, response) {
+                    $.ajax({
+
+                        type: 'GET',
+                        url: '/Commandes/AutocompleteTagSuggestions',
+                        contentType: "application/json; charset=utf-8",
+                        dataType: "json",
+
+                        data: {
+                            term: request.term
+                        },
+                        success: function (data) {
+                            console.log(data);
+                            response($.map(data, function (val, item) {
+
+                                return {
+                                    value: val.Text,
+                                    text: val.Value
+                                }
+                            }))
+                        },
+                        error: function (error) {
+                            console.log(error);
+                        }
+                    })
+                },
+                select: function (event, ui) {
+                    $("#tag").val(ui.item.text);
+                    console.log($("#tag").val(ui.item.text));
+                },
+                minLength: 1
+            });
+
+            $("#site").autocomplete({
+
+                source: function (request, response) {
+                    $.ajax({
+
+                        type: 'GET',
+                        url: '/Commandes/AutocompleteSiteSuggestions',
+                        contentType: "application/json; charset=utf-8",
+                        dataType: "json",
+
+                        data: {
+                            term: request.term
+                        },
+                        success: function (data) {
+                            console.log(data);
+                            response($.map(data, function (val, item) {
+
+                                return {
+                                    value: val.Text,
+                                    text: val.Value
+                                }
+                            }))
+                        },
+                        error: function (error) {
+                            console.log(error);
+                        }
+                    })
+                },
+                select: function (event, ui) {
+                    $("#site").val(ui.item.text);
+
+                },
+                minLength: 1
+            });
+                          
+        });
+
+
+
+    </script>
+}
+
+@if (Session["name"] != null && @Session["role"] != null && @Session["role"].ToString() != "5")
+{
+    <main id="wrapper">
+        <div id="single-container">
+            <div class="onglets">
+                <ul>
+                    <li> @Html.ActionLink("Dashboard", "Dashboard", new { controller = "Home" }) </li>
+                    @if (@Session["role"] != null && @Session["role"].ToString() != "2" && @Session["role"].ToString() != "1")
+                    {
+                        <li> @Html.ActionLink("Utilisateurs", "ListeUser", new { controller = "Home" }) </li>
+                    }
+                    <li>@Html.ActionLink("Commandes", "ListCommandes", new { controller = "Commandes" }, new { @class = "active" })</li>
+                    @if (@Session["role"] != null && @Session["role"].ToString() != "1")
+                    {
+                        <li>@Html.ActionLink("Factures", "ListFacture", new { controller = "Facture" })</li>
+
+                    }
+
+                </ul>
+            </div>
+            <div class="card back-office with-shadow">
+                <div class="head">
+                    <i class="icon icon-create-command"></i>
+                    <h1>Créer commande</h1>
+                    <p class="erreur">Veuillez remplir les champs Requis (*) et appuyez sur Enregistrer pour créer une commande</p>
+
+                    @if (ViewBag.ErrorRedacteur != null)
+                    {
+                        <p class="error-msg text-centered">Veuillez selectionner un rédacteur.</p>
+                    }
+                </div>
+
+                @using (Html.BeginForm("CreateCommande", "Commandes", FormMethod.Post, new { role = "form", @id = "createcommande" }))
+                {
+                    @Html.AntiForgeryToken()
+                    <!-- Champs -->
+                    <section class="clearfix">
+                        <label for="" class="col-50 pull-left">
+                            Projet (*)
+                            @Html.DropDownListFor(x => Model.listprojetId, new SelectList(Model.ListProjet, "Value", "Text"), htmlAttributes: new { @id = "SelectItemProjet", @required = true })
+                        </label>
+                        <label for="" class="col-50 pull-right">
+                            @if (@Session["role"] != null && @Session["role"].ToString() != "2" && @Session["role"].ToString() != "1")
+                            {
+                                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#createprojet" style="margin: 34px 0;">Nouveau projet</button>
+                            }
+                        </label>
+
+                        <label for="" class="col-50 pull-left">
+                            Thématique (*)
+                            @Html.EditorFor(model => model.thematique, new { htmlAttributes = new { } })
+                        </label>
+                        <label for="" class="col-50 pull-right">
+                            Rédacteur (*)
+                            @Html.DropDownListFor(x => Model.listRedacteurId, new SelectList(Model.ListRedacteur, "Value", "Text"), htmlAttributes: new { id = "SelectItemRedacteur", @required = true })
+                        </label>
+                        <label for="" class="col-50 pull-left">
+                            Type de texte (*)
+                            @Html.DropDownListFor(x => Model.listCommandeTypeId, new SelectList(Model.ListCommandeType, "Value", "Text"), htmlAttributes: new { @id = "SelectItemCommandeType", @required = true })
+                        </label>
+                        <label for="" class="col-50 pull-right">
+                            Tag
+                            @Html.EditorFor(model => model.tag, new { htmlAttributes = new { } })
+                        </label>
+                        <label for="" class="col-50 pull-left">
+                            Site
+                            @Html.EditorFor(model => model.site, new { htmlAttributes = new { } })
+                        </label>
+
+                    </section>
+                    <section class="clearfix">
+                        <div class="section-title">
+                            <span>Mots clés</span>
+                        </div>
+
+                        <label for="" class="col-50 pull-left">
+                            Mot clé principal (*)
+                            @Html.TextBoxFor(x => x.mot_cle_pricipal, new { @required = true, @name = "name" })
+                        </label>
+                        <label for="" class="col-50 pull-right">
+                            Mot clé secondaire
+                            @Html.TextBoxFor(x => x.mot_cle_secondaire)
+                        </label>
+                        <label for="" class="col-50 pull-left">
+                            Texte d'ancrage
+                            @Html.TextBoxFor(x => x.texte_ancrage, new { @name = "name" })
+                        </label>
+                        <label for="" class="col-50 pull-right">
+                            Nombre de mots (*)
+                            @Html.TextBoxFor(x => x.nombre_mots, new { @required = true, @name = "name", type = "number" })
+                        </label>
+                    </section>
+                    <section class="clearfix">
+                        <div class="section-title">
+                            <span>Consignes</span>
+                        </div>
+
+                        <label for="" class="col-50 pull-left">
+                            Références
+                            @Html.TextAreaFor(x => x.consigne_references)
+                        </label>
+                        <label for="" class="col-50 pull-right">
+                            Autres
+                            @Html.TextAreaFor(x => x.consigne_autres)
+                        </label>
+
+                        <label for="" class="col-50 pull-right">
+                            Date de livraison (*)
+                            @Html.TextBoxFor(x => x.date_livraison, "{0:dd/MM/yyyy}", new { type = "text", @required = true })
+                            @Html.ValidationMessageFor(m => m.date_livraison)
+                        </label>
+                        <label for="" class="col-50 pull-left">
+                            Ordre de priorité (*)
+                            @Html.DropDownListFor(x => x.ordrePriorite,
+                                                            new List<SelectListItem> {
+                                                                new SelectListItem { Value = " " , Text = "Selectionner priorité" },
+                                                                new SelectListItem { Value = "Bas" , Text = "Bas (2 à 4 jours)" },
+                                                                new SelectListItem { Value = "Moyen" , Text = "Moyen (1 à 2 jours)" },
+                                                                new SelectListItem { Value = "Avancé" , Text = "Haut (Aujourd'hui)" }
+                                                            }, new {  @required = true })
+                        </label>
+                        <span class="pull-left" style="margin-bottom: 20px;">
+                            Notification sms
+                            <input id="SavePass" name="checkResp" type="checkbox" style="display: inline-block; width: auto; vertical-align: middle; margin: 0 0 0 10px;" />
+                        </span>
+
+                    </section>
+                    <section class="clearfix submit-area" id="toast">
+                        <input type="submit" value="Envoyer" class="btn btn-success" />
+
+                        @Html.ActionLink("Annuler", "ListCommandes", "Commandes", new { @class = "btn btn-warning" })
+                    </section>
+
+                    if (Session["VolumeInfo"] != null)
+                    {
+                        <div id="volumePopup" style="" class="modal modal-popup in" aria-hidden="false">
+                            <div class="flex-content flex-jcenter-acenter flex-col pop-up">
+                                <div class="popup-container with-shadow">
+                                    <div class="content-section text-centered icon-bottom">
+                                        <h2>Attention !</h2>
+                                        <p>Le volume journalier pour le rédacteur <span id="selectedRedact"></span> est atteint , votre commande peut être en retard. Confirmer la commande, choisir un autre redacteur ou bien <strong data-dismiss="modal">modifier la commande</strong>. </p>
+                                        <label>
+                                            Choisir Rédacteur
+                                            @Html.DropDownListFor(x => Model.listOtherRedacteurId, new SelectList(Model.ListOtherRedacteur, "Value", "Text"), htmlAttributes: new { id = "SelectItemOtherRedacteur" })
+                                        </label>
+                                        <section>
+                                            <button type="submit" class="btn btn-warning" onclick="@("window.location.href='" + @Url.RouteUrl("Home", new { controller = "Commandes", action = "Choisir" }) + "'");">Changer rédacteur</button>
+                                            <input type="submit" value="Rédacteur actuel" class="btn btn-success" />
+                                            <!-- <button type="button" class="btn btn-success" >Editer</button> -->
+                                        </section>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                }
+            </div>
+        </div>
+
+
+
+        <div id="createprojet" class="modal modal-popup">
+            <div class="flex-content flex-jcenter-acenter flex-col pop-up">
+                <div class="popup-container with-shadow">
+                    <div class="head gradient-blue">
+                        <h1>Nouveau projet</h1>
+                    </div>
+                    <div class="content-section text-centered icon-bottom">
+
+                        @using (Html.BeginForm("CreateProjet", "Commandes", FormMethod.Post))
+                        {
+
+                            <label for="" class="col-100 ">
+                                Nom du projet(*)
+                                @Html.TextBoxFor(x => x.projet, new { @required = true })
+                            </label>
+
+                            <input type="submit" value="Enregistrer" class="btn btn-primary ">
+                            @Html.ActionLink("Annuler", "Create", new { controller = "Commandes" }, new { @class = "btn btn-warning" })
+                        }
+
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+
+
+        @*<div >           
+                 
+            @using (Html.BeginForm("GenerateMotCle", "Commandes", FormMethod.Post))
+            {
+                <input type="submit" value="Mot clé" class="btn btn-primary ">                           
+            }                   
+        </div>*@
+
+
+
+    </main>
+}
+else
+{ Response.Redirect("~/Login/Accueil"); }
+
+<script>
+    $(window).on('load', function () { $('#volumePopup').modal('show'); });
+</script>
+
+
+

@@ -63,11 +63,9 @@ namespace RedactApplication.Controllers
             commandeVm.ListCommandeType = val.GetListCommandeTypeItem();
             commandeVm.ListTag = val.GetListTagItem();
             commandeVm.ListOtherRedacteur = val.GetListRedacteurItem();
-            return View("Create",commandeVm);
-            
+            return View("Create",commandeVm);            
         }
-
-       
+        
         public async Task<ActionResult> GenerateMotCle(COMMANDEViewModel commandeVm)
         {
             //Lancer une commande de guide
@@ -115,13 +113,7 @@ namespace RedactApplication.Controllers
                     Session["keys"] = res;
                     Console.WriteLine(String.Format("Response: {0}", res));
                 }
-
-
-
-
-            
-
-
+                
                 return res;
             }
             return null;
@@ -192,7 +184,7 @@ namespace RedactApplication.Controllers
             return null;
         }
 
-        public ActionResult ListCommandes(string statut)
+        public ActionResult ListCommandes(string statut = null)
         {
             // Exécute le suivi de session utilisateur
             if (!string.IsNullOrEmpty(Request.QueryString["currentid"]))
@@ -235,7 +227,14 @@ namespace RedactApplication.Controllers
                     GetRedacteurInformations(_userId);
                     if (currentrole.Contains("2"))
                     {
-                        ViewBag.listeCommandeVms = listeDataCmde.Where(x => x.commandeRedacteurId == _userId).ToList();
+                        string etat = "Traitement";
+                        var state = db.STATUT_COMMANDE.SingleOrDefault(x => x.statut_cmde.Contains(etat));
+
+                        string etatDuplique = "Dupliqué";
+                        var stateDuplique = db.STATUT_COMMANDE.SingleOrDefault(x => x.statut_cmde.Contains(etatDuplique));
+
+                        
+                        ViewBag.listeCommandeVms = listeDataCmde.Where(x => x.commandeRedacteurId == _userId && x.commandeStatutId != state.statutCommandeId && x.commandeStatutId != stateDuplique.statutCommandeId).ToList();
 
                     }
                     if (currentrole.Contains("1"))
@@ -689,6 +688,15 @@ namespace RedactApplication.Controllers
         }
 
         [AcceptVerbs(HttpVerbs.Get)]
+        public JsonResult LoadScoreByContent(string contenu,string mot_cle_pricipal)
+        {
+            contenu = System.Net.WebUtility.HtmlDecode(contenu);
+            var res =  new Worker().GetScoringAsync(mot_cle_pricipal, contenu);            
+
+            return Json(res, JsonRequestBehavior.AllowGet);
+        }
+
+        [AcceptVerbs(HttpVerbs.Get)]
         public JsonResult LoadRedacteurByTheme(string theme)
         {
 
@@ -835,14 +843,12 @@ namespace RedactApplication.Controllers
         /// <summary>
         /// Count words with Regex.
         /// </summary>
-        private int CountWords(string s)
-        {
-            MatchCollection collection = Regex.Matches(s, @"[\S]+");
-            return collection.Count;
-        }
-
-
-      
+        private int CountWords(string contenu)
+        {           
+            string res = System.Net.WebUtility.HtmlDecode(contenu);          
+            int wordCount = res.Split(  new [] { ""," ",".",",",";","!",":", "\r\n", "\r", "\n" }, StringSplitOptions.RemoveEmptyEntries).Length +1;
+            return wordCount;
+        }                    
 
         public ActionResult DetailsCommande(Guid? hash, string not ="")
         {
@@ -880,6 +886,7 @@ namespace RedactApplication.Controllers
             return View("ErrorException");
         }
 
+       
 
         // GET: COMMANDEs/Create
         public ActionResult Create()
@@ -962,7 +969,7 @@ namespace RedactApplication.Controllers
 
                 if (!string.IsNullOrEmpty(selectedThematique))
                 {
-                    THEME currentTheme = db.THEMES.FirstOrDefault(x => x.theme_name.Contains(selectedThematique.TrimEnd()));
+                    THEME currentTheme = db.THEMES.FirstOrDefault(x => x.theme_name == selectedThematique.TrimEnd());
                     if (currentTheme == null)
                     {
                         currentTheme = new THEME { themeId = Guid.NewGuid(), theme_name = selectedThematique };
@@ -975,7 +982,7 @@ namespace RedactApplication.Controllers
 
                 if (!string.IsNullOrEmpty(selectedTag))
                 {
-                    TAG currentTag = db.TAGS.FirstOrDefault(x => x.type.Contains(selectedTag.TrimEnd()));
+                    TAG currentTag = db.TAGS.FirstOrDefault(x => x.type == selectedTag.TrimEnd());
                     if (currentTag == null)
                     {
                         currentTag = new TAG { tagId = Guid.NewGuid(), type = selectedTag };
@@ -1028,6 +1035,8 @@ namespace RedactApplication.Controllers
                 Session["cmdeEditModif"] = null;
                 Session["VolumeInfo"] = null;
 
+                newcommande.etat_sms = Session["notifSms"] != null ? true : false;
+
                 db.COMMANDEs.Add(newcommande);
                 db.SaveChanges();
 
@@ -1066,17 +1075,7 @@ namespace RedactApplication.Controllers
             return View("ErrorException");
         }
 
-
-
-
-
-
-
-
-
-
-
-        // POST: COMMANDEs/Create
+         // POST: COMMANDEs/Create
         // Afin de déjouer les attaques par sur-validation, activez les propriétés spécifiques que vous voulez lier. 
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -1422,7 +1421,7 @@ namespace RedactApplication.Controllers
                
             string mailbody = "<p> Votre livraison "+commande.commandeREF + " a été bien validée le " + DateTime.Now.ToString("dd/MM/yyyy") + ", nous vous remercions de votre collaboration.</p>";
                 string mailobject = "Media click App - Validation de la commande";
-            bool isSendMail =  SendeMailNotification(commande, mailbody, mailobject);
+            bool isSendMail =  SendMailNotification(commande, mailbody, mailobject);
 
             if (isSendMail)
             {
@@ -1469,7 +1468,7 @@ namespace RedactApplication.Controllers
           
             string mailbody = "<p> La commande " + commande.commandeREF + " a été annulée par "+commande.REFERENCEUR.userNom +" "+commande.REFERENCEUR.userPrenom+" le "+ DateTime.Now.ToString("dd/MM/yyyy")+" , vous pouvez contacter le responsable pour plus de détails.</p>";
             string mailobject = "Media click App - Annulation de la commande";
-            bool isSendMail =  SendeMailNotification(commande, mailbody, mailobject);
+            bool isSendMail =  SendMailNotification(commande, mailbody, mailobject);
 
             if (isSendMail)
             {
@@ -1668,7 +1667,7 @@ namespace RedactApplication.Controllers
                   
                      mailbody = "<p> Votre commande " + commande.commandeREF + " a été refusé, vous pouvez contacter le responsable pour plus de détails.</p>";
                     string mailobject = "Media click App - Refus de la commande";
-                isSendMail = SendeMailNotification(commande, mailbody, mailobject);
+                isSendMail = SendMailNotification(commande, mailbody, mailobject);
                 if (isSendMail)
                     SendNotification(commande, commande.commandeReferenceurId, commande.commandeRedacteurId, Regex.Replace(mailbody, "<.*?>", String.Empty));
                 else
@@ -1708,7 +1707,7 @@ namespace RedactApplication.Controllers
             string mailobject = "Media click App - Demande de correction de la commande";
 
             string notif = commande.REFERENCEUR.userNom + " " + commande.REFERENCEUR.userPrenom + " a demandé un correctif sur votre livraison " + commande.commandeREF + ".veuillez revoir la commande s'il vous plait. Nous vous remercions de votre collaboration.";
-            bool isSendMail = SendeMailNotification(commande, mailbody, mailobject);
+            bool isSendMail = SendMailNotification(commande, mailbody, mailobject);
             
             if (isSendMail)
             {
@@ -1849,7 +1848,7 @@ namespace RedactApplication.Controllers
         }
 
 
-        private bool SendeMailNotification(COMMANDE newcommande,string mailbody,string mailobject)
+        private bool SendMailNotification(COMMANDE newcommande,string mailbody,string mailobject)
         {
             bool isSendMail = false;
 
@@ -1902,7 +1901,6 @@ namespace RedactApplication.Controllers
 
         }
 
-
         // GET: COMMANDEs/Edit/5
         public ActionResult Edit(Guid? hash)
         {
@@ -1910,7 +1908,40 @@ namespace RedactApplication.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
+
+            var currentCommande = EditCurrentCommande(hash);         
+            return View(currentCommande);
            
+        }
+
+        // GET: COMMANDEs/Edit/5
+        public ActionResult EditDuplicateCommande(Guid? hash)
+        {
+            if (hash == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+
+            var currentCommande = EditCurrentCommande(hash);
+            return View(currentCommande);
+
+        }
+
+        // GET: COMMANDEs/Edit/5
+        public ActionResult UpdateCommande(Guid? hash)
+        {
+            if (hash == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+
+            var currentCommande = EditCurrentCommande(hash);
+            return View(currentCommande);
+
+        }
+
+        private COMMANDEViewModel EditCurrentCommande(Guid? hash)
+        {
             Commandes val = new Commandes();
             var currentCommande = val.GetDetailsCommande(hash);
 
@@ -1925,7 +1956,7 @@ namespace RedactApplication.Controllers
             currentCommande.ListTag = val.GetListTagItem();
             currentCommande.ListStatut = val.GetListStatutItem();
             if (currentCommande.commandeProjetId != null)
-                currentCommande.listprojetId = (Guid) currentCommande.commandeProjetId;
+                currentCommande.listprojetId = (Guid)currentCommande.commandeProjetId;
 
             if (currentCommande.commandeThemeId != null)
                 currentCommande.listThemeId = (Guid)currentCommande.commandeThemeId;
@@ -1944,27 +1975,97 @@ namespace RedactApplication.Controllers
                 currentCommande.listStatutId = (Guid)currentCommande.commandeStatutId;
 
             Session["cmdeEditModif"] = null;
-            return View(currentCommande);
-           
+
+            return currentCommande;
         }
 
         private int CountWordsModified(string s)
-        {           
-            string myString = Console.ReadLine();
-            int wCount = 0, index = 0;
+        {
+          
 
-            while (index < myString.Length)
+
+            string pattern = "[^\\w]";
+            //get all spaces and other signs, like: '.' '?' '!'
+            
+            string[] words = null;
+            int i = 0;
+            int count = 0;
+          
+            words = Regex.Split(s, pattern, RegexOptions.IgnoreCase);
+            for (i = words.GetLowerBound(0); i <= words.GetUpperBound(0); i++)
             {
-                while (index < myString.Length && !char.IsWhiteSpace(myString[index]))
-                    index++;
-
-                wCount++;
-
-                while (index < myString.Length && char.IsWhiteSpace(myString[index]))
-                    index++;
+                if (words[i].ToString() == string.Empty)
+                    count = count - 1;
+                count = count + 1;
             }
-            Console.WriteLine(wCount);
-            return wCount;
+            Console.WriteLine("Count of words:" + count.ToString());
+
+            var wordss = s.Split(new char[] { ' ', '.' });
+
+            return count;
+        }
+
+
+        [HttpPost]
+        [Authorize]
+        [ValidateInput(false)]
+        [MvcApplication.CheckSessionOut]
+        public ActionResult SaveEditCommande(Guid idCommande, COMMANDEViewModel model, FormCollection collection)
+        {
+            var hash = idCommande;
+            COMMANDE commande = db.COMMANDEs.Find(hash);
+            Guid? fromId = _userId;
+          
+            if (commande != null)
+            {             
+                model.texte_ancrage =
+                    StatePageSingleton.SanitizeString(Sanitizer.GetSafeHtmlFragment(model.texte_ancrage));
+                model.consigne_references =
+                    StatePageSingleton.SanitizeString(Sanitizer.GetSafeHtmlFragment(model.consigne_references));
+                model.consigne_autres =
+                    StatePageSingleton.SanitizeString(Sanitizer.GetSafeHtmlFragment(model.consigne_autres));
+
+                commande.mot_cle_secondaire = model.mot_cle_secondaire;
+
+                commande.date_livraison = model.date_livraison;
+                bool limit = IsLimiteVolumeEnCours(commande.commandeRedacteurId, model.date_livraison, commande.nombre_mots); //total volume journalier en cours
+
+
+                if (limit && Session["VolumeInfo"] == null)
+                {
+                    Session["VolumeInfo"] = "Le volume journalier pour le rédacteur " + commande.REDACTEUR.userNom + " est atteint. Vous confirmez l'envoi de la commande ? ";
+                    COMMANDEViewModel cmd = SetCommandeViewModelDetails(commande);
+                    return View("UpdateCommande", cmd);
+                }
+
+
+                try
+                {
+                    Session["VolumeInfo"] = null;
+                   
+                    int result = db.SaveChanges();
+                    if (result > 0)
+                    {
+                        return View("CreateCommandeConfirmation");
+                    }
+                    else
+                    {
+                        return View("ErrorException");
+                    }
+                }
+                catch (DbUpdateException ex)
+                {
+                    Session["cmdeEditModif"] = model;
+                    return RedirectToRoute("Home", new RouteValueDictionary
+                    {
+                        {"controller", "Commandes"},
+                        {"action", "UpdateCommande"}
+                    });
+                }
+            }
+
+            return View("ErrorException");
+
         }
 
         [HttpPost]
@@ -1980,31 +2081,7 @@ namespace RedactApplication.Controllers
             if (commande != null)
             {
                 bool notifSms = false;
-                if (Session["role"] != null && Session["role"].ToString() == "2")
-                {
-                    string etat = "Livré";
-                    var statut = db.STATUT_COMMANDE.SingleOrDefault(x => x.statut_cmde.Contains(etat));
-                    commande.commandeStatutId = statut.statutCommandeId;
-
-                    commande.balise_titre = model.balise_titre;
-                    commande.contenu_livre = model.contenu_livre;
-
-                    commande.dateLivraisonReel = DateTime.Now;
-                    toId = commande.commandeReferenceurId;
-                    string contenu = Regex.Replace(commande.contenu_livre, "<.*?>", string.Empty);
-                    int nb_contenu = CountWordsModified(contenu);
-
-                    if (contenu.Split(' ').ToList().Count < commande.nombre_mots)
-                    {
-                        ViewBag.ErrorMessage = "Le nombre de mots à livrer est inférieur à celui demandé ("+ commande.nombre_mots + "), veuillez revoir votre contenu.";
-                        COMMANDEViewModel cmd = SetCommandeViewModelDetails(commande);
-                        return View("Edit", cmd);
-                    }
-                    
-                }
-
-                else
-                {
+              
                     toId = commande.commandeRedacteurId;
                     var selectedProjetId = model.listprojetId;
                     var selectedThemeId = model.listThemeId;
@@ -2013,28 +2090,21 @@ namespace RedactApplication.Controllers
                     var selectedTag = model.tag;
                     var selectedReferenceurId = Guid.Parse(HttpContext.User.Identity.Name);
                     var selectedSite = model.site;
-                    
+                    var selectedThematique = model.thematique;            
                     var selectedStatut = model.listStatutId;
-
-                    model.mot_cle_secondaire =
-                        StatePageSingleton.SanitizeString(Sanitizer.GetSafeHtmlFragment(model.mot_cle_secondaire));
+                 
                     model.texte_ancrage =
                         StatePageSingleton.SanitizeString(Sanitizer.GetSafeHtmlFragment(model.texte_ancrage));
                     model.consigne_references =
                         StatePageSingleton.SanitizeString(Sanitizer.GetSafeHtmlFragment(model.consigne_references));
                     model.consigne_autres =
                         StatePageSingleton.SanitizeString(Sanitizer.GetSafeHtmlFragment(model.consigne_autres));
-                   
-                    if (!string.IsNullOrEmpty(collection["checkResp"]))
-                    {
-                        string checkResp = collection["checkResp"];
-                        notifSms = checkResp == "on";
-                    }
-                    
+
+                    commande.mot_cle_secondaire = model.mot_cle_secondaire;
+
                     commande.PROJET = db.PROJETS.Find(selectedProjetId);
                     commande.commandeProjetId = selectedProjetId;
-                    commande.THEME = db.THEMES.Find(selectedThemeId);
-                    commande.commandeThemeId = selectedThemeId;
+                 
                     commande.REFERENCEUR = db.UTILISATEURs.Find(selectedReferenceurId);
                     commande.commandeReferenceurId = selectedReferenceurId;
                     commande.REDACTEUR = db.UTILISATEURs.Find(selectedRedacteurId);
@@ -2043,9 +2113,22 @@ namespace RedactApplication.Controllers
                     commande.COMMANDE_TYPE = db.COMMANDE_TYPE.Find(selectedCommandeTypeId);
                     commande.commandeTypeId = selectedCommandeTypeId;
 
+                    if (!string.IsNullOrEmpty(selectedThematique))
+                    {
+                        THEME currentTheme = db.THEMES.FirstOrDefault(x => x.theme_name == selectedThematique.TrimEnd());
+                        if (currentTheme == null)
+                        {
+                            currentTheme = new THEME { themeId = Guid.NewGuid(), theme_name = selectedThematique };
+                            db.THEMES.Add(currentTheme);
+                            db.SaveChanges();
+                        }
+                        commande.commandeThemeId = currentTheme.themeId;
+                        commande.THEME = currentTheme;
+                    }
+
                     if (!string.IsNullOrEmpty(selectedTag))
                     {
-                        TAG currentTag = db.TAGS.SingleOrDefault(x => x.type.Contains(selectedTag.TrimEnd()));
+                        TAG currentTag = db.TAGS.FirstOrDefault(x => x.type == selectedTag.TrimEnd());
                         if (currentTag == null)
                         {
                             currentTag = new TAG { tagId = Guid.NewGuid(), type = selectedTag };
@@ -2058,7 +2141,7 @@ namespace RedactApplication.Controllers
 
                     if (!string.IsNullOrEmpty(selectedSite))
                     {
-                        SITE currentSite = db.SITES.SingleOrDefault(x => x.site_name.Contains(selectedSite.TrimEnd()));
+                        SITE currentSite = db.SITES.FirstOrDefault(x => x.site_name.Contains(selectedSite.TrimEnd()));
                         if (currentSite == null)
                         {
                             currentSite = new SITE { siteId = Guid.NewGuid(), site_name = selectedSite };
@@ -2069,21 +2152,11 @@ namespace RedactApplication.Controllers
                         commande.SITE = currentSite;
                     }
 
+                    string etat = "En attente";
+                    var statut = db.STATUT_COMMANDE.SingleOrDefault(x => x.statut_cmde.Contains(etat));
+                    commande.commandeStatutId = statut.statutCommandeId;
 
-
-                    commande.commandeStatutId = selectedStatut;
-                    commande.mot_cle_pricipal =
-                        StatePageSingleton.SanitizeString(Sanitizer.GetSafeHtmlFragment(model.mot_cle_pricipal));
-                    commande.mot_cle_secondaire =
-                        StatePageSingleton.SanitizeString(Sanitizer.GetSafeHtmlFragment(model.mot_cle_secondaire));
-                    commande.texte_ancrage =
-                        StatePageSingleton.SanitizeString(Sanitizer.GetSafeHtmlFragment(model.texte_ancrage));
-                    commande.nombre_mots = model.nombre_mots;
-                    commande.consigne_references = model.consigne_references;
-                    commande.tagId = model.listTagId;
-                    commande.consigne_autres =
-                        StatePageSingleton.SanitizeString(Sanitizer.GetSafeHtmlFragment(model.consigne_autres));
-                    commande.ordrePriorite = model.ordrePriorite;
+                  
                     commande.date_livraison = model.date_livraison;
                     bool limit = IsLimiteVolumeEnCours(commande.commandeRedacteurId, model.date_livraison, commande.nombre_mots); //total volume journalier en cours
 
@@ -2092,19 +2165,27 @@ namespace RedactApplication.Controllers
                     {
                         Session["VolumeInfo"] = "Le volume journalier pour le rédacteur " + commande.REDACTEUR.userNom + " est atteint. Vous confirmez l'envoi de la commande ? ";
                         COMMANDEViewModel cmd = SetCommandeViewModelDetails(commande);
-                        return View("Edit", cmd);
+                        return View("EditDuplicateCommande", cmd);
                     }                    
-                }
+                
             
-            try
+                try
                 {
                     Session["VolumeInfo"] = null;
+                  
+                    if (!string.IsNullOrEmpty(collection["checkResp"]))
+                    {
+                        string checkResp = collection["checkResp"];
+                        notifSms = checkResp == "on";
+                        Session["notifSms"] = notifSms;
+                    }
+                     commande.etat_sms = notifSms;
                     int result = db.SaveChanges();
                     if (result > 0)
                     {
                         if (notifSms)
                         {
-                            string msgBody = "Vous avez une commande mise à jour.";
+                            string msgBody = "Vous avez une nouvelle commande.";
                             var accountSid =
                                 System.Configuration.ConfigurationManager.AppSettings["SMSAccountIdentification"];
                             var authToken = System.Configuration.ConfigurationManager.AppSettings["SMSAccountPassword"];
@@ -2116,6 +2197,7 @@ namespace RedactApplication.Controllers
                                 string redactNumber = commande.REDACTEUR.redactPhone;
                                 redactNumber = redactNumber.TrimStart(new char[] { '0' });
                                 redactNumber = "+261" + redactNumber;
+
                                 var to = new PhoneNumber(redactNumber);
                                 var message = MessageResource.Create(
                                     to,
@@ -2125,7 +2207,7 @@ namespace RedactApplication.Controllers
                                 if (!string.IsNullOrEmpty(message.Sid))
                                 {
                                     Console.WriteLine(message.Sid);
-
+                                    //return View("Create");
                                 }
                             }
                         }
@@ -2155,33 +2237,42 @@ namespace RedactApplication.Controllers
                                         .ToLower()));
                                 mailBody.AppendFormat("<br />");
                                 mailBody.AppendFormat(
-                                    "<p>Vous avez une commande à corriger. Veuillez cliquer sur le lien suivant pour voir les détails de la commande.</p>");
+                                    "<p>Vous venez de recevoir une de commande de " + commande.REFERENCEUR.userNom + " " + commande.REFERENCEUR.userPrenom + " le " + DateTime.Now + ".Veuillez cliquer sur le lien suivant pour accepter ou refuser la commande.</p>");
                                 mailBody.AppendFormat("<br />");
-                                mailBody.AppendFormat(url + "/Commandes/DetailsCommande?hash=" + commande.commandeId);
+                                mailBody.AppendFormat(url + "/Commandes/CommandeWaitting?token=" + commande.commandeId);
                                 mailBody.AppendFormat("<br />");
                                 mailBody.AppendFormat("Cordialement,");
                                 mailBody.AppendFormat("<br />");
                                 mailBody.AppendFormat("Media click App .");
 
-                                bool isSendMail =  MailClient.SendMail(commande.REDACTEUR.userMail, mailBody.ToString(), "Media click App  - nouvelle commande.");
+                                bool isSendMail = MailClient.SendMail(commande.REDACTEUR.userMail, mailBody.ToString(), "Media click App - nouvelle commande.");
                                 if (isSendMail)
                                 {
-                                    string notif = "Vous avez une commande à corriger de " + commande.REFERENCEUR.userNom + " " + commande.REFERENCEUR.userPrenom + " le " + DateTime.Now + ".Veuillez regarder les détails de la commande.";
-                                    if (Session["role"] != null && Session["role"].ToString() == "2")
-                                         notif = "La commande "+commande.commandeREF + " a été livrée  par " + commande.REDACTEUR.userNom +"le " + DateTime.Now.ToShortDateString() ;
+                                    commande.commandeToken = commande.commandeId;
+                                    commande.dateToken = DateTime.Now;
+                                    int res = db.SaveChanges();
+                                    if (res > 0)
+                                    {
+                                        string notif = "Vous venez de recevoir une de commande de " + commande.REFERENCEUR.userNom + " " + commande.REFERENCEUR.userPrenom + " le " + DateTime.Now + ".Veuillez accepter ou refuser la commande.";
 
-                                    if (SendNotification(commande,fromId,toId, notif) > 0)
-                                        return View("EditCommandeConfirmation");
+                                        if (SendNotification(commande, commande.commandeReferenceurId, commande.commandeRedacteurId, notif) > 0)
+                                            return View("CreateCommandeConfirmation");
 
-                                    return RedirectToRoute("Home", new RouteValueDictionary
+                                        return RedirectToRoute("Home", new RouteValueDictionary
                                     {
                                         {"controller", "Commandes"},
-                                        {"action", "Edit"}
+                                        {"action", "Create"}
                                     });
 
+                                    }
                                 }
                             }
                         }
+                    }
+
+                    else
+                    {
+                        return View("ErrorException");
                     }
                 }
                 catch (DbUpdateException ex)
@@ -2223,6 +2314,35 @@ namespace RedactApplication.Controllers
             db.COMMANDEs.Remove(cOMMANDE);
             db.SaveChanges();
             return RedirectToAction("Index");
+        }
+
+        /// <summary>
+        /// Duplique une commande dans la base données.
+        /// </summary>
+        /// <param name="hash">id du commande</param>
+        /// <returns>View</returns>
+        [Authorize]
+        public ActionResult Duplicate(Guid? hash)
+        {
+            try
+            {  
+                bool result = Commandes.Duplicate((Guid)hash);
+                if (result == true)
+                {
+                    return RedirectToRoute("Home", new RouteValueDictionary {
+                    { "controller", "Commandes" },
+                    { "action", "ListCommandes" }
+                });
+                }
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine(e);
+            }
+            return RedirectToRoute("Home", new RouteValueDictionary {
+                    { "controller", "Commandes" },
+                    { "action", "ListCommandes" }
+                });
         }
 
         protected override void Dispose(bool disposing)

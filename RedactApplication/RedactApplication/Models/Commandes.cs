@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Web.Mvc;
 
@@ -516,5 +517,68 @@ namespace RedactApplication.Models
             }).ToList();
             return listCmde?.OrderBy(x => x.date_cmde).ThenBy(x => x.date_livraison).ToList();
         }
+
+        /// <summary>
+        /// Duplique un objet Campaign et l'ajoute à la base de données.
+        /// </summary>
+        /// <param name="commandeId">Id du commande à dupliquer</param>
+        /// <returns>bool</returns>
+        public static bool Duplicate(Guid commandeId)
+        {
+            
+            try
+            {
+                redactapplicationEntities db = new Models.redactapplicationEntities();
+                COMMANDE y = db.COMMANDEs.Find(commandeId);
+                int? maxRef = db.COMMANDEs.Max(u => u.commandeREF);
+                int? commandeREF = (maxRef != null) ? maxRef + 1 : 1;
+
+                string etat = "Dupliqué";
+                var statut = db.STATUT_COMMANDE.SingleOrDefault(s => s.statut_cmde.Contains(etat));
+               
+                // Copie du COMMANDE
+                COMMANDE x = new COMMANDE
+                {                 
+                    commandeId = Guid.NewGuid(),
+                    commandeReferenceurId = y.commandeReferenceurId, 
+                    commandeRedacteurId = y.commandeRedacteurId,
+                    date_cmde = y.date_cmde,
+                    date_livraison = y.date_livraison,
+                    commandeTypeId = y.commandeTypeId,
+                    nombre_mots = y.nombre_mots,
+                    mot_cle_pricipal = y.mot_cle_pricipal,
+                    mot_cle_secondaire = y.mot_cle_secondaire,
+                    consigne_references = y.consigne_references,
+                    texte_ancrage = y.texte_ancrage,
+                    consigne_autres = y.consigne_autres,
+                    etat_paiement = y.etat_paiement,
+                    commandeREF = commandeREF,
+                    ordrePriorite = y.ordrePriorite,
+                    balise_titre = y.balise_titre,
+                    contenu_livre = y.contenu_livre,
+                    commandeProjetId = y.commandeProjetId,
+                    commandeThemeId = y.commandeThemeId,
+                    tagId = y.tagId,
+                    siteId = y.siteId,
+                    commandeStatutId = statut.statutCommandeId,
+                    dateLivraisonReel = y.dateLivraisonReel,
+                    remarques = y.remarques                   
+
+                };
+                db.COMMANDEs.Add(x);
+                
+                int val = db.SaveChanges();
+                if (val != 0)
+                {
+                    return true;
+                }
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine(e);
+            }
+            return false;
+        }
+
     }
 }

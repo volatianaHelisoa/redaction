@@ -90,13 +90,12 @@
                             }
                             <th>#</th>
                             <th>Demandeur</th>
-                            <th>Redacteur</th>
-                            <th>Date de la commande</th>
-                            <th>Date de la livraison</th>
+                            <th>Redacteur</th>                           
+                            <th>Livraison</th>
                             <th>Projet</th>
                             <th>Site</th>
                             <th>Thématique</th>
-                            <th>Type de textes</th>
+                            <th>Type</th>
                             <th>Tags</th>
                             <th>Etat </th>
                          
@@ -109,6 +108,7 @@
 
                             foreach (var item in ViewBag.listeCommandeVms)
                             {
+                               
                                 <tr>
                                     @if (@Session["role"] != null && @Session["role"].ToString() != "2")
                                     {
@@ -116,47 +116,55 @@
                                     }
                                     <td>@item.commandeREF</td>
                                     <td>@item.commandeDemandeur</td>
-                                    <td>@item.commandeRedacteur</td>
-                                    <td>@item.date_cmde.ToShortDateString()</td>
-
+                                    <td>@item.commandeRedacteur</td>                  
                                     <td>@item.date_livraison.ToShortDateString()</td>
                                     <td>@item.projet </td>
                                     <td>@item.site</td>
                                     <td>@item.thematique</td>
                                     <td>@item.commandeType</td>
                                     <td>@item.tag</td>
-                                    <td>@item.statut_cmde</td>
-
-                                   
-
+                                    <td>@item.statut_cmde</td>         
                                     <td class="col-option">
-                                        <!--ViewBag.numpage/ViewBag.nbrow-->
-                                        <div class="item">
-                                            <div class="option">
-                                                @if (@Session["role"] != null && @Session["role"].ToString() == "2")
-                                                {
-                                                    <a href="~/Commandes/DetailsCommandeAValider/@item.commandeId" title="Détails"><i class="fa fa-eye"></i></a>
-                                                }
-                                                else
-                                                {
-                                                    <a href="~/Commandes/DetailsCommande/@item.commandeId" title="Détails"><i class="fa fa-eye"></i></a>
-                                                }
 
-                                                @if ((@item.statut_cmde == "En cours" || @item.statut_cmde == "A corriger") && @Session["role"] != null && @Session["role"].ToString() == "2")
-                                                {
-                                                    <a href="~/Commandes/Edit/@item.commandeId" title="Editer"><i class="fa fa-edit"></i></a>
-                                                }
-                                                @if (@Session["role"] != null && @Session["role"].ToString() != "2" && (@item.statut_cmde == "Validé" || @item.statut_cmde == "Refusé" || @item.statut_cmde == "Annulé"))
-                                                {
-                                                    <a onclick="DeleteCommandeClick('@item.commandeId')" title="Supprimer"><i class="fa fa-trash"></i></a>
-                                                }
-                                                @if (Session["role"] != null && Session["role"].ToString() != "2" && (@item.statut_cmde == "En cours" || @item.statut_cmde == "A corriger" || @item.statut_cmde == "En attente"))
-                                                {
+                                     
+                                            <div class="item" >
+                                                <div class="option">
+                                                    @if (@Session["role"] != null && @Session["role"].ToString() == "2")
+                                                    {
+                                                        <a href="~/Commandes/DetailsCommandeAValider/@item.commandeId" title="Détails"><i class="fa fa-eye"></i></a>
+                                                    }
+                                                    else if (@item.statut_cmde != "Traitement")
+                                                    {
+                                                        <a href="~/Commandes/DetailsCommande/@item.commandeId" title="Détails"><i class="fa fa-eye"></i></a>
+                                                    }
 
-                                                    <a href="~/Commandes/CommandeCancel/@item.commandeId" title="Annuler"><i class="fa fa-undo"></i></a>
-                                                }
+                                                    @if ((@item.statut_cmde == "En cours" || @item.statut_cmde == "A corriger") && @Session["role"] != null && @Session["role"].ToString() == "2")
+                                                    {
+                                                        <a href="~/Commandes/Edit/@item.commandeId" title="Editer"><i class="fa fa-edit"></i></a>
+                                                    }
+                                                    @if (@Session["role"] != null && @Session["role"].ToString() != "2" && (@item.statut_cmde == "Validé" || @item.statut_cmde == "Refusé" || @item.statut_cmde == "Annulé"))
+                                                    {
+                                                        <a onclick="DeleteCommandeClick('@item.commandeId')" title="Supprimer"><i class="fa fa-trash"></i></a>
+                                                    }
+                                                    @if (Session["role"] != null && Session["role"].ToString() != "2" && (@item.statut_cmde == "En cours" || @item.statut_cmde == "A corriger" || @item.statut_cmde == "En attente"))
+                                                    {
+
+                                                        <a href="~/Commandes/CommandeCancel/@item.commandeId" title="Annuler"><i class="fa fa-undo"></i></a>
+                                                    }
+                                                    @if (Session["role"] != null && Session["role"].ToString() != "2" && (@item.statut_cmde == "En attente"))
+                                                    {
+                                                        <a href="~/Commandes/Duplicate/@item.commandeId" title="Dupliquer"><i class="fa fa-copy"></i></a>
+                                                    }
+                                                    @if (Session["role"] != null && Session["role"].ToString() != "2" && (@item.statut_cmde == "Dupliqué" ))
+                                                    {
+                                                        <a href="~/Commandes/EditDuplicateCommande/@item.commandeId" title="Editer"><i class="fa fa-edit"></i></a>
+                                                    }
+                                                    @if (Session["role"] != null && Session["role"].ToString() != "2" && ( @item.statut_cmde == "En attente"))
+                                                    {
+                                                        <a href="~/Commandes/UpdateCommande/@item.commandeId" title="Editer"><i class="fa fa-edit"></i></a>
+                                                    }
+                                                </div>
                                             </div>
-                                        </div>
                                     </td>
                                 </tr>
 

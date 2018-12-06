@@ -9,7 +9,7 @@
 {
     <main id="wrapper">
         <div id="single-container">
-            <div class="onglets">
+            <div class="onglets ease-in-out">
                 <ul>
                     <li> @Html.ActionLink("Dashboard", "Dashboard", new { controller = "Home" }) </li>
                     @if (@Session["role"] != null && @Session["role"].ToString() != "2" && @Session["role"].ToString() != "1")
@@ -20,152 +20,82 @@
                     @if (@Session["role"] != null && @Session["role"].ToString() != "1")
                     {
                         <li>@Html.ActionLink("Factures", "ListFacture", new { controller = "Facture" })</li>
-
                     }
-
-
                 </ul>
             </div>
             <div class="card back-office with-shadow">
                 <div class="head">
-                    <i class="icon icon-edit-command"></i>
-                    <h1>Editer commande</h1>
-                    <p>Veuillez remplir les champs Requis (*) et appuyez sur Enregistrer pour éditer une commande</p>
+                    <h1>Éditer la commande</h1>
+                    <p>Veuillez remplir les champs requis (*) et appuyez sur enregistrer la pour mettre à jour</p>
                 </div>
                 @using (Html.BeginForm("EditCommande", "Commandes", FormMethod.Post, new { @class = "formfields" }))
                 {
-                    @Html.AntiForgeryToken()
-                    <!-- Champs -->
+                    @Html.AntiForgeryToken();
                     <input type="hidden" name="idCommande" value="@Model.commandeId">
                     <input type="hidden" id="limit" value="@Model.nombre_mots">
-                    if (ViewBag.ErrorMessage != null)
-                    {
-                    <p class="error-msg text-centered">
-                        @ViewBag.ErrorMessage
-                    </p>
-                    }
-                    if (Session["VolumeInfo"] != null)
-                    {
-                        <p class="error-msg text-centered">@Session["VolumeInfo"].ToString()</p>
-                    }
-
-                    if (@Session["role"] != null && @Session["role"].ToString() != "2")
-                    {
-                        <section class="clearfix">
-                            <label for="" class="col-50 pull-left">
-                                Projet
-                                @Html.DropDownListFor(x => Model.listprojetId, new SelectList(Model.ListProjet, "Value", "Text"), htmlAttributes: new { @id = "SelectItemProjet" })
-                            </label>
-                            <label for="" class="col-50 pull-right">
-                                Thématique
-                                @Html.DropDownListFor(x => Model.listThemeId, new SelectList(Model.ListTheme, "Value", "Text"), htmlAttributes: new { id = "SelectItemTheme" })
-                            </label>
-                            <label for="" class="col-50 pull-left">
-                                Rédacteur
-                                @Html.DropDownListFor(x => Model.listRedacteurId, new SelectList(Model.ListRedacteur, "Value", "Text"), htmlAttributes: new { id = "SelectItemRedacteur" })
-                            </label>
-                            <label for="" class="col-50 pull-right">
-                                Type de texte
-                                @Html.DropDownListFor(x => Model.listCommandeTypeId, new SelectList(Model.ListCommandeType, "Value", "Text"), htmlAttributes: new { @id = "SelectItemCommandeType" })
-                            </label>
-                        </section>
-                        <section class="clearfix">
-                            <div class="section-title">
-                                <span>Mots clés</span>
+                    <input type="hidden" id="mot_cle_pricipal" value="@Model.mot_cle_pricipal">
+                    <!-- Champs -->
+                    <div class="container clearfix">
+                        <div class="section-title-rounded">
+                            <span>Livraison</span>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <a class="btn btn-success" style="display: inline-block; margin-bottom: 2em">Check duplicate</a>
+                                <a class="btn btn-primary" style="display: inline-block; margin-left: 1em; margin-bottom: 2em">Corriger</a>
                             </div>
+                            <section class="col-md-9 commande-view">
+                                <div class="wrap">
+                                    <div class="blk">
+                                        <strong>Titre :</strong>
+                                        @Html.TextBoxFor(x => x.balise_titre)
+                                    </div>
+                                    <div class="blk">
+                                        <strong>Contenu : </strong>
+                                        @Html.TextAreaFor(m => m.contenu_livre, new { rows = "20", style = "resize:none;", @class = "textarea-editor command-edition", maxlength = @Html.DisplayNameFor(m => m.nombre_mots) })
+                                    </div>
+                                    <span>
+                                        <strong>  Nombre de mots demandés </strong>
+                                        <span id="balise_titre">
+                                            @Html.DisplayFor(x => x.nombre_mots)
+                                        </span>
+                                    </span>
+                                </div>
+                            </section>
+                            <section class="col-md-3 commande-resume">
+                                <div>
+                                    <span>Mots clés</span>
+                                   
+                                    @Html.DisplayFor(x => x.mot_cle_secondaire)
+                                   
+                                </div>
+                            </section>
+                            <section class="col-md-3">
+                                <a class="btn btn-dark btn-medium" id="btn-optimisation" style="display: block; margin: 20px 0">Voir l'optimisation</a>
+                                <div class="scores">
+                                    <dd class="item">
+                                        <span>DSEO</span>
+                                        <div class="separator"></div>
+                                        <span id="res_dseo"></span>
+                                    </dd>
+                                    <dd class="item">
+                                        <span>SOSEO</span>
+                                        <div class="separator"></div>
+                                        <span id="res_soseo"></span>
+                                    </dd>
+                                </div>
+                            </section>
 
-                            <label for="" class="col-50 pull-left">
-                                Mot clé principal
-                                @Html.TextBoxFor(x => x.mot_cle_pricipal, new { @name = "name" })
-                            </label>
-                            <label for="" class="col-50 pull-right">
-                                Mot clé secondaire
-                                @Html.TextBoxFor(x => x.mot_cle_secondaire, new { @name = "name" })
-                            </label>
-                            <label for="" class="col-50 pull-left">
-                                Texte d'ancrage
-                                @Html.TextBoxFor(x => x.texte_ancrage, new { @name = "name" })
-                            </label>
-                            <label for="" class="col-50 pull-right">
-                                Nombre de mots
-                                @Html.TextBoxFor(x => x.nombre_mots, new { @name = "name" })
+                            <section class="clearfix submit-area" id="toast">
+                                <input type="submit" value="Envoyer" class="btn btn-success" id="btn-save" />
+                                @Html.ActionLink("Annuler", "ListCommandes", "Commandes", new { @class = "btn btn-warning" })
+                            </section>
+                        </div>
+                    </div>
 
-                            </label>
-                        </section>
-                        <section class="clearfix">
-                            <div class="section-title">
-                                <span>Consignes</span>
-                            </div>
-
-                            <label for="" class="col-50 pull-left">
-                                Références
-                                @Html.TextBoxFor(x => x.consigne_references, new { @name = "name" })
-                            </label>
-                            <label for="" class="col-50 pull-right">
-                                Autres
-                                @Html.TextBoxFor(x => x.consigne_autres, new { @name = "name" })
-                            </label>
-
-                            <label for="" class="col-50 pull-right">
-                                Date de livraison
-                                @Html.TextBoxFor(x => x.date_livraison, "{0:dd/MM/yyyy}", new { type = "text" })
-                                @Html.ValidationMessageFor(m => m.date_livraison)
-                            </label>
-
-
-
-                        </section>
-                        <section class="clearfix">
-                            <div class="section-title">
-                                <span>Autres</span>
-                            </div>
-                            <label for="" class="col-50 pull-left">
-                                Notification via sms ?
-                                <input type="checkbox" id="SavePass" style="display: inline-block; width: auto; vertical-align: middle; margin: 0 0 0 10px;">
-                            </label>
-                            <label for="" class="col-50 pull-left">
-                                Statut
-                                @Html.DropDownListFor(x => Model.listStatutId, new SelectList(Model.ListStatut, "Value", "Text"), htmlAttributes: new { @id = "SelectItemStatut" })
-                            </label>
-
-
-                        </section>
-                    }
-                    else
-                    {
-                        <!-- WYSIWYG ICI -->
-
-                        <section class="clearfix">
-                            <div class="section-title">
-                                <span>Livraison</span>
-                            </div>
-
-
-
-                            <label for="" class="col-100">
-                                Titre
-                                @Html.TextBoxFor(x => x.balise_titre)
-                            </label>
-                            <label for="" class="col-100">
-                                Contenu
-                                @Html.TextAreaFor(m => m.contenu_livre, new { rows = "20", style = "resize:none;", @class = "textarea-editor command-edition", maxlength = @Html.DisplayNameFor(m => m.nombre_mots) })
-                            </label>
-                            <span>
-                                <strong>  Nombre de mots demandés </strong>
-                                <span id="balise_titre">
-                                    @Html.DisplayFor(x => x.nombre_mots)
-                                </span>
-                            </span>
-                        </section>
-                    }
-
-                    <section class="clearfix submit-area" id="toast">
-                        <input type="submit" value="Envoyer" class="btn btn-success" />
-                        @Html.ActionLink("Annuler", "ListCommandes", "Commandes", new { @class = "btn btn-warning" })
-                    </section>
                 }
-            </div>
 
+            </div>
         </div>
     </main>
 }
@@ -195,6 +125,7 @@ else
     <script type="text/javascript">
         $(document).ready(function () {
             var date = new Date();
+            var words = 0;
             date.setDate(date.getDate());
             var date_input = $('input[name="date_livraison"]'); //our date input has the name "date"
             var container = $('.bootstrap-iso form').length > 0 ? $('.bootstrap-iso form').parent() : "body";
@@ -227,42 +158,39 @@ else
                     ed.on('keyup', function (e) {
                         tinyMceChange(ed);
                         var contenu = $.trim($(this).text());
+                       
 
                         var contenu_res = ed.getContent().replace(/(style="([^"]*)")/g, "");
                         var regex = /(&nbsp;|<([^>]+)>)/ig;
                         contenu_res = contenu_res.replace(regex, "");
-                        var words = ed.plugins.wordcount.getCount();
-
+                        words = ed.plugins.wordcount.getCount();
+                        console.log(words);
                         var charLength = words.length;
                         var charLimit = $("#limit").val();
                         // Displays count
                         $(".left_char").html(charLength + " sur " + charLimit + " caractère(s) utilisé(s)");
-                        // Alert when max is reached
-                        /* if (charLength > charLimit) {
-                            $(".left_char").html("<strong>Le nombre de caractères maximum de " +
-                                charLimit +
-                                " atteint.</strong>");
-                        } */
+                      
                     });
                     ed.on('change', function (e) {
+                        words = ed.plugins.wordcount.getCount();
+
                         tinyMceChange(ed);
                     });
                 }
             });
             function tinyMceChange(ed) {
-                console.debug('Editor contents was modified. Contents: ' + ed.getContent());
+                //console.debug('Editor contents was modified. Contents: ' + ed.getContent());
             }
 
             $("#tinymce").keypress(function () {
-                alert("tests0");
+
                 var contenu = $.trim($(this).text());
                 var charLength = contenu.length;
                 var charLimit = $("#limit").val();
-                console.log(charLimit);
-                console.log(charLength);
+
 
                 // Displays count
-                $(".left_char").html(charLength + " sur " + charLimit + " caractère(s) utilisé(s)");
+                $(".left_char").html(words + " sur " + charLimit + " caractère(s) utilisé(s)");
                 // Alert when max is reached
                 if (charLength > charLimit) {
                     $(".left_char").html("<strong>Le nombre de caractères maximum de " +
@@ -271,7 +199,53 @@ else
                 }
             });
 
+            $("#btn-save").click(function () {
+                setCookie('words', words, 1);
+            });
+
+            function setCookie(name, value, days) {
+                var expires = "";
+                if (days) {
+                    var date = new Date();
+                    date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
+                    expires = "; expires=" + date.toUTCString();
+                }
+                document.cookie = name + "=" + (value || "") + expires + "; path=/";
+            }
+
+            $(".scores").hide();
+
+            $("#btn-optimisation").click(function () {
+              
+                var contenu_res = tinymce.activeEditor.getContent().replace(/(style="([^"]*)")/g, "");
+                var regex = /(&nbsp;|<([^>]+)>)/ig;
+                contenu_res = contenu_res.replace(regex, "");
+                var mot_cle_pricipal = $("#mot_cle_pricipal").val();
+                console.log(contenu_res);
+                $.ajax({
+                    type: 'GET',
+                    url: '/Commandes/LoadScoreByContent',
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "json",
+
+                    data: {
+                        contenu: contenu_res,
+                        mot_cle_pricipal: mot_cle_pricipal
+                    },
+
+                    success: function (response) {
+                        alert(response);
+                    },
+                    error: function (response) {
+                        alert(response);
+                        $(".scores").show();
+                    }
+                });
+                $(".scores").show();
+            });
+
         });
+
 
 
     </script>

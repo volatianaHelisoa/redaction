@@ -205,13 +205,15 @@
     color: #26b5ff;
 }
 
-
-#remarques {
+#remarques,
+#motcle2nd {
     display: block;
     margin-top: 30px;
+    font-size: 16px
 }
 
-#remarques .contenu {
+#remarques .contenu,
+#motcle2nd .contenu {
     padding: 20px;
     background: #ffebeb;
 }
@@ -222,4 +224,333 @@
 
 #remarques .section-title span {
     background: #ff4026;
+}
+
+/* Commnade V2*/
+.icon-create-command {
+    background: url(../../../images/creercommande-picto.png) no-repeat center;
+    background-size: 100%;
+}
+
+.icon-edit-command {
+    background: url(../../../images/editcomande-picto.png) no-repeat center;
+    background-size: 100%;
+}
+
+.head-list .resume {
+    text-align: center;
+    padding: 20px 0;
+    position: relative;
+}
+
+    .head-list .resume ul {
+        margin: 0;
+        padding: 8px 25px;
+        border: 1px solid #ebebeb;
+        background: #fafafa;
+        display: inline-block;
+    }
+
+    .head-list .resume li {
+        list-style: none;
+        display: inline-block;
+        text-transform: uppercase;
+        border-right: 1px solid #868686;
+        padding: 0 20px;
+        margin-left: -2px;
+    }
+
+        .head-list .resume li:last-of-type {
+            border-right: none;
+        }
+/** Commande view **/
+.commande-view .wrap span,
+.commande-resume .wrap span {
+    display: block;
+    margin-bottom: 10px;
+    color: #898989;
+    font-size: 16px;
+}
+
+.commande-resume .wrap strong,
+.commande-resume .wrap strong {
+    color: #525252;
+}
+
+.commande-view .section-title,
+.commande-resume .section-title {
+    margin: 0;
+    padding: 0;
+}
+
+.commande-view .section-title {
+    margin-bottom: 20px;
+}
+
+.commande-view .commande-contenu {
+    padding: 20px;
+    border: 1px solid #dadada;
+    margin-top: 10px;
+    min-height: 339px;
+}
+
+.commande-resume span {
+    font-size: 20px;
+    display: block;
+}
+
+.commande-resume .section-title {
+    border: none;
+}
+
+.commande-view .contenu-footer {
+    border-right: 1px solid #dadada;
+    border-bottom: 1px solid #dadada;
+    border-left: 1px solid #dadada;
+    font-size: 12px;
+    padding-left: 20px;
+    background: #f9f9f9;
+}
+
+    .commande-view .contenu-footer span {
+        margin: 0
+    }
+
+    .commande-view .contenu-footer #copy {
+        padding: 7px 20px;
+        font-size: 16px;
+        color: white;
+        background-color: #26b5ff;
+        margin-right: -1px;
+        text-transform: uppercase;
+    }
+
+.commande-resume > div {
+    text-align: left;
+    border: 1px solid #e0e0e0;
+    padding: 25px;
+}
+
+.commande-resume .status {
+    margin: 20px 0 0;
+    padding: 25px 15px;
+    text-align: center;
+    border: 1px solid #e0e0e0;
+}
+
+    .commande-resume .status li {
+        list-style-position: inside;
+    }
+
+#table_id_length {
+    float: right;
+    margin: -37px 0 40px;
+    background: white;
+}
+
+    #table_id_length select {
+        width: auto;
+        display: inline-block;
+        margin: 0;
+        padding: 7px 40px 7px 15px;
+        background-size: 30px;
+    }
+
+#table_id th {
+    font-weight: normal;
+    padding: 15px 10px;
+    text-align: left;
+    background-color: #013956;
+    color: white;
+}
+
+#table_id td {
+    color: #868686;
+    border: none;
+    padding: 15px 10px;
+}
+
+#table_id tfoot {
+    display: none;
+}
+
+#table_id_paginate {
+    float: none;
+    text-align: center;
+    padding-top: 0.25em;
+    margin-top: 20px;
+}
+
+    #table_id_paginate .paginate_button.current {
+        border-radius: 50%;
+        width: 30px;
+        height: 30px;
+        line-height: 30px;
+        padding: 0;
+        border: 1px solid #26b5ff;
+        color: #26b5ff !important;
+        background: white;
+    }
+
+/* Commande non livré */
+.commande-view .commande-not-delivered > span {
+    font-size: 20px;
+    text-align: center;
+    padding: 50px 0 70px;
+    margin: 0;
+    color: #525252;
+    font-family: 'RL';
+}
+
+.commande-not-delivered .item {
+    flex: 1;
+    text-align: center;
+    cursor: pointer
+}
+
+    .commande-not-delivered .item > span {
+        width: 70px;
+        height: 70px;
+        border-radius: 50%;
+        padding: 0;
+        color: white;
+        text-align: center;
+        line-height: 80px;
+        margin: 0 auto 10px;
+        display: block;
+    }
+
+
+/* Command create */
+.section-title-rounded {
+    position: relative;
+    margin-bottom: 30px;
+    padding: 0;
+    text-align: center;
+    border: none;
+    margin: 0 0 30px;
+}
+
+    .section-title-rounded::before {
+        content: "";
+        border-top: 1px solid #e0e0e0;
+        position: absolute;
+        top: 50%;
+        width: 100%;
+        height: 1px;
+        left: 0;
+    }
+
+    .section-title-rounded span {
+        position: relative;
+        z-index: 10;
+        background: #12306e;
+        padding: 15px 30px;
+        border-radius: 30px;
+        color: white;
+        text-transform: uppercase;
+    }
+
+.blk {
+    background: #fafafa;
+    border: 1px solid #e7e7e7;
+    padding: 25px;
+    margin-bottom: 2em;
+}
+
+    .blk input,
+    .blk select,
+    .blk textarea {
+        margin: 0 !important;
+        background-color: white;
+    }
+
+    .blk strong {
+        display: block;
+        color: #26b5ff;
+        font-size: 16px;
+        margin-bottom: 15px;
+    }
+
+.btn-add {
+    background: #26b5ff;
+    padding: 10px 15px 11px;
+    color: white;
+    text-align: center;
+    position: relative;
+    border-radius: 3px;
+    overflow: hidden;
+    display: inline-block;
+    vertical-align: middle;
+    background-size: 17px;
+    max-width: 240px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    cursor: pointer;
+    position: relative;
+}
+
+.btn-add::before {
+    content: "+";
+    width: 20px;
+    height: 20px;
+    display: inline-block;
+    vertical-align: middle;
+    border-radius: 50%;
+    background-color: white;
+    color: #26b5ff;
+    margin-right: 15px;
+}
+
+.status .ok {
+    color: #16c43b;
+    text-decoration: line-through;
+}
+
+.scores {
+    display: flex;
+    justify-content: space-between
+}
+
+.scores dd {
+    color: white;
+    display: inline-block;
+    vertical-align: middle;
+    margin: 0;
+    border-radius: 3px;
+    padding: 10px 15px;
+    text-align: center;
+}
+
+.scores dd {
+    color: white;
+    display: inline-block;
+    vertical-align: middle;
+    font-size: 20px;
+    min-width: 45%;
+}
+
+.scores dd:first-of-type {
+    background: #26b5ff;
+}
+
+.scores dd:last-of-type {
+    background: #698fde;
+}
+
+.scores span {
+    color: #12306e;
+    display: block;
+    font-size: 14px;
+}
+
+.scores .separator {
+    width: 30px;
+    height: 2px;
+    background-color: #12306e;
+    margin: 10px auto;
+}
+
+#createcommande section {
+    max-width: 1024px;
 }

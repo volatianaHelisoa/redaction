@@ -155,6 +155,7 @@
     <NavigationProperty Name="TAG" Relationship="redactapplicationModel.FK_COMMANDE_TAGS" FromRole="COMMANDE" ToRole="TAG" />
     <Property Name="siteId" Type="Guid" />
     <NavigationProperty Name="SITE" Relationship="redactapplicationModel.FK_COMMANDE_SITES" FromRole="COMMANDE" ToRole="SITE" />
+    <Property Name="etat_sms" Type="Boolean" />
   </EntityType>
   <EntityType Name="COMMANDE_TYPE">
     <Key>

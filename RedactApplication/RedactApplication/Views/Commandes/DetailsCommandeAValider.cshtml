@@ -40,17 +40,16 @@
 
                 <!-- Champs -->
                 <div class="container clearfix">
-                    <section class="commande-resume">
+                    <section class="commande-resume large">
                         <div class="section-title">
-                            <span>Récapitulatif</span>
+                            <span>@Html.DisplayFor(model => model.projet)</span>
                         </div>
                         <div class="wrap">
                             <div class="flex-content flex-jsbet-astart">
                                 <div>
-                                    <span class="project-id"><strong>Projet :</strong> @Html.DisplayFor(model => model.projet)</span>
+                                 
                                     <span><strong>Demandeur :</strong>@Html.DisplayFor(model => model.commandeDemandeur)</span>
-                                    <span><strong>Redacteur  :</strong>@Html.DisplayFor(model => model.commandeRedacteur)</span>
-                                    <span><strong>Date de Commande :</strong>@Html.DisplayFor(model => model.date_cmde)</span>
+                                                                 
                                     <span>
                                         <strong>Date de livraison :</strong> @Html.DisplayFor(model => model.date_livraison)
                                         @if (Model.dateLivraisonReel > Model.date_livraison)
@@ -58,26 +57,18 @@
                                             <span>Livraison en retard (prévue le @Model.date_livraison)</span>
                                         }
                                     </span>
-                                    <span><strong>Ordre de priorité :</strong> @Html.DisplayFor(model => model.ordrePriorite)</span>
+                                  
                                     <span><strong>Site :</strong> @Html.DisplayFor(model => model.site)</span>
-                                </div>
-                                <div>
                                     <span><strong>Thème :</strong> @Html.DisplayFor(model => model.thematique)</span>
+                                <div>
+                                </div>
                                     <span><strong>Type de contenu :</strong>  @Html.DisplayFor(model => model.commandeType)</span>
                                     <span><strong>Mot clé principal :</strong> @Html.DisplayFor(model => model.mot_cle_pricipal)</span>
-                                    <span><strong>Mot clé secondaire :</strong>@Html.DisplayFor(model => model.mot_cle_secondaire)</span>
                                     <span><strong>Texte d'ancrage :</strong>@Html.DisplayFor(model => model.texte_ancrage)</span>
                                     <span><strong>Nombre de mots :</strong>@Html.DisplayFor(model => model.nombre_mots)</span>
                                 </div>
                             </div>
-                            @*<div>
-                                <table>
-                                    <tr>
-                                        <td><strong>Consignes:</strong></td>
-                                        <td></td>
-                                    </tr>
-                                </table>
-                            </div>*@
+                          
                         </div>
                         <span id="remarques">
                             <div class="section-title">
@@ -95,6 +86,23 @@
                                 }
                             </div>
                         </span>
+
+                        <span id="motcle2nd">
+                            <div class="section-title">
+                                <span><i class="fa fa-exclamation-circle"></i>  Mots clés secondaire</span>
+                            </div>
+                            <div class="contenu">
+                                @{ string[] keysArray = Model.mot_cle_secondaire.Split(','); }
+                                <ul>
+                                    @foreach (var name in keysArray)
+                                    {
+                                        <li>@name</li>
+                                    }
+                                </ul>
+                               
+                                
+                            </div>
+                        </span>
                     </section>
                 </div>
 
@@ -107,7 +115,6 @@
                     else
                     {
                         @Html.ActionLink("Retour", "ListCommandes", "Commandes", new { }, new { @class = "btn btn-primary" })
-
                     }
                 </div>
             </div>

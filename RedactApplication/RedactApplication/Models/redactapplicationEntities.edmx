@@ -36,6 +36,7 @@
           <Property Name="remarques" Type="nvarchar(max)" />
           <Property Name="tagId" Type="uniqueidentifier" />
           <Property Name="siteId" Type="uniqueidentifier" />
+          <Property Name="etat_sms" Type="bit" />
         </EntityType>
         <EntityType Name="COMMANDE_TYPE">
           <Key>
@@ -322,6 +323,30 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_COMMANDE_UTILISATEUR">
+          <End Role="UTILISATEUR" Type="Self.UTILISATEUR" Multiplicity="0..1" />
+          <End Role="COMMANDE" Type="Self.COMMANDE" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="UTILISATEUR">
+              <PropertyRef Name="userId" />
+            </Principal>
+            <Dependent Role="COMMANDE">
+              <PropertyRef Name="commandeReferenceurId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_FACTURE_UTILISATEUR">
+          <End Role="UTILISATEUR" Type="Self.UTILISATEUR" Multiplicity="0..1" />
+          <End Role="FACTURE" Type="Self.FACTURE" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="UTILISATEUR">
+              <PropertyRef Name="userId" />
+            </Principal>
+            <Dependent Role="FACTURE">
+              <PropertyRef Name="redacteurId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_FACTURE_UTILISATEUR1">
           <End Role="UTILISATEUR" Type="Self.UTILISATEUR" Multiplicity="0..1" />
           <End Role="FACTURE" Type="Self.FACTURE" Multiplicity="*" />
@@ -348,6 +373,30 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_NOTIFICATION_DEMANDEUR">
+          <End Role="UTILISATEUR" Type="Self.UTILISATEUR" Multiplicity="0..1" />
+          <End Role="NOTIFICATION" Type="Self.NOTIFICATION" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="UTILISATEUR">
+              <PropertyRef Name="userId" />
+            </Principal>
+            <Dependent Role="NOTIFICATION">
+              <PropertyRef Name="fromId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_NOTIFICATION_REDACTEUR">
+          <End Role="UTILISATEUR" Type="Self.UTILISATEUR" Multiplicity="0..1" />
+          <End Role="NOTIFICATION" Type="Self.NOTIFICATION" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="UTILISATEUR">
+              <PropertyRef Name="userId" />
+            </Principal>
+            <Dependent Role="NOTIFICATION">
+              <PropertyRef Name="toId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_REDACT_THEME_THEMES">
           <End Role="THEMES" Type="Self.THEMES" Multiplicity="0..1" />
           <End Role="REDACT_THEME" Type="Self.REDACT_THEME" Multiplicity="*" />
@@ -369,18 +418,6 @@
             </Principal>
             <Dependent Role="REDACT_THEME">
               <PropertyRef Name="redactId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_TEMPLATE_MODELE">
-          <End Role="MODELE" Type="Self.MODELE" Multiplicity="0..1" />
-          <End Role="TEMPLATE" Type="Self.TEMPLATE" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="MODELE">
-              <PropertyRef Name="modeleId" />
-            </Principal>
-            <Dependent Role="TEMPLATE">
-              <PropertyRef Name="modeleId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -457,9 +494,7 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_UserRole_UTILISATEUR">
-          <End Role="UTILISATEUR" Type="Self.UTILISATEUR" Multiplicity="0..1">
-            <OnDelete Action="Cascade" />
-          </End>
+          <End Role="UTILISATEUR" Type="Self.UTILISATEUR" Multiplicity="0..1" />
           <End Role="UserRole" Type="Self.UserRole" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="UTILISATEUR">
@@ -519,12 +554,28 @@
             <End Role="THEMES" EntitySet="THEMES" />
             <End Role="COMMANDE" EntitySet="COMMANDE" />
           </AssociationSet>
+          <AssociationSet Name="FK_COMMANDE_UTILISATEUR" Association="Self.FK_COMMANDE_UTILISATEUR">
+            <End Role="UTILISATEUR" EntitySet="UTILISATEUR" />
+            <End Role="COMMANDE" EntitySet="COMMANDE" />
+          </AssociationSet>
+          <AssociationSet Name="FK_FACTURE_UTILISATEUR" Association="Self.FK_FACTURE_UTILISATEUR">
+            <End Role="UTILISATEUR" EntitySet="UTILISATEUR" />
+            <End Role="FACTURE" EntitySet="FACTURE" />
+          </AssociationSet>
           <AssociationSet Name="FK_FACTURE_UTILISATEUR1" Association="Self.FK_FACTURE_UTILISATEUR1">
             <End Role="UTILISATEUR" EntitySet="UTILISATEUR" />
             <End Role="FACTURE" EntitySet="FACTURE" />
           </AssociationSet>
           <AssociationSet Name="FK_NOTIFICATION_COMMANDE" Association="Self.FK_NOTIFICATION_COMMANDE">
             <End Role="COMMANDE" EntitySet="COMMANDE" />
+            <End Role="NOTIFICATION" EntitySet="NOTIFICATION" />
+          </AssociationSet>
+          <AssociationSet Name="FK_NOTIFICATION_DEMANDEUR" Association="Self.FK_NOTIFICATION_DEMANDEUR">
+            <End Role="UTILISATEUR" EntitySet="UTILISATEUR" />
+            <End Role="NOTIFICATION" EntitySet="NOTIFICATION" />
+          </AssociationSet>
+          <AssociationSet Name="FK_NOTIFICATION_REDACTEUR" Association="Self.FK_NOTIFICATION_REDACTEUR">
+            <End Role="UTILISATEUR" EntitySet="UTILISATEUR" />
             <End Role="NOTIFICATION" EntitySet="NOTIFICATION" />
           </AssociationSet>
           <AssociationSet Name="FK_REDACT_THEME_THEMES" Association="Self.FK_REDACT_THEME_THEMES">
@@ -534,10 +585,6 @@
           <AssociationSet Name="FK_REDACT_THEME_UTILISATEUR" Association="Self.FK_REDACT_THEME_UTILISATEUR">
             <End Role="UTILISATEUR" EntitySet="UTILISATEUR" />
             <End Role="REDACT_THEME" EntitySet="REDACT_THEME" />
-          </AssociationSet>
-          <AssociationSet Name="FK_TEMPLATE_MODELE" Association="Self.FK_TEMPLATE_MODELE">
-            <End Role="MODELE" EntitySet="MODELE" />
-            <End Role="TEMPLATE" EntitySet="TEMPLATE" />
           </AssociationSet>
           <AssociationSet Name="FK_TEMPLATE_PROJETS" Association="Self.FK_TEMPLATE_PROJETS">
             <End Role="PROJETS" EntitySet="PROJETS" />
@@ -727,6 +774,7 @@
           <NavigationProperty Name="TAG" Relationship="redactapplicationModel.FK_COMMANDE_TAGS" FromRole="COMMANDE" ToRole="TAG" />
           <Property Name="siteId" Type="Guid" />
           <NavigationProperty Name="SITE" Relationship="redactapplicationModel.FK_COMMANDE_SITES" FromRole="COMMANDE" ToRole="SITE" />
+          <Property Name="etat_sms" Type="Boolean" />
         </EntityType>
         <EntityType Name="COMMANDE_TYPE">
           <Key>
@@ -1254,6 +1302,7 @@
           <EntitySetMapping Name="COMMANDEs">
             <EntityTypeMapping TypeName="redactapplicationModel.COMMANDE">
               <MappingFragment StoreEntitySet="COMMANDE">
+                <ScalarProperty Name="etat_sms" ColumnName="etat_sms" />
                 <ScalarProperty Name="siteId" ColumnName="siteId" />
                 <ScalarProperty Name="tagId" ColumnName="tagId" />
                 <ScalarProperty Name="remarques" ColumnName="remarques" />

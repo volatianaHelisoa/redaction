@@ -1,0 +1,296 @@
+﻿@model RedactApplication.Models.COMMANDEViewModel
+
+@{
+    ViewBag.Title = "Edit";
+    Layout = "~/Views/Shared/LayoutConnected.cshtml";
+
+}
+@if (Session["name"] != null && @Session["role"] != null && @Session["role"].ToString() != "5")
+{
+    <main id="wrapper">
+        <div id="single-container">
+            <div class="onglets">
+                <ul>
+                    <li> @Html.ActionLink("Dashboard", "Dashboard", new { controller = "Home" }) </li>
+                    @if (@Session["role"] != null && @Session["role"].ToString() != "2" && @Session["role"].ToString() != "1")
+                    {
+                        <li> @Html.ActionLink("Utilisateurs", "ListeUser", new { controller = "Home" }) </li>
+                    }
+                    <li>@Html.ActionLink("Commandes", "ListCommandes", new { controller = "Commandes" }, new { @class = "active" })</li>
+                    @if (@Session["role"] != null && @Session["role"].ToString() != "1")
+                    {
+                        <li>@Html.ActionLink("Factures", "ListFacture", new { controller = "Facture" })</li>
+
+                    }
+
+
+                </ul>
+            </div>
+            <div class="card back-office with-shadow">
+                <div class="head">
+                    <i class="icon icon-edit-command"></i>
+                    <h1>Editer commande</h1>
+                    <p>Veuillez remplir les champs Requis (*) et appuyez sur Enregistrer pour éditer une commande</p>
+                </div>
+                @using (Html.BeginForm("EditCommande", "Commandes", FormMethod.Post, new { @class = "formfields" }))
+                {
+                    @Html.AntiForgeryToken()
+                    <!-- Champs -->
+                    <input type="hidden" name="idCommande" value="@Model.commandeId">
+                    <input type="hidden" id="limit" value="@Model.nombre_mots">
+                    if (ViewBag.ErrorMessage != null)
+                    {
+                    <p class="error-msg text-centered">
+                        @ViewBag.ErrorMessage
+                    </p>
+                    }
+                    if (Session["VolumeInfo"] != null)
+                    {
+                        <p class="error-msg text-centered">@Session["VolumeInfo"].ToString()</p>
+                    }
+
+                    if (@Session["role"] != null && @Session["role"].ToString() != "2")
+                    {
+                        <section class="clearfix">
+                            <label for="" class="col-50 pull-left">
+                                Projet
+                                @Html.DropDownListFor(x => Model.listprojetId, new SelectList(Model.ListProjet, "Value", "Text"), htmlAttributes: new { @id = "SelectItemProjet" })
+                            </label>
+                            <label for="" class="col-50 pull-right">
+                                Thématique
+                                @Html.DropDownListFor(x => Model.listThemeId, new SelectList(Model.ListTheme, "Value", "Text"), htmlAttributes: new { id = "SelectItemTheme" })
+                            </label>
+                            <label for="" class="col-50 pull-left">
+                                Rédacteur
+                                @Html.DropDownListFor(x => Model.listRedacteurId, new SelectList(Model.ListRedacteur, "Value", "Text"), htmlAttributes: new { id = "SelectItemRedacteur" })
+                            </label>
+                            <label for="" class="col-50 pull-right">
+                                Type de texte
+                                @Html.DropDownListFor(x => Model.listCommandeTypeId, new SelectList(Model.ListCommandeType, "Value", "Text"), htmlAttributes: new { @id = "SelectItemCommandeType" })
+                            </label>
+                        </section>
+                        <section class="clearfix">
+                            <div class="section-title">
+                                <span>Mots clés</span>
+                            </div>
+
+                            <label for="" class="col-50 pull-left">
+                                Mot clé principal
+                                @Html.TextBoxFor(x => x.mot_cle_pricipal, new { @name = "name" })
+                            </label>
+                            <label for="" class="col-50 pull-right">
+                                Mot clé secondaire
+                                @Html.TextBoxFor(x => x.mot_cle_secondaire, new { @name = "name" })
+                            </label>
+                            <label for="" class="col-50 pull-left">
+                                Texte d'ancrage
+                                @Html.TextBoxFor(x => x.texte_ancrage, new { @name = "name" })
+                            </label>
+                            <label for="" class="col-50 pull-right">
+                                Nombre de mots
+                                @Html.TextBoxFor(x => x.nombre_mots, new { @name = "name" })
+
+                            </label>
+                        </section>
+                        <section class="clearfix">
+                            <div class="section-title">
+                                <span>Consignes</span>
+                            </div>
+
+                            <label for="" class="col-50 pull-left">
+                                Références
+                                @Html.TextBoxFor(x => x.consigne_references, new { @name = "name" })
+                            </label>
+                            <label for="" class="col-50 pull-right">
+                                Autres
+                                @Html.TextBoxFor(x => x.consigne_autres, new { @name = "name" })
+                            </label>
+
+                            <label for="" class="col-50 pull-right">
+                                Date de livraison
+                                @Html.TextBoxFor(x => x.date_livraison, "{0:dd/MM/yyyy}", new { type = "text" })
+                                @Html.ValidationMessageFor(m => m.date_livraison)
+                            </label>
+
+
+
+                        </section>
+                        <section class="clearfix">
+                            <div class="section-title">
+                                <span>Autres</span>
+                            </div>
+                            <label for="" class="col-50 pull-left">
+                                Notification via sms ?
+                                <input type="checkbox" id="SavePass" style="display: inline-block; width: auto; vertical-align: middle; margin: 0 0 0 10px;">
+                            </label>
+                            <label for="" class="col-50 pull-left">
+                                Statut
+                                @Html.DropDownListFor(x => Model.listStatutId, new SelectList(Model.ListStatut, "Value", "Text"), htmlAttributes: new { @id = "SelectItemStatut" })
+                            </label>
+
+
+                        </section>
+                    }
+                    else
+                    {
+                        <!-- WYSIWYG ICI -->
+
+                        <section class="clearfix">
+                            <div class="section-title">
+                                <span>Livraison</span>
+                            </div>
+
+
+
+                            <label for="" class="col-100">
+                                Titre
+                                @Html.TextBoxFor(x => x.balise_titre)
+                            </label>
+                            <label for="" class="col-100">
+                                Contenu
+                                @Html.TextAreaFor(m => m.contenu_livre, new { rows = "20", style = "resize:none;", @class = "textarea-editor command-edition", maxlength = @Html.DisplayNameFor(m => m.nombre_mots) })
+                            </label>
+                            <span>
+                                <strong>  Nombre de mots demandés </strong>
+                                <span id="balise_titre">
+                                    @Html.DisplayFor(x => x.nombre_mots)
+                                </span>
+                            </span>
+                        </section>
+                    }
+
+                    <section class="clearfix submit-area" id="toast">
+                        <input type="submit" value="Envoyer" class="btn btn-success" id="btn-save" />
+                        @Html.ActionLink("Annuler", "ListCommandes", "Commandes", new { @class = "btn btn-warning" })
+                    </section>
+                }
+            </div>
+
+        </div>
+    </main>
+}
+else
+{ Response.Redirect("~/Login/Accueil"); }
+<!--  Dialogue succès ajout user   -->
+<div id="addUserPopUp">
+
+</div>
+
+<!--  Dialogue error valid data   -->
+<div id="errorValidDataUserPopUp">
+
+</div>
+@section Scripts
+{
+    <link rel="stylesheet" href="~/Content/css/bootstrap-datepicker3.css" />
+    <link rel="stylesheet" href="~/Content/css/elements/commandes.css" />
+
+    <script type="text/javascript" src="~/Scripts/js/bootstrap-datepicker.min.js"></script>
+    <script type="text/javascript" src="~/Scripts/scriptredacteur.js"></script>
+
+
+    <script type="text/javascript" src="//cdn.tinymce.com/4/tinymce.min.js"></script>
+
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            var date = new Date();
+            var words = 0;
+            date.setDate(date.getDate());
+            var date_input = $('input[name="date_livraison"]'); //our date input has the name "date"
+            var container = $('.bootstrap-iso form').length > 0 ? $('.bootstrap-iso form').parent() : "body";
+            var options = {
+                format: 'dd/mm/yyyy',
+                container: container,
+                todayHighlight: true,
+                autoclose: true,
+                weekStart: 1,
+                startDate: date
+            };
+            date_input.datepicker(options);
+           
+            tinymce.init({
+                selector: 'textarea',
+                height: 500,
+                width: '100%',
+                menubar: false,
+
+                plugins: [
+                    'advlist autolink lists link image charmap anchor textcolor',
+                    'searchreplace visualblocks code fullscreen',
+                    'insertdatetime media table contextmenu paste code  wordcount'
+                ],
+                toolbar: 'insert | undo redo |  formatselect | bold italic backcolor  | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | removeformat | help',
+                content_css: [
+                    '//fonts.googleapis.com/css?family=Lato:300,300i,400,400i',
+                    '//www.tinymce.com/css/codepen.min.css'],
+                setup: function (ed) {
+                    ed.on('keyup', function (e) {
+                        tinyMceChange(ed);
+                        var contenu = $.trim($(this).text());
+
+                        var contenu_res = ed.getContent().replace(/(style="([^"]*)")/g, "");
+                        var regex = /(&nbsp;|<([^>]+)>)/ig;
+                        contenu_res = contenu_res.replace(regex, "");
+                        words = ed.plugins.wordcount.getCount();
+                        console.log(words);
+                        var charLength = words.length;
+                        var charLimit = $("#limit").val();
+                        // Displays count
+                        $(".left_char").html(charLength + " sur " + charLimit + " caractère(s) utilisé(s)");
+                        // Alert when max is reached
+                        /* if (charLength > charLimit) {
+                            $(".left_char").html("<strong>Le nombre de caractères maximum de " +
+                                charLimit +
+                                " atteint.</strong>");
+                        } */
+                    });
+                    ed.on('change', function (e) {
+                        words = ed.plugins.wordcount.getCount();
+                       
+                        tinyMceChange(ed);
+                    });
+                }
+            });
+            function tinyMceChange(ed) {
+                console.debug('Editor contents was modified. Contents: ' + ed.getContent());
+            }
+
+            $("#tinymce").keypress(function () {
+               
+                var contenu = $.trim($(this).text());
+                var charLength = contenu.length;
+                var charLimit = $("#limit").val();
+              
+
+                // Displays count
+                $(".left_char").html(words + " sur " + charLimit + " caractère(s) utilisé(s)");
+                // Alert when max is reached
+                if (charLength > charLimit) {
+                    $(".left_char").html("<strong>Le nombre de caractères maximum de " +
+                        charLimit +
+                        " atteint.</strong>");
+                }
+            });
+
+            $("#btn-save").click(function () {
+                setCookie('words', words, 1);
+            });
+
+            function setCookie(name, value, days) {
+                var expires = "";
+                if (days) {
+                    var date = new Date();
+                    date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
+                    expires = "; expires=" + date.toUTCString();
+                }
+                document.cookie = name + "=" + (value || "") + expires + "; path=/";
+            }
+
+        });
+
+       
+
+    </script>
+}
+

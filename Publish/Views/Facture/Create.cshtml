@@ -67,6 +67,18 @@
 
         });
 
+        $("#SelectItemRedacteur").change(function () {
+
+            var selectItemRedacteur = $(this).val();
+            $("#selectedRedact").text(selectItemRedacteur);
+            $.getJSON("../Facture/LoadCommandeStart", { redact: selectItemRedacteur },
+                function (data) {
+                    var dateDebut = $("#dateDebut");                  
+                    dateDebut.text(data);
+                 });
+        });
+
+
 
 
     </script>
@@ -103,12 +115,7 @@
                 @using (Html.BeginForm("CreateFacture", "Facture", FormMethod.Post, new { @class = "form-horizontal", role = "form", @id = "createfacture" }))
                 {
                     @Html.AntiForgeryToken()
-                    if (ViewBag.ErrorMessage != null)
-                    {
-                        <section class="clearfix">
-                            <label class="error-msg text-centered">Aucune commande liée à ce redacteur pour cette période.</label>
-                        </section>
-                    }
+
 
                     <section class="clearfix">
 
@@ -118,6 +125,12 @@
                         </label>
 
                     </section>
+                    if (ViewBag.ErrorMessage != null)
+                    {
+                        <section class="clearfix">
+                            <label class="error-msg text-centered" style="margin-bottom:1em; display: block">Aucune commande liée à ce redacteur pour cette période.</label>
+                        </section>
+                    }
                     <section class="clearfix">
                         <label for="" class="col-50 pull-left">
                             <span style="display: inline-block; vertical-align: middle; margin-right: 8px;">De</span>

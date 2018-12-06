@@ -4,6 +4,7 @@
     <EntitySetMapping Name="COMMANDEs">
       <EntityTypeMapping TypeName="redactapplicationModel.COMMANDE">
         <MappingFragment StoreEntitySet="COMMANDE">
+          <ScalarProperty Name="etat_sms" ColumnName="etat_sms" />
           <ScalarProperty Name="siteId" ColumnName="siteId" />
           <ScalarProperty Name="tagId" ColumnName="tagId" />
           <ScalarProperty Name="remarques" ColumnName="remarques" />
