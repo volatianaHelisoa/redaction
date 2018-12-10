@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <!-- TOUJOURS APPELER -->
+    <link rel="stylesheet" href="css/layout/layout.css">
+    <link rel="stylesheet" href="css/base/reset.css">
+    <link rel="stylesheet" href="css/base/common.css">
+    <link rel="stylesheet" href="css/elements/forms.css">    
+    <!-- POUR CHAQUE PAGE -->
+    <link rel="stylesheet" href="css/elements/login.css">
+    <title>Redaction App | Login</title>
+</head>
+<body>
+    <header></header>
+    <main>
+            <div id="box-login" class="login-container flex-content flex-jcenter-acenter flex-col">
+                <div id="clouds"></div>
+
+                <div class="login-form with-shadow">
+                    <div class="head gradient-blue">
+                        <h1>Bienvenue !</h1>
+                        <p>Lorem ipsum dolor sit amet, Nunc posuere libero id auctor efficitur. Aenean posuere leo quis dolor iaculis</p>
+                    </div>
+                    <div class="content-section">
+                        <form action="" method="post">
+                            <label for="Myemail" class="mail-input">
+                                <input type="email" name="" id="Myemail" placeholder="E-mail">
+                            </label>
+                            <label for="Mypassword" class="pass-input">
+                                <input type="password" name="" id="Mypassword" placeholder="Mot de passe">
+                            </label>
+                            <div class="flex-content flex-jcenter-acenter save-content">
+                                <span class="SavePass">
+                                    <input type="checkbox" id="SavePass">
+                                    Se souvenir de moi
+                                </span>                            
+                                <a href="" class="link forgotPass">Mot de passe oublié ?</a>
+                            </div>
+                            <input type="submit" value="Connexion" class="btn btn-primary">
+                        </form>                        
+                    </div>
+                </div> 
+                <a href="#" class="watermark-mc">
+                    <img src="images/powered-by.jpg" alt="" srcset="">
+                </a> 
+                
+                <div id="mongolfier"></div>
+            </div>            
+    </main>
+    <footer>
+    </footer>
+    <script type="text/javascript">
+        function mouseParallax ( id, left, top, mouseX, mouseY, speed ) {
+        var obj = document.getElementById ( id );
+        var parentObj = obj.parentNode,
+        containerWidth = parseInt( parentObj.offsetWidth ),
+        containerHeight = parseInt( parentObj.offsetHeight );
+        obj.style.left = left - ( ( ( mouseX - ( parseInt( obj.offsetWidth ) / 2 + left ) ) / containerWidth ) * speed ) + 'px';
+        obj.style.top = top - ( ( ( mouseY - ( parseInt( obj.offsetHeight ) / 2 + top ) ) / containerHeight ) * speed ) + 'px';
+    }
+
+    window.onload = function init() {
+        var parallaxBox = document.getElementById ( 'box-login' );
+        var cleft = document.getElementById ( 'clouds' ).offsetLeft,
+                        ctop = document.getElementById ( 'clouds' ).offsetTop,
+                        mleft = document.getElementById ( 'mongolfier' ).offsetLeft,
+                        mtop = document.getElementById ( 'mongolfier' ).offsetTop;
+        
+        parallaxBox.onmousemove = function ( event ) {
+                event = event || window.event;
+                var x = event.clientX - parallaxBox.offsetLeft,
+                y = event.clientY - parallaxBox.offsetTop;
+                
+                mouseParallax ( 'clouds', cleft, ctop, x, y, 5 );
+                mouseParallax ( 'mongolfier', mleft, mtop, x, y, 30 );
+        }
+    }
+    </script>
+</body>
+</html>

@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <!-- TOUJOURS APPELER -->
+    <link rel="stylesheet" href="css/layout/layout.css">
+    <link rel="stylesheet" href="css/base/reset.css">
+    <link rel="stylesheet" href="css/base/common.css">
+    <link rel="stylesheet" href="css/elements/forms.css"> 
+    <script src="js/jquery.min.js"></script>
+    <script src="js/redac-script.js"></script>   
+    <!-- POUR CHAQUE PAGE -->
+    <link rel="stylesheet" href="css/elements/commandes.css">
+    <title>Redaction App | Edition commande</title>
+</head>
+<body>
+    <header>
+        <div id="top-bar" class="clearfix with-shadow">
+            <div class="pull-left">
+                <a href="#" class="logo">
+                    <img src="images/logo_mc_large.png" alt="MediaClick" srcset="">
+                </a>
+            </div>
+            
+            <div class="pull-right">
+                <div class="notifications">
+                    <i id="notification-bell"></i>
+                    <div>
+                        
+                    </div>
+                </div>
+
+                <a href="#" class="profil">
+                    <span id="user-name">Rakoto be Jose</span>
+                    <span id="user-avatar">
+                        <img src="images/avatar.png" alt="" srcset="">
+                    </span>
+                </a>
+                <!-- Interne -->
+                <div class="profil-menu with-shadow">
+                    <div class="flex-content flex-jsbet-acenter profil-setting">
+                        <span>
+                            <img src="images/avatar.png" alt="" srcset="" class="user-photo"/>
+                        </span>
+                        <div>
+                            <span class="user-name">Rakoto be</span>
+                            <a href="#" class="user-mail link">rakotobe@gmail.com</a>
+                            <button class="btn btn-success btn-small">Modifier</button>
+                        </div>
+                    </div>
+                    <a href="javascript:void(0)">Lorem ipsum dolor</a>
+                    <a href="javascript:void(0)">Lorem ipsum dolor</a>
+                    <a href="javascript:void(0)">Lorem ipsum dolor</a>
+                    <button class="logout">Deconnexion</button>
+                </div>
+                <!-- Interne -->
+            </div>
+        </div>
+    </header>
+    <main id="wrapper">
+        <div id="single-container">
+            <div class="onglets ease-in-out">
+                <ul>
+                    <li><a href="">Utilisateurs</a></li>
+                    <li><a href="" class="active">Commandes</a></li>
+                    <li><a href="">Dolor sit amet</a></li>
+                </ul>
+            </div>
+            <div class="card back-office with-shadow">
+                <div class="head">
+                    <i class="icon icon-edit-command"></i>
+                    <h1>Editer commande</h1>
+                    <p>Veuillez remplir les champs Requis et appuyez sur Enregistrer pour éditer une commande</p>
+                </div>
+
+                <!-- Champs -->
+                <section class="clearfix">
+                    <label for="" class="col-50 pull-left">
+                        Projet
+                        <select>
+                            <option value="">Projet 0001</option>                        
+                            <option value="">Lorem ipsum</option>
+                            <option value="">Lorem ipsum</option>
+                            <option value="">Lorem ipsum</option>
+                            <option value="">Lorem ipsum</option>
+                        </select>
+                    </label>
+                    <label for="" class="col-50 pull-right">
+                        Thématique
+                        <select>
+                            <option value="">Credit</option>
+                            <option value="">Lorem ipsum</option>
+                            <option value="">Lorem ipsum</option>
+                            <option value="">Lorem ipsum</option>
+                            <option value="">Lorem ipsum</option>
+                        </select>
+                    </label>
+                    <label for="" class="col-50 pull-left">
+                        Rédacteur
+                        <select>
+                            <option value="">John doe</option>
+                            <option value="">Lorem ipsum</option>
+                            <option value="">Lorem ipsum</option>
+                            <option value="">Lorem ipsum</option>
+                            <option value="">Lorem ipsum</option>
+                        </select>
+                    </label>
+                    <label for="" class="col-50 pull-right">
+                        Type de texte
+                        <select>
+                            <option value="">Contenu</option>
+                            <option value="">Lorem ipsum</option>
+                            <option value="">Lorem ipsum</option>
+                            <option value="">Lorem ipsum</option>
+                            <option value="">Lorem ipsum</option>
+                        </select>
+                    </label>
+                </section>
+                <section class="clearfix">
+                    <div class="section-title">
+                        <span>Mots clés</span>
+                    </div>
+
+                    <label for="" class="col-50 pull-left">
+                        Mot clé principal
+                        <input type="text" name="" id="" value="Mot clé 01">
+                    </label>
+                    <label for="" class="col-50 pull-right">
+                        Mot clé secondaire
+                        <input type="text" name="" id="" value="Mot clé 02">
+                    </label>
+                    <label for="" class="col-50 pull-left">
+                        Texte d'ancrage
+                        <input type="text" name="" id="" value="Lorem ipsum">
+                    </label>
+                    <label for="" class="col-50 pull-right">
+                        Nombre de mots
+                        <input type="number" name="" id="" value="500">
+                    </label>
+                </section>
+                <section class="clearfix">
+                    <div class="section-title">
+                        <span>Consignes</span>
+                    </div>
+
+                    <label for="" class="col-50 pull-left">
+                        Références
+                        <textarea name="" id=""></textarea>
+                    </label>
+                    <label for="" class="col-50 pull-right">
+                        Autres
+                        <textarea name="" id=""></textarea>
+                    </label>
+                    <label for="" class="col-50 pull-left">
+                        Type de contenu
+                        <select>
+                            <option></option>
+                            <option>Lorem ipsum</option>
+                            <option>Lorem ipsum</option>
+                            <option>Lorem ipsum</option>
+                            <option>Lorem ipsum</option>
+                        </select>
+                    </label>
+                    <label for="" class="col-50 pull-right">
+                        Date de livraison
+                        <input type="date" name="" id="">
+                    </label>
+                    <span class="pull-left" style="margin-bottom: 20px;">
+                        Notification sms
+                        <input type="checkbox" id="SavePass" style="display: inline-block; width: auto; vertical-align: middle; margin: 0 0 0 10px;">
+                    </span>
+                    <div class="clearfix">
+                    <label for="" class="col-50 pull-left">
+                        Titre
+                        <input type="text" name="" id="">
+                    </label>
+                    <label for="" class="col-100">
+                        Contenus
+                        <textarea name="" id="toCopy"></textarea>
+                    </label>
+                    <!-- WYSIWYG ICI -->
+                </section>
+                <section class="clearfix submit-area">
+                    <input type="submit" value="Enregistrer" class="btn btn-success" id="copy">
+                    <input type="submit" value="Annuler" class="btn btn-warning">
+                </section>
+            </div>
+        </div>
+    </main>
+    <footer>
+        
+    </footer>
+    <script type="text/javascript"></script>
+</body>
+</html>
