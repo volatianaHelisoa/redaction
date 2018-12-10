@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <!-- TOUJOURS APPELER -->
+    <link rel="stylesheet" href="css/layout/layout.css">
+    <link rel="stylesheet" href="css/base/reset.css">
+    <link rel="stylesheet" href="css/base/common.css">
+    <link rel="stylesheet" href="css/elements/forms.css">
+    <script src="js/jquery.min.js"></script>
+    <script src="js/redac-script.js"></script>
+    <!-- POUR CHAQUE PAGE -->
+    <link rel="stylesheet" href="css/elements/sites-creation.css">
+    <link rel="stylesheet" href="css/libs/bootstrap-grid.css"> 
+    <title>Redaction App</title>
+</head>
+<body>
+    <header>
+        <div id="top-bar" class="clearfix with-shadow">
+            <div class="pull-left">
+                <a href="#" class="logo">
+                    <img src="images/logo_mc_large.png" alt="MediaClick" srcset="">
+                </a>
+            </div>
+            
+            <div class="pull-right">
+                <div class="notifications">
+                    <i id="notification-bell"></i>
+                    <div>
+                        
+                    </div>
+                </div>
+
+                <a href="#" class="profil">
+                    <span id="user-name">Rakoto be Jose</span>
+                    <span id="user-avatar">
+                        <img src="images/avatar.png" alt="" srcset="">
+                    </span>
+                </a>
+                <!-- Interne -->
+                <div class="profil-menu with-shadow">
+                    <div class="flex-content flex-jsbet-acenter profil-setting">
+                        <span>
+                            <img src="images/avatar.png" alt="" srcset="" class="user-photo"/>
+                        </span>
+                        <div>
+                            <span class="user-name">Rakoto be</span>
+                            <a href="#" class="user-mail link">rakotobe@gmail.com</a>
+                            <button class="btn btn-success btn-small">Modifier</button>
+                        </div>
+                    </div>
+                    <a href="javascript:void(0)">Lorem ipsum dolor</a>
+                    <a href="javascript:void(0)">Lorem ipsum dolor</a>
+                    <a href="javascript:void(0)">Lorem ipsum dolor</a>
+                    <button class="logout">Deconnexion</button>
+                </div>
+                <!-- Interne -->
+            </div>
+        </div>
+    </header>
+    <main id="wrapper">
+        <div id="single-container">
+            <div class="onglets ease-in-out">
+                <ul>
+                    <li><a href="" class="active">Creation Site</a></li>
+                </ul>
+            </div>
+            <div class="theme-select grey-bg">
+                <h1>CHOISIR VOTRE THEME</h1>			
+				
+                <section class="clearfix container">
+                    <div class="row">
+                        <div class="col-md-3 item" data-index="1" id="theme1">
+                            <div class="thumb with-shadow"><img src="images/theme1_thumb.jpg" /></div>							
+                            <span class="choose-color">Thème 1</span>
+                            <div class="theme-param theme1__templates">
+                                <div class="control-group">
+                                    <h4>Selectionnez vos couleurs</h4>
+                                    <label class="control control--checkbox">
+                                        <input type="radio" checked="checked" name="color-select"/>
+										Par défaut
+                                        <div class="control__indicator"></div>										
+                                        <div class="color-scheme default">
+                                            <dd class="color1"></dd>
+                                            <dd class="color2"></dd>
+                                            <dd class="color3"></dd>
+                                        </div>
+                                    </label>
+                                    <label class="control control--checkbox">
+                                        <input type="radio"  name="color-select"/>
+										Sombre
+                                        <div class="control__indicator"></div>
+                                        <div class="color-scheme dark">
+                                            <dd class="color1"></dd>
+                                            <dd class="color2"></dd>
+                                            <dd class="color3"></dd>
+                                        </div>
+                                    </label>
+                                    <label class="control control--checkbox">
+                                        <input type="radio" name="color-select"/>
+										Thème 2
+                                        <div class="control__indicator"></div>
+                                        <div class="color-scheme theme2">
+                                            <dd class="color1"></dd>
+                                            <dd class="color2"></dd>
+                                            <dd class="color3"></dd>
+                                        </div>
+                                    </label>
+									
+								
+									<div class="create-theme">
+										<a class="btn btn-success btn-small">Créer</a>                            
+										<a class="btn btn-warning btn-small cancel-color-choice" id="close-1">Annuler</a>
+									</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3 item" data-index="2" id="theme2">
+                            <div class="thumb with-shadow"><img src="images/theme2_thumb.jpg" /></div>
+							<span class="choose-color">Thème 2</span>                            
+                            <div class="theme-param theme1__templates">
+                                <div class="control-group">
+                                    <h4>Selectionnez vos couleurs</h4>
+                                    <label class="control control--checkbox">
+                                        <input type="radio" checked="checked" name="color-select"/>
+										Par défaut
+                                        <div class="control__indicator"></div>
+                                        <div class="color-scheme default">
+                                            <dd class="color1"></dd>
+                                            <dd class="color2"></dd>
+                                            <dd class="color3"></dd>
+                                        </div>
+                                    </label>
+                                    <label class="control control--checkbox">
+                                        <input type="radio"  name="color-select"/>
+										Sombre
+                                        <div class="control__indicator"></div>
+                                        <div class="color-scheme dark">
+                                            <dd class="color1"></dd>
+                                            <dd class="color2"></dd>
+                                            <dd class="color3"></dd>
+                                        </div>
+                                    </label>
+                                    <label class="control control--checkbox">
+                                        <input type="radio" name="color-select"/>
+										Thème 2
+                                        <div class="control__indicator"></div>
+                                        <div class="color-scheme theme2">
+                                            <dd class="color1"></dd>
+                                            <dd class="color2"></dd>
+                                            <dd class="color3"></dd>
+                                        </div>
+                                    </label>
+									<div class="create-theme">
+										<a class="btn btn-success btn-small">Créer</a>                            
+										<a class="btn btn-warning btn-small cancel-color-choice" id="close-2">Annuler</a>
+									</div>
+                                </div>
+                            </div>
+                            
+                        </div>
+                        <div class="col-md-3 item" data-index="3" id="theme3">
+                            <div class="thumb with-shadow"><img src="images/theme3_thumb.jpg" /></div>
+                            <span class="choose-color">Thème 3</span>
+                            <div class="theme-param theme1__templates">
+                                <div class="control-group">
+                                    <h4>Selectionnez vos couleurs</h4>
+                                    <label class="control control--checkbox">
+                                        <input type="radio" checked="checked" name="color-select"/>
+										Par défaut
+                                        <div class="control__indicator"></div>
+                                        <div class="color-scheme default">
+                                            <dd class="color1"></dd>
+                                            <dd class="color2"></dd>
+                                            <dd class="color3"></dd>
+                                        </div>
+                                    </label>
+                                    <label class="control control--checkbox">
+                                        <input type="radio"  name="color-select"/>
+										Sombre
+                                        <div class="control__indicator"></div>
+                                        <div class="color-scheme dark">
+                                            <dd class="color1"></dd>
+                                            <dd class="color2"></dd>
+                                            <dd class="color3"></dd>
+                                        </div>
+                                    </label>
+                                    <label class="control control--checkbox">
+                                        <input type="radio" name="color-select"/>
+										Thème 2
+                                        <div class="control__indicator"></div>
+                                        <div class="color-scheme theme2">
+                                            <dd class="color1"></dd>
+                                            <dd class="color2"></dd>
+                                            <dd class="color3"></dd>
+                                        </div>
+                                    </label>
+									
+									<div class="create-theme">
+										<a class="btn btn-success btn-small">Créer</a>                            
+										<a class="btn btn-warning btn-small cancel-color-choice" id="close-3">Annuler</a>
+									</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3 item" data-index="4" id="theme4">
+                            <div class="thumb with-shadow"><img src="images/theme4_thumb.jpg" /></div>
+                            <span class="choose-color">Thème 4</span>
+                            <div class="theme-param theme1__templates">
+                                <div class="control-group">
+                                    <h4>Selectionnez vos couleurs</h4>
+                                    <label class="control control--checkbox">
+                                        <input type="radio" checked="checked" name="color-select"/>
+                                        <div class="control__indicator"></div>
+                                        <div class="color-scheme default">
+                                            <dd class="color1"></dd>
+                                            <dd class="color2"></dd>
+                                            <dd class="color3"></dd>
+                                        </div>
+                                    </label>
+                                    <label class="control control--checkbox">
+                                        <input type="radio"  name="color-select"/>
+                                        <div class="control__indicator"></div>
+                                        <div class="color-scheme dark">
+                                            <dd class="color1"></dd>
+                                            <dd class="color2"></dd>
+                                            <dd class="color3"></dd>
+                                        </div>
+                                    </label>
+                                    <label class="control control--checkbox">
+                                        <input type="radio" name="color-select"/>
+                                        <div class="control__indicator"></div>
+                                        <div class="color-scheme theme2">
+                                            <dd class="color1"></dd>
+                                            <dd class="color2"></dd>
+                                            <dd class="color3"></dd>
+                                        </div>
+                                    </label>
+									
+									<div class="create-theme">
+										<a class="btn btn-success btn-small">Créer</a>                            
+										<a class="btn btn-warning btn-small cancel-color-choice" id="close-4">Annuler</a>
+									</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+    </main>
+    <footer>
+    </footer>
+</body>
+</html>

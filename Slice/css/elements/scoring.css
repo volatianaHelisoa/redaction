@@ -1,0 +1,31 @@
+#optimisation-result { padding: 50px 0 0; }
+
+#optimisation-result .scoreitem { margin: 0 15px; display: inline-block; color: white; padding: 10px 30px 10px 90px; min-height: 80px; border-radius: 80px; line-height: 26px; position: relative; min-width: 310px;}
+#optimisation-result .scoreitem strong { font-weight: bold; font-size: 30px; display: block}
+#optimisation-result .soseo { background: #16c43b url(../../images/shield.svg) no-repeat 25px center; background-size: 29px; }
+#optimisation-result .soseo::before,
+#optimisation-result .dseo::before { content: ""; position: absolute; border-left: 1px solid white; height: 57px; min-width: 1px; left: 71px; top: 12px; }
+
+#optimisation-result .dseo { background: #ffaa23 url(../../images/caution.svg) no-repeat 25px center; background-size: 29px;}
+.detail-optimisation { padding: 20px 0; border-top: 1px solid #eaeaea; border-bottom: 1px solid #eaeaea; margin: 40px 0 0; }
+.detail-optimisation li { color: #383838; padding: 8px 0; display: inline-block; vertical-align: middle; width: 33.33%; margin: 0 -2px; }
+.detail-optimisation .txt-score { display: inline-block; vertical-align: middle;}
+
+dd.word { display: inline-block; margin: 0; min-width: 160px; }
+
+.txt-score span,
+.legend span { min-width: 21px; min-height: 15px; display: inline-block; border-radius: 3px; vertical-align: middle; margin:-2px 0 0 30px; }
+.sousoptimise { background-color: #7cb5ec}
+.normal { background-color: #90ee7e}
+.forte { background-color: #ffa500}
+.suroptimise { background-color: #ff0000}
+
+#optimisation-result .legend li { display: inline-block; width: 25%; margin: 0 -2px;}
+
+.legend dd.word { min-width: 100px}
+
+/* Guides */
+#guide-type { text-align: center; padding: 10px 0 40px; }
+#guide-type label {
+    margin: 0 40px;
+}

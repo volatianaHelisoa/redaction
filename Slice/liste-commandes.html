@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <!-- TOUJOURS APPELER -->
+    <link rel="stylesheet" href="css/layout/layout.css">
+    <link rel="stylesheet" href="css/base/reset.css">
+    <link rel="stylesheet" href="css/base/common.css">
+    <link rel="stylesheet" href="css/elements/forms.css">
+    <script src="js/jquery.min.js"></script>
+    <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.js"></script>
+    <script src="js/redac-script.js"></script>   
+    <!-- POUR CHAQUE PAGE -->
+    <link rel="stylesheet" href="css/elements/commandes.css">
+    <link rel="stylesheet" href="css/libs/bootstrap-grid.css">
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.css">
+    <title>Redaction App</title>
+</head>
+<body>
+    <header>
+        <div id="top-bar" class="clearfix with-shadow">
+            <div class="pull-left">
+                <a href="#" class="logo">
+                    <img src="images/logo_mc_large.png" alt="MediaClick" srcset="">
+                </a>
+            </div>
+            
+            <div class="pull-right">
+                <div class="notifications">
+                    <i id="notification-bell"><span class="count-notif"></span></i>
+                    <div class="notifs-content with-shadow">
+                        <ul id="notiContent">
+                            <li class="recent">
+                                commande Lorem ipsum dolor sit amet, consectetur adipiscing elit
+                                <div class="time"><i></i>il y a 45 min</div>
+                            </li>
+                            <li class="recent">
+                                commande Lorem ipsum dolor sit amet, consectetur adipiscing elit
+                                <div class="time"><i></i>il y a 45 min</div>
+                            </li>
+                            <li>
+                                commande Lorem ipsum dolor sit amet, consectetur adipiscing elit
+                                <div class="time"><i></i>il y a 45 min</div>
+                            </li>
+                            <li>
+                                commande ajoutée
+                                <div class="time"><i></i>il y a 45 min</div>
+                            </li>
+                        </ul>
+                    </div> 
+                </div>
+
+                <a href="#" class="profil">
+                    <span id="user-name">Rakoto be Jose</span>
+                    <span id="user-avatar"><img src="images/avatar.png" alt="" srcset=""></span>
+                </a>
+                <!-- Interne -->
+                <div class="profil-menu with-shadow">
+                    <div class="flex-content flex-jsbet-acenter profil-setting">
+                        <span>
+                            <img src="images/avatar.png" alt="" srcset="" class="user-photo"/>
+                        </span>
+                        <div>
+                            <span class="user-name">Rakoto be</span>
+                            <a href="#" class="user-mail link">rakotobe@gmail.com</a>
+                            <button class="btn btn-success btn-small">Modifier</button>
+                        </div>
+                    </div>
+                    <a href="javascript:void(0)">Lorem ipsum dolor</a>
+                    <a href="javascript:void(0)">Lorem ipsum dolor</a>
+                    <a href="javascript:void(0)">Lorem ipsum dolor</a>
+                    <button class="logout">Deconnexion</button>
+                </div>
+                <!-- Interne -->
+            </div>
+        </div>
+    </header>
+    <main id="wrapper">
+        <div id="single-container">
+            <div class="onglets ease-in-out">
+                <ul>
+                    <li><a href="">Utilisateurs</a></li>
+                    <li><a href="" class="active">Commandes</a></li>
+                    <li><a href="">Dolor sit amet</a></li>
+                </ul>
+            </div>
+            <div class="head-list">
+                <div class="resume with-shadow">
+                    <ul>
+                        <li>Commande en cours : <a href="">0</a></li>
+                        <li>Commande en attente : <a href="">0</a></li>
+                        <li>Commande en retard : <a href="">0</a></li>
+                        <li>Commande livrée : <a href="">0</a></li>
+                        <li>Commande à facturer : <a href="">0</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="card back-office with-shadow">
+                <div class="action-bar flex-content flex-jsbet-acenter">
+                    <div><input type="search" name="" id="" placeholder="Rechercher"></div>
+                    <div class="submit-area">
+                        <button class="btn btn-warm btn-medium">Commande à valider</button>
+                        <button class="btn btn-success btn-medium">Creer commande</button>
+                    </div>
+                </div>
+                <div class="filters flex-content flex-jsbet-acenter">
+                    <div class="flex-content flex-jsbet-acenter">
+                        Sélection
+                        <span>Tous</span>
+                        <span>Aucun</span>
+                        <button class="btn btn-small">Supprimer la sélection</button>
+                    </div>
+                </div>
+
+                <table id="table_id" class="display" style="width:100%">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Position</th>
+                            <th>Office</th>
+                            <th>Age</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>                            
+                            <td>Tiger Nixon</td>
+                            <td>System Architect</td>
+                            <td>Edinburgh</td>
+                            <td>61</td>
+                        </tr>
+                        <tr>                            
+                            <td>Garrett Winters</td>
+                            <td>Accountant</td>
+                            <td>Tokyo</td>
+                            <td>63</td>
+                        </tr>
+                        <tr>                            
+                            <td>Ashton Cox</td>
+                            <td>Junior Technical Author</td>
+                            <td>San Francisco</td>
+                            <td>66</td>
+                        </tr>
+                        <tr>                            
+                            <td>Cedric Kelly</td>
+                            <td>Senior Javascript Developer</td>
+                            <td>Edinburgh</td>
+                            <td>22</td>
+                        </tr>
+                        <tr>                            
+                            <td>Airi Satou</td>
+                            <td>Accountant</td>
+                            <td>Tokyo</td>
+                            <td>33</td>
+                        </tr>
+                        <tr>                            
+                            <td>Brielle Williamson</td>
+                            <td>Integration Specialist</td>
+                            <td>New York</td>
+                            <td>61</td>
+                        </tr>
+                        <tr>                            
+                            <td>Herrod Chandler</td>
+                            <td>Sales Assistant</td>
+                            <td>San Francisco</td>
+                            <td>59</td>
+                        </tr>
+                        <tr>                            
+                            <td>Rhona Davidson</td>
+                            <td>Integration Specialist</td>
+                            <td>Tokyo</td>
+                            <td>55</td>
+                        </tr>
+                        <tr>
+                            
+                            <td>Colleen Hurst</td>
+                            <td>Javascript Developer</td>
+                            <td>San Francisco</td>
+                            <td>39</td>
+                        </tr>
+                        <tr>
+                            
+                            <td>Sonya Frost</td>
+                            <td>Software Engineer</td>
+                            <td>Edinburgh</td>
+                            <td>23</td>
+                        </tr>
+                        <tr>
+                            
+                            <td>Jena Gaines</td>
+                            <td>Office Manager</td>
+                            <td>London</td>
+                            <td>30</td>
+                        </tr>
+                        <tr>
+                            
+                            <td>Quinn Flynn</td>
+                            <td>Support Lead</td>
+                            <td>Edinburgh</td>
+                            <td>22</td>
+                        </tr>
+                        <tr>
+                            
+                            <td>Charde Marshall</td>
+                            <td>Regional Director</td>
+                            <td>San Francisco</td>
+                            <td>36</td>
+                        </tr>
+                        <tr>
+                            
+                            <td>Haley Kennedy</td>
+                            <td>Senior Marketing Designer</td>
+                            <td>London</td>
+                            <td>43</td>
+                        </tr>
+                        <tr>
+                            
+                            <td>Tatyana Fitzpatrick</td>
+                            <td>Regional Director</td>
+                            <td>London</td>
+                            <td>19</td>
+                        </tr>
+                        <tr>
+                            
+                            <td>Michael Silva</td>
+                            <td>Marketing Designer</td>
+                            <td>London</td>
+                            <td>66</td>
+                        </tr>
+                        <tr>
+                            
+                            <td>Paul Byrd</td>
+                            <td>Chief Financial Officer (CFO)</td>
+                            <td>New York</td>
+                            <td>64</td>
+                        </tr>
+                        <tr>
+                            
+                            <td>Gloria Little</td>
+                            <td>Systems Administrator</td>
+                            <td>New York</td>
+                            <td>59</td>
+                        </tr>
+                        <tr>
+                            
+                            <td>Bradley Greer</td>
+                            <td>Software Engineer</td>
+                            <td>London</td>
+                            <td>41</td>
+                        </tr>
+                        <tr>
+                            
+                            <td>Dai Rios</td>
+                            <td>Personnel Lead</td>
+                            <td>Edinburgh</td>
+                            <td>35</td>
+                        </tr>
+                        <tr>
+                            
+                            <td>Jenette Caldwell</td>
+                            <td>Development Lead</td>
+                            <td>New York</td>
+                            <td>30</td>
+                        </tr>
+                        <tr>
+                            
+                            <td>Yuri Berry</td>
+                            <td>Chief Marketing Officer (CMO)</td>
+                            <td>New York</td>
+                            <td>40</td>
+                        </tr>
+                        <tr>
+                            
+                            <td>Caesar Vance</td>
+                            <td>Pre-Sales Support</td>
+                            <td>New York</td>
+                            <td>21</td>
+                        </tr>
+                        <tr>
+                            
+                            <td>Doris Wilder</td>
+                            <td>Sales Assistant</td>
+                            <td>Sidney</td>
+                            <td>23</td>
+                        </tr>
+                        <tr>
+                            
+                            <td>Angelica Ramos</td>
+                            <td>Chief Executive Officer (CEO)</td>
+                            <td>London</td>
+                            <td>47</td>
+                        </tr>
+                        <tr>
+                            
+                            <td>Gavin Joyce</td>
+                            <td>Developer</td>
+                            <td>Edinburgh</td>
+                            <td>42</td>
+                        </tr>
+                        <tr>
+                            
+                            <td>Jennifer Chang</td>
+                            <td>Regional Director</td>
+                            <td>Singapore</td>
+                            <td>28</td>
+                        </tr>
+                        <tr>
+                            
+                            <td>Brenden Wagner</td>
+                            <td>Software Engineer</td>
+                            <td>San Francisco</td>
+                            <td>28</td>
+                        </tr>
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <th>Name</th>
+                            <th>Position</th>
+                            <th>Office</th>
+                            <th>Age</th>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
+        </div>
+    </main>
+    <footer>
+    </footer>
+    <script type="text/javascript"></script>
+</body>
+</html>

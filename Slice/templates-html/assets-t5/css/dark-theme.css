@@ -1,0 +1,235 @@
+* {
+    box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    -ms-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+}
+body {
+    margin: 0;
+    padding:0;
+    font-family: 'Oswald', Arial, sans-serif;
+    color: #e0e0e0;
+    font-size: 14px;
+    line-height: 26px;
+    background-color: #1d1d1d
+}
+p {
+    margin: 0 0 22px;
+}
+h2 { color: #07b6ff }
+a {
+    text-decoration: none;
+}
+
+/**/
+.clearfix {
+    float: none;
+    display: block;
+    clear: both;
+}
+.clearfix::after,
+.clearfix::before {
+    content: '';
+    display: table;
+    clear: both;
+}
+
+.grey-bg {
+    background-color: #0e0908;
+}
+.template .wrapper{
+    max-width: 1170px;
+    display: block;
+    margin: 0 auto;
+}
+#topbar.centered {
+    text-align: center;
+}
+.t-logo {
+    padding: 16px 0;
+}
+.t-logo,
+.t-logo img,
+.t-logo .site-url {
+    display: inline-block;
+    vertical-align: middle;
+}
+
+.t-logo .site-url {
+    color: #333;
+    margin-left: 10px;
+}
+
+.template #banner img {
+    display: block;
+    width: 100%;
+    height: auto;
+}
+
+nav.menu {
+    float: right;
+}
+nav.menu ul {
+    margin: 0 0 -5px;
+    padding: 0
+}
+nav.menu li {
+    display: inline-block;
+    vertical-align: middle;
+    padding: 0 15px;
+}
+nav.menu a {
+    color: #5b5b5b;
+    font-size: 17px;
+    padding: 25px 0 30px;
+    display: block;
+    position: relative;
+}
+nav.menu .current {
+    background: #f3f3f3;
+}
+nav.menu .current a {
+    color: #eb5639;
+}
+
+nav.menu .current a::before {
+    content: '';
+    border-top: 2px solid #eb5639;
+    position: absolute;
+    bottom: 4px;
+    width: 100%;
+    position: absolute;
+    min-height: 1px;
+}
+
+/* TEMPLATE 5 */
+.box {
+    background-color: #d4d4d4;
+    padding: 25px;
+    color: #1d1d1d;
+}
+
+.divider {
+    display: block;
+    background-color: #eb5639;
+    height: 2px;
+    width: 87px;
+    margin-bottom: 25px;
+    margin-top: 5px;
+}
+
+.template header{
+    border-bottom: 1px solid #f8f8f8
+}
+
+.template #bloc1 {
+    display: flex;
+    padding: 40px 0 20px;
+}
+
+.template h1 {
+    color: #d4d4d4;
+    font-weight: 700;
+    font-size: 22px
+}
+.template h2,
+.template h3 {
+    font-size: 18px;
+    font-weight: 700;
+    color: #eb5639;
+    position: relative;
+}
+.template h2::before,
+.template h3::before {
+    content: "";
+    display: inline-block;
+    background: url(../img/title_deco.png) no-repeat center;
+    width: 16px;
+    height: 13px;
+    vertical-align: middle;
+    margin-right: 10px;
+}
+.template #bloc1 .texte {
+    padding-left: 50px;
+    min-width: 60%;
+}
+
+.template .texte p{
+    text-align: justify;
+}
+
+.template #bloc1 .photo {
+    min-width: 40%;
+    overflow: hidden;
+    max-width: 40%;
+}
+
+.template .photo > img {
+    height: 100%;
+}
+
+.template #bloc2 {
+    display: flex;
+    background: transparent;
+}
+
+.template #bloc2 .texte {
+    margin-right: 50px;
+}
+
+.template #bloc2 .photo {
+    padding-right: 0;
+    min-width: 40%;
+}
+
+.template #bloc2 .photo > img {
+    width: 100%;
+    object-fit: cover;
+}
+
+.template #f1-footer {
+    position: relative;
+    padding: 57px 0;
+    background-color: #eb5639;
+    color: white;
+
+}
+
+.template #f1-footer > div {
+    text-align: right;
+}
+
+.template #f1-footer a{
+    color: white
+}
+
+.template #bloc3 {
+    display: flex;
+    padding-bottom: 30px;
+}
+
+.template #bloc3 .texte:first-of-type {
+    margin-right: 25px;
+}
+
+.template #bloc3 .texte:last-of-type {
+    margin-left: 25px;
+}
+
+.template #bloc3 p {
+    padding-left: 25px;
+}
+
+.footer-logo {
+    display: block;
+    position: absolute;
+    background: white;
+    padding: 30px;
+    top: -20px;
+}
+
+.space {
+    display: block;
+    margin: 25px 0;
+    min-height: 1px;
+}

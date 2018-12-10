@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <!-- TOUJOURS APPELER -->
+    <link rel="stylesheet" href="css/layout/layout.css">
+    <link rel="stylesheet" href="css/base/reset.css">
+    <link rel="stylesheet" href="css/base/common.css">
+    <link rel="stylesheet" href="css/elements/forms.css">
+    <script src="js/jquery.min.js"></script>
+    <script src="js/redac-script.js"></script>  
+    <!-- POUR CHAQUE PAGE -->
+    <link rel="stylesheet" href="css/elements/commandes.css">   
+    <title>Redaction App | Commande</title>
+</head>
+<body>
+    <header>
+        <div id="top-bar" class="clearfix with-shadow">
+            <div class="pull-left">
+                <a href="#" class="logo">
+                    <img src="images/logo_mc_large.png" alt="MediaClick" srcset="">
+                </a>
+            </div>
+            
+            <div class="pull-right">
+                <div class="notifications">
+                    <i id="notification-bell"></i>
+                    <div>
+                        
+                    </div>
+                </div>
+
+                <a href="#" class="profil">
+                    <span id="user-name">Rakoto be Jose</span>
+                    <span id="user-avatar">
+                        <img src="images/avatar.png" alt="" srcset="">
+                    </span>
+                </a>
+                <!-- Interne -->
+                <div class="profil-menu with-shadow">
+                    <div class="flex-content flex-jsbet-acenter profil-setting">
+                        <span>
+                            <img src="images/avatar.png" alt="" srcset="" class="user-photo"/>
+                        </span>
+                        <div>
+                            <span class="user-name">Rakoto be</span>
+                            <a href="#" class="user-mail link">rakotobe@gmail.com</a>
+                            <button class="btn btn-success btn-small">Modifier</button>
+                        </div>
+                    </div>
+                    <a href="javascript:void(0)">Lorem ipsum dolor</a>
+                    <a href="javascript:void(0)">Lorem ipsum dolor</a>
+                    <a href="javascript:void(0)">Lorem ipsum dolor</a>
+                    <button class="logout">Deconnexion</button>
+                </div>
+                <!-- Interne -->
+            </div>
+        </div>
+    </header>
+    <main id="wrapper">
+        <div id="single-container">
+            <div class="onglets ease-in-out">
+                <ul>
+                    <li><a href="">Utilisateurs</a></li>
+                    <li><a href="" class="active">Commandes</a></li>
+                    <li><a href="">Dolor sit amet</a></li>
+                </ul>
+            </div>
+            <div class="card back-office with-shadow">
+                <div class="head">
+                    <i class="icon icon-create-command"></i>
+                    <h1>Creer commande</h1>
+                    <p>Veuillez remplir les champs Requis et appuyez sur Enregistrer pour éditer une commande</p>
+                </div>
+
+                <!-- Champs -->
+                <section class="clearfix">
+                    <div class="section-title-rounded">
+                        <span>Séléction projet</span>
+                    </div>
+                    <label for="" class="col-50 pull-left">
+                        <div class="blk">
+                            <strong>Ajouter un nouveau projet</strong>
+                            <span class="btn-add">Nouveau projet</span>
+                        </div>
+                    </label>
+
+                    <label for="" class="col-50 pull-right">
+                        <div class="blk">
+                            <strong>Projet</strong>
+                            <select>
+                                <option value=""></option>                        
+                                <option value="">Lorem ipsum</option>
+                                <option value="">Lorem ipsum</option>
+                                <option value="">Lorem ipsum</option>
+                                <option value="">Lorem ipsum</option>
+                            </select>
+                        </div>
+                    </label>                
+                </section>
+                <section class="clearfix">
+                    <div class="section-title-rounded">
+                        <span>Préférences</span>
+                    </div>
+                    <label for="" class="col-50 pull-left">
+                        <div class="blk">
+                            <strong>Site</strong>
+                            <input type="url" name="urlsite">
+                        </div>
+                    </label>
+                    <label for="" class="col-50 pull-right">
+                        <div class="blk">
+                            <strong>Thématique</strong>
+                            <input type="text">
+                        </div>
+                    </label>                    
+                    <label for="" class="col-50 pull-left">
+                        <div class="blk">
+                            <strong>TAG</strong>
+                            <input type="text" name="" id="">
+                        </div>
+                    </label>
+                    <label for="" class="col-50 pull-right">
+                        <div class="blk">
+                            <strong>Type de texte</strong>
+                            <select>
+                                <option value=""></option>
+                                <option value="">Article blog</option>
+                                <option value="">Lorem ipsum</option>
+                                <option value="">Lorem ipsum</option>
+                                <option value="">Lorem ipsum</option>
+                            </select>
+                        </div>
+                    </label>
+                    <label for="" class="col-50 pull-left">
+                        <div class="blk">
+                            <strong>Rédacteur</strong>
+                            <select>
+                                <option value=""></option>
+                                <option value="">Lorem ipsum</option>
+                                <option value="">Lorem ipsum</option>
+                                <option value="">Lorem ipsum</option>
+                                <option value="">Lorem ipsum</option>
+                            </select>
+                        </div>
+                    </label>
+                </section>
+                <section class="clearfix">
+                    <div class="section-title-rounded">
+                        <span>Détails</span>
+                    </div>
+                    <div class="toggle">
+                        <label for="" class="col-50 pull-left">
+                            <div class="blk">
+                                <strong>Mot clé principal</strong>
+                                <input type="text" name="" id="">
+                            </div>
+                        </label>
+                        <label for="" class="col-50 pull-right" style="min-height: 160px;">
+                            <a class="btn btn-success" style="display:inline-block; vertical-align: middle; margin: 42px 0;">Générer Guide</a>
+                        </label>                        
+                        <label for="" class="col-50 pull-left">
+                            <div class="blk">
+                                <strong>Nombre de mots</strong>
+                                <input type="number" name="" id="">
+                            </div>
+                        </label>
+                        <label for="" class="col-50 pull-right">
+                            <div class="blk">
+                                <strong>Date de livraison</strong>
+                                <input type="date" name="" id="">
+                            </div>
+                        </label>
+                    </div>
+                </section>
+                <section class="clearfix">
+                    <div class="section-title-rounded">
+                        <span>Consignes</span>
+                    </div>
+
+                    <label for="" class="col-50 pull-left">
+                        <div class="blk">
+                            <strong>Références</strong>
+                            <textarea name="" id=""></textarea>
+                        </div>
+                    </label>
+                    <label for="" class="col-50 pull-right">
+                        <div class="blk">
+                            <strong>Autres</strong>
+                            <textarea name="" id=""></textarea>
+                        </div>
+                    </label>
+                    <label for="" class="col-50 pull-left">
+                        <div class="blk">
+                            <strong>Ordre de priorité</strong>
+                            <select>
+                                <option></option>
+                                <option>Lorem ipsum</option>
+                                <option>Lorem ipsum</option>
+                                <option>Lorem ipsum</option>
+                                <option>Lorem ipsum</option>
+                            </select>
+                        </div>
+                    </label>
+                    
+                    <span class="col-50 pull-right" style="display: inline-block; vertical-align: middle; margin: 54px 0;">
+                        Notification sms
+                        <input type="checkbox" id="SavePass" style="display: inline-block; width: auto; vertical-align: middle; margin: 0 0 0 10px;">
+                    </span>
+                </section>
+                <section class="clearfix submit-area">
+                    <input type="submit" value="Enregistrer" class="btn btn-success">
+                    <input type="submit" value="Annuler" class="btn btn-warning">
+                </section>
+            </div>
+        </div>
+    </main>
+    <footer>
+    </footer>
+</body>
+</html>

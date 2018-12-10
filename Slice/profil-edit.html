@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <!-- TOUJOURS APPELER -->
+    <link rel="stylesheet" href="css/layout/layout.css">
+    <link rel="stylesheet" href="css/base/reset.css">
+    <link rel="stylesheet" href="css/base/common.css">
+    <link rel="stylesheet" href="css/elements/forms.css"> 
+    <script src="js/jquery.min.js"></script>
+    <script src="js/redac-script.js"></script>   
+    <!-- POUR CHAQUE PAGE -->
+    <link rel="stylesheet" href="css/elements/profil.css">
+    <title>Redaction App</title>
+</head>
+<body>
+    <header>
+        <div id="top-bar" class="clearfix with-shadow">
+            <div class="pull-left">
+                <a href="#" class="logo">
+                    <img src="images/logo_mc_large.png" alt="MediaClick" srcset="">
+                </a>
+            </div>
+            
+            <div class="pull-right">
+                <div class="notifications">
+                    <i id="notification-bell"></i>
+                    <div class="notifs-content with-shadow">
+                        <ul id="notiContent">
+                            <li class="recent">
+                                commande Lorem ipsum dolor sit amet, consectetur adipiscing elit
+                                <div class="time"><i></i>il y a 45 min</div>
+                            </li>
+                            <li class="recent">
+                                commande Lorem ipsum dolor sit amet, consectetur adipiscing elit
+                                <div class="time"><i></i>il y a 45 min</div>
+                            </li>
+                            <li>
+                                commande Lorem ipsum dolor sit amet, consectetur adipiscing elit
+                                <div class="time"><i></i>il y a 45 min</div>
+                            </li>
+                            <li>
+                                commande ajoutée
+                                <div class="time"><i></i>il y a 45 min</div>
+                            </li>
+                        </ul>
+                    </div> 
+                </div>
+
+                <a href="#" class="profil">
+                    <span id="user-name">Rakoto be Jose</span>
+                    <span id="user-avatar">
+                        <img src="images/avatar.png" alt="" srcset="">
+                    </span>
+                </a>
+                <!-- Interne -->
+                <div class="profil-menu with-shadow">
+                    <div class="flex-content flex-jsbet-acenter profil-setting">
+                        <span>
+                            <img src="images/avatar.png" alt="" srcset="" class="user-photo"/>
+                        </span>
+                        <div>
+                            <span class="user-name">Rakoto be</span>
+                            <a href="#" class="user-mail link">rakotobe@gmail.com</a>
+                            <button class="btn btn-success btn-small">Modifier</button>
+                        </div>
+                    </div>
+                    <a href="javascript:void(0)">Lorem ipsum dolor</a>
+                    <a href="javascript:void(0)">Lorem ipsum dolor</a>
+                    <a href="javascript:void(0)">Lorem ipsum dolor</a>
+                    <button class="logout">Deconnexion</button>
+                </div>
+                <!-- Interne -->
+            </div>
+        </div>
+    </header>
+    <main id="wrapper">
+        <div id="single-container">
+            <div class="onglets ease-in-out">
+                <ul>
+                    <li><a href="">Utilisateurs</a></li>
+                    <li><a href="" class="active">Commandes</a></li>
+                    <li><a href="">Dolor sit amet</a></li>
+                </ul>
+            </div>
+            <div class="card back-office with-shadow">
+                <div class="head">
+                    <div class="flex-content flex-jcenter-acenter edit-avatar">
+                        <span class="profil-thumb">
+                            <img id="new-profil-preview" src="images/avatar.png" alt="" srcset=""/>
+                        </span>
+                        <span>
+                            
+                        <div class="flex-content flex-col change-avatar">
+                                <span class="file-name">Votre avatar</span>
+                            <label for="profil">
+                                Changer
+                                <input type="file" class="btn" id="profil" accept="image/*">
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Champs -->
+                <section class="clearfix">
+                    <label for="" class="col-50 pull-left">
+                        Nom(*)
+                        <input type="text" name="" id="">
+                    </label>
+                    <label for="" class="col-50 pull-right">
+                        Prénom
+                        <input type="text" name="" id="">
+                    </label>
+                    <label for="" class="col-50 pull-left">
+                        E-mail(*)
+                        <input type="email" name="" id="">
+                    </label>
+                    <label for="" class="col-50 pull-right">
+                        Skype
+                        <input type="text" name="" id="">
+                    </label>
+                    <label for="" class="col-50 pull-left">
+                        Téléphone
+                        <input type="text" name="" id="">
+                    </label>
+                    <label for="" class="col-50 pull-right">
+                        volume / Jour
+                        <input type="text" name="" id="">
+                    </label>
+                    <label for="" class="col-50 pull-left">
+                        Tarif
+                        <input type="text" name="" id="">
+                    </label>
+                    <label for="" class="col-50 pull-right">
+                        Thèmes
+                        <input type="text" name="" id="">
+                    </label>
+                    <label for="" class="col-50 pull-left">
+                        Niveau
+                        <input type="text" name="" id="">
+                    </label>
+                    <label for="" class="col-50 pull-right">
+                        Référenceur
+                        <input type="text" name="" id="">
+                    </label>
+                    <label for="" class="col-50 pull-left">
+                        Mode de paiement
+                        <select>
+                            <option></option>
+                            <option>Liquide</option>
+                            <option>Chèque</option>
+                            <option>Virement</option>
+                        </select>
+                    </label>
+                    <label for="" class="col-100" style="margin-bottom: 10px;">
+                        Role(*)
+                    </label>
+                    <label for="" class="col-100">
+                        <input type="checkbox" style="display: inline-block; width: auto; vertical-align: middle; margin: 10px 0;">
+                        Référenceur
+                    </label>
+                    <label for="" class="col-100">
+                        <input type="checkbox" style="display: inline-block; width: auto; vertical-align: middle;margin: 10px 0;">
+                        Rédacteur
+                    </label>
+                    <label for="" class="col-100">
+                        <input type="checkbox" style="display: inline-block; width: auto; vertical-align: middle; margin: 10px 0;">
+                        Manager
+                    </label>
+                </section>
+                <section class="clearfix submit-area" style=" margin: 70px auto 0;">
+                    <input type="submit" value="Enregistrer" class="btn btn-success">
+                    <input type="submit" value="Annuler" class="btn btn-warning">
+                </section>
+            </div>
+        </div>
+    </main>
+    <footer>
+    </footer>
+    <script type="text/javascript"></script>
+</body>
+</html>

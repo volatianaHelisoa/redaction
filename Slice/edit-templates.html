@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="fr">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta http-equiv="X-UA-Compatible" content="ie=edge">
+        <!-- TOUJOURS APPELER -->
+        <link rel="stylesheet" href="css/layout/layout.css">
+        <link rel="stylesheet" href="css/base/reset.css">
+        <link rel="stylesheet" href="css/base/common.css">
+        <link rel="stylesheet" href="css/elements/forms.css">
+        <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css"> -->
+
+        <script src="js/jquery.min.js"></script>
+        <script src="js/redac-script.js"></script>
+        <!-- POUR CHAQUE PAGE -->
+        <link rel="stylesheet" href="css/elements/sites-creation.css">
+        <link rel="stylesheet" href="css/libs/bootstrap-grid.css"> 
+        <title>Redaction App</title>
+    </head>
+    <body>
+        <header>
+            <div id="top-bar" class="clearfix with-shadow">
+                <div class="pull-left">
+                    <a href="#" class="logo">
+                        <img src="images/logo_mc_large.png" alt="MediaClick" srcset="">
+                    </a>
+                </div>
+                
+                <div class="pull-right"> 
+                    <div class="notifications">
+                        <i id="notification-bell"></i>
+                        <div>
+                            
+                        </div>
+                    </div>
+
+                    <a href="#" class="profil">
+                        <span id="user-name">Rakoto be Jose</span>
+                        <span id="user-avatar">
+                            <img src="images/avatar.png" alt="" srcset="">
+                        </span>
+                    </a>
+                    <!-- Interne -->
+                    <div class="profil-menu with-shadow">
+                        <div class="flex-content flex-jsbet-acenter profil-setting">
+                            <span>
+                                <img src="images/avatar.png" alt="" srcset="" class="user-photo"/>
+                            </span>
+                            <div>
+                                <span class="user-name">Rakoto be</span>
+                                <a href="#" class="user-mail link">rakotobe@gmail.com</a>
+                                <button class="btn btn-success btn-small">Modifier</button>
+                            </div>
+                        </div>
+                        <a href="javascript:void(0)">Lorem ipsum dolor</a>
+                        <a href="javascript:void(0)">Lorem ipsum dolor</a>
+                        <a href="javascript:void(0)">Lorem ipsum dolor</a>
+                        <button class="logout">Deconnexion</button>
+                    </div>
+                    <!-- Interne -->
+                </div>
+            </div>
+        </header>
+        <main id="wrapper">
+            <div id="single-container">
+                <section class="theme-customization clearfix">
+                    <div class="section-title">
+                        <span>Modifier le template</span>
+                    </div>
+                    <div class="row site-identity">
+                        <div class="col-md-6">
+                            <div class="blk">
+                                <strong>L'url de votre site</strong>
+                                <input type="url" placeholder="example.com">
+                            </div> 
+                        </div>
+                        <div class="col-md-6">
+                            <div class="blk">
+                                <strong>Adresse IP</strong>
+                                <input type="text" placeholder="192.168.0.1">
+                            </div> 
+                        </div>                        
+                    </div>                         
+                    
+                    <!-- contenu bloc 1 -->
+                    <div class="section-title">
+                        <span>Accès</span>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-4"> 
+                            <div class="blk clearfix">
+                                <label for="">
+                                    <strong>FTP hôte</strong>
+                                    <input type="text" placeholder="Adresse de l'hôte">
+                                </label>
+                            </div>
+                        </div>
+                        <div class="col-md-4"> 
+                            <div class="blk clearfix">
+                                <label for="">
+                                    <strong>Utilisateur</strong>
+                                    <input type="text" placeholder="Identifiant">
+                                </label>
+                            </div>
+                        </div>
+                        <div class="col-md-4"> 
+                            <div class="blk clearfix">
+                                <label for="">
+                                    <strong>Mot de passe</strong>
+                                    <input type="password" placeholder="********">
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+                <section class="clearfix submit-area">
+                    <input type="submit" value="Enregistrer" class="btn btn-success">
+                    <input type="submit" value="Annuler" class="btn btn-warning">
+                </section>
+            </div>
+        </main>
+        <footer>
+        </footer>
+    </body>
+</html>

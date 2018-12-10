@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <!-- TOUJOURS APPELER -->
+    <link rel="stylesheet" href="css/layout/layout.css">
+    <link rel="stylesheet" href="css/base/reset.css">
+    <link rel="stylesheet" href="css/base/common.css">
+    <link rel="stylesheet" href="css/elements/forms.css"> 
+    <script src="js/jquery.min.js"></script>
+    <script src="js/redac-script.js"></script>   
+    <!-- POUR CHAQUE PAGE -->
+    <link rel="stylesheet" href="css/elements/dashboard.css">
+    <title>Redaction App</title>
+</head>
+<body>
+    <header>
+        <div id="top-bar" class="clearfix with-shadow">
+            <div class="pull-left">
+                <a href="#" class="logo">
+                    <img src="images/logo_mc_large.png" alt="MediaClick" srcset="">
+                </a>
+            </div>
+            
+            <div class="pull-right">
+                <div class="notifications">
+                    <i id="notification-bell"></i>
+                    <div class="notifs-content with-shadow">
+                        <ul id="notiContent">
+                            <li class="recent">
+                                commande Lorem ipsum dolor sit amet, consectetur adipiscing elit
+                                <div class="time"><i></i>il y a 45 min</div>
+                            </li>
+                            <li class="recent">
+                                commande Lorem ipsum dolor sit amet, consectetur adipiscing elit
+                                <div class="time"><i></i>il y a 45 min</div>
+                            </li>
+                            <li>
+                                commande Lorem ipsum dolor sit amet, consectetur adipiscing elit
+                                <div class="time"><i></i>il y a 45 min</div>
+                            </li>
+                            <li>
+                                commande ajoutée
+                                <div class="time"><i></i>il y a 45 min</div>
+                            </li>
+                        </ul>
+                    </div> 
+                </div>
+
+                <a href="#" class="profil">
+                    <span id="user-name">Rakoto be Jose</span>
+                    <span id="user-avatar">
+                        <img src="images/avatar.png" alt="" srcset="">
+                    </span>
+                </a>
+                <!-- Interne -->
+                <div class="profil-menu with-shadow">
+                    <div class="flex-content flex-jsbet-acenter profil-setting">
+                        <span>
+                            <img src="images/avatar.png" alt="" srcset="" class="user-photo"/>
+                        </span>
+                        <div>
+                            <span class="user-name">Rakoto be</span>
+                            <a href="#" class="user-mail link">rakotobe@gmail.com</a>
+                            <button class="btn btn-success btn-small">Modifier</button>
+                        </div>
+                    </div>
+                    <a href="javascript:void(0)">Lorem ipsum dolor</a>
+                    <a href="javascript:void(0)">Lorem ipsum dolor</a>
+                    <a href="javascript:void(0)">Lorem ipsum dolor</a>
+                    <button class="logout">Deconnexion</button>
+                </div>
+                <!-- Interne -->
+            </div>
+        </div>
+    </header>
+    <main id="wrapper">
+        <div id="single-container">
+            <div class="onglets ease-in-out">
+                <ul>
+                    <li><a href="" class="active">Dashboard</a></li>
+                    <li><a href="">Utilisateurs</a></li>
+                    <li><a href="">Commandes</a></li>
+                    <li><a href="">Dolor sit amet</a></li>
+                </ul>
+            </div>
+            <div class="card back-office with-shadow">
+                <div class="left-dash">
+                    <div class="content">
+                      <div class="titre">utilisateurs</div>
+                        <div class="content-button">
+                            <div>
+                                <a href="#" class="manager">
+                                    <div>
+                                        <div class="ttl">Manager</div>
+                                        <span>01</span>
+                                    </div>
+                                </a>
+                            </div>
+                            <div>
+                                <a href="#" class="referenceur">
+                                    <div>
+                                        <div class="ttl">Réferenceur</div>
+                                        <span>03</span>
+                                    </div>
+                                </a>
+                            </div>
+                            <div>
+                                <a href="#" class="redac">
+                                    <div>
+                                        <div class="ttl">Rédacteur</div>
+                                        <span>01</span>
+                                    </div>
+                                </a>
+                            </div>
+                          <span class="clear"></span>	
+                        </div>
+                    </div>
+                </div>
+                <div class="right-dash">
+                    <div class="content">
+                        <div class="titre">Commandes texte</div>
+                        <div class="content-button">
+                            <div>
+                                <a href="#" class="livraison">
+                                    <div>
+                                        <div class="ttl">Livraisons reçues</div>
+                                        <span>25</span>
+                                    </div>
+                                </a>
+                            </div>
+                            <div>
+                                <a href="#" class="livraison-retard">
+                                    <div>
+                                        <div class="ttl">Livraison en retard</div>
+                                        <span>05</span>
+                                    </div>
+                                </a>
+                            </div>
+                            <div>
+                                <a href="#" class="refuse">
+                                    <div>
+                                        <div class="ttl">Commande refusée<br>par le rédacteur</div>
+                                        <span>02</span>
+                                    </div>
+                                </a>
+                            </div>
+                            <div>
+                                <a href="#" class="attente">
+                                    <div>
+                                        <div class="ttl">Commander en attente<br>de confirmation</div>
+                                        <span>153</span>
+                                    </div>
+                                </a>
+                            </div>
+                            <div>
+                                <a href="#" class="encours">
+                                    <div>
+                                        <div class="ttl">Redaction<br>en cours</div>
+                                        <span>10</span>
+                                    </div>
+                                </a>
+                            </div>
+                            <div>
+                                <a href="#" class="annulation">
+                                    <div>
+                                        <div class="ttl">Commande annulée</div>
+                                        <span>02</span>
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="bottom-dash clearfix">
+                    <div class="content">
+                        <div class="titre">Facturation</div>
+                        <div class="content-button">
+                            <div>
+                                <a href="#" class="facturation">
+                                    <div>
+                                        <div class="ttl">Commande à facturer :</div>
+                                        <span>1054</span>
+                                    </div>
+                                </a>
+                            </div>
+                            <div>
+                                <a class="montant">
+                                    <div>
+                                        <div class="ttl">Commande à facturer :</div>
+                                        <span>1 251 520, 51 Ar</span>
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+    <footer>
+    </footer>
+    <script type="text/javascript"></script>
+</body>
+</html>

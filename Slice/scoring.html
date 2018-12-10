@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <!-- TOUJOURS APPELER -->
+    <link rel="stylesheet" href="css/layout/layout.css">
+    <link rel="stylesheet" href="css/base/reset.css">
+    <link rel="stylesheet" href="css/base/common.css">
+    <link rel="stylesheet" href="css/elements/forms.css">
+    <link rel="stylesheet" href="css/libs/bootstrap-grid.css">
+    <script src="js/jquery.min.js"></script>
+    <script src="js/redac-script.js"></script>  
+    <!-- POUR CHAQUE PAGE -->
+    <link rel="stylesheet" href="css/elements/commandes.css">   
+	<link rel="stylesheet" href="css/elements/scoring.css">  
+    <title>Redaction App | Scoring</title>
+</head>
+<body>
+    <header>
+        <div id="top-bar" class="clearfix with-shadow">
+            <div class="pull-left">
+                <a href="#" class="logo">
+                    <img src="images/logo_mc_large.png" alt="MediaClick" srcset="">
+                </a>
+            </div>
+            
+            <div class="pull-right">
+                <div class="notifications">
+                    <i id="notification-bell"></i>
+                    <div>
+                        
+                    </div>
+                </div>
+
+                <a href="#" class="profil">
+                    <span id="user-name">Rakoto be Jose</span>
+                    <span id="user-avatar">
+                        <img src="images/avatar.png" alt="" srcset="">
+                    </span>
+                </a>
+            </div>
+        </div>
+    </header>
+    <main id="wrapper">
+        <div id="single-container">
+            <div class="onglets ease-in-out">
+                <ul>
+                    <li><a href="">Utilisateurs</a></li>
+                    <li><a href="">Commandes</a></li>
+                    <li><a href="">Dolor sit amet</a></li>
+					<li><a href="" class="active">Scoring</a></li>
+                </ul>
+            </div>
+            <div class="card back-office with-shadow">
+                <!-- Champs -->
+                <div class="container clearfix">
+                    <div class="section-title-rounded">
+                        <span>Verification</span>
+                    </div>
+					<div class="col-md-12">
+						<div class="row">
+							<div class="blk">
+								<strong>Mots clés :</strong>
+								<input type="text" value="Turpis sapien molestie sem, hendrerit aliquam">
+							</div>
+							<div class="wrap commande-view">                                
+                                <div class="blk">
+                                    <strong>Contenu : </strong>
+                                    <div class="commande-contenu">
+                                        <p>Aenean consectetur lacinia mollis. In eleifend erat non neque maximus, sed posuere lectus imperdiet. Nullam dui ante, ullamcorper non consequat ut, pulvinar non arcu. Ut id ante a diam faucibus pharetra. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Cras metus nisl, tempor et tincidunt in, semper et dolor. Vestibulum cursus, neque at sodales ultrices, velit nibh maximus turpis, ut euismod lacus massa vehicula ipsum. Vivamus accumsan volutpat lorem, nec tristique lorem pharetra nec. Vestibulum id lectus purus.</p>
+                                        <p>Integer eleifend tellus vitae augue elementum condimentum. Cras vel facilisis felis. Aenean congue, justo a pharetra condimentum, turpis sapien molestie sem, hendrerit aliquam tellus massa eu dolor. Pellentesque gravida mattis mi, non egestas mauris luctus at. Pellentesque semper vestibulum diam. Quisque at tincidunt leo.</p>
+                                    </div>
+                                    <div class="contenu-footer flex-content flex-jsbet-acenter">
+                                        <span>354 sur 500 Caractère(s) utilisé(s)</span>
+                                        <span id="copy">Copier</span>
+                                    </div>
+                                </div>
+								<div class="text-centered">
+									<button class="btn btn-primary">Vérifier</button>
+								</div>
+                            </div> 
+						</div>                    
+					</div>
+					<span class="clearfix"></span>
+					<div id="optimisation-result">
+						<div class="section-title-rounded">
+							<span>Niveau d'optimisation</span>
+						</div>
+						<div class="score text-centered" style="padding: 30px 0;">
+							<div class="scoreitem soseo">
+								Score d'optimisation (SOSEO)
+								<strong id="soseo-val">35%</strong>
+							</div>
+							<div class="scoreitem dseo">
+								Danger SEO (DSEO)
+								<strong id="dseo-val">0%</strong>
+							</div>
+						</div>
+						<div class="detail-optimisation">
+							<ul>
+								<li><dd class="word">Crédit</dd> <div class="txt-score">25<span class="normal"></span></div></li>
+								<li><dd class="word">Pret</dd> <div class="txt-score">25<span class="forte"></span></div></li>
+								<li><dd class="word">Assurance</dd> <div class="txt-score">25<span class="normal"></span></div></li>
+								<li><dd class="word">Immobilier</dd> <div class="txt-score">25<span class="sousoptimise"></span></div></li>
+								<li><dd class="word">Justificatif</dd> <div class="txt-score">25<span class="forte"></span></div></li>
+								<li><dd class="word">Personnel</dd> <div class="txt-score">25<span class="suroptimise"></span></div></li>
+								<li><dd class="word">Projet</dd> <div class="txt-score">25<span class="sousoptimise"></span></div></li>
+								<li><dd class="word">Financement</dd> <div class="txt-score">25<span class="forte"></span></div></li>
+							</ul>
+						</div>
+						<div class="legend">
+							<ul>
+							<li><dd class="word">Suroptimisation</dd><span class="suroptimise"></span></li>
+							<li><dd class="word">Optimisation forte</dd><span class="forte"></span></li>
+							<li><dd class="word">Optimisation normale</dd> <span class="normal"></span></li>
+							<li><dd class="word">Sous-optimisation</dd><span class="sousoptimise"></span></li>
+							</ul>
+						</div>
+					</div>
+				</div>
+                
+            </div>
+        </div>
+    </main>
+    <footer>
+    </footer>
+</body>
+</html>
