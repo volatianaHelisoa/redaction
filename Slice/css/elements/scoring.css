@@ -23,3 +23,9 @@ dd.word { display: inline-block; margin: 0; min-width: 160px; }
 #optimisation-result .legend li { display: inline-block; width: 25%; margin: 0 -2px;}
 
 .legend dd.word { min-width: 100px}
+
+/* Guides */
+#guide-type { text-align: center; padding: 10px 0 40px; }
+#guide-type label {
+    margin: 0 40px;
+}

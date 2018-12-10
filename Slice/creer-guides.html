@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="fr">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta http-equiv="X-UA-Compatible" content="ie=edge">
+        <!-- TOUJOURS APPELER -->
+        <link rel="stylesheet" href="css/layout/layout.css">
+        <link rel="stylesheet" href="css/base/reset.css">
+        <link rel="stylesheet" href="css/base/common.css">
+        <link rel="stylesheet" href="css/elements/forms.css">
+
+        <script src="js/jquery.min.js"></script>
+        <script src="js/redac-script.js"></script>
+        <!-- POUR CHAQUE PAGE -->
+        <link rel="stylesheet" href="css/elements/sites-creation.css">
+		<link rel="stylesheet" href="css/elements/scoring.css"> 
+        <link rel="stylesheet" href="css/libs/bootstrap-grid.css"> 
+        <title>Redaction App</title>
+    </head>
+    <body>
+        <header>
+            <div id="top-bar" class="clearfix with-shadow">
+                <div class="pull-left">
+                    <a href="#" class="logo">
+                        <img src="images/logo_mc_large.png" alt="MediaClick" srcset="">
+                    </a>
+                </div>
+                
+                <div class="pull-right"> 
+                    <div class="notifications">
+                        <i id="notification-bell"></i>
+                        <div>
+                            
+                        </div>
+                    </div>
+
+                    <a href="#" class="profil">
+                        <span id="user-name">Rakoto be Jose</span>
+                        <span id="user-avatar">
+                            <img src="images/avatar.png" alt="" srcset="">
+                        </span>
+                    </a>
+                    <!-- Interne -->
+                    <div class="profil-menu with-shadow">
+                        <div class="flex-content flex-jsbet-acenter profil-setting">
+                            <span>
+                                <img src="images/avatar.png" alt="" srcset="" class="user-photo"/>
+                            </span>
+                            <div>
+                                <span class="user-name">Rakoto be</span>
+                                <a href="#" class="user-mail link">rakotobe@gmail.com</a>
+                                <button class="btn btn-success btn-small">Modifier</button>
+                            </div>
+                        </div>
+                        <a href="javascript:void(0)">Lorem ipsum dolor</a>
+                        <a href="javascript:void(0)">Lorem ipsum dolor</a>
+                        <a href="javascript:void(0)">Lorem ipsum dolor</a>
+                        <button class="logout">Deconnexion</button>
+                    </div>
+                    <!-- Interne -->
+                </div>
+            </div>
+        </header>
+        <main id="wrapper">
+            <div id="single-container">
+				<div class="card back-office with-shadow">
+					<div class="head">
+						<h1>Générer un guide à la rédaction</h1>
+						<p>Veuillez remplir les champs Requis (*) et appuyez sur Enregistrer pour créer une commande</p>
+					</div>
+
+					<section class="theme-customization clearfix">
+						<div class="section-title">
+							<span>Type de guide</span>
+						</div>
+						<div class="row">
+							<div id="guide-type">
+								<input type="radio" value="oneshot" id="oneShot" name="typeguide"><label for="oneShot">One shot</label>
+								<input type="radio" value="premium" id="premium" name="typeguide"><label for="premium">Premium</label>								
+							</div>
+							
+							<div class="section-title">
+								<span>Détails  & consignes</span>
+							</div>
+							<div class="col-md-6">
+								<div class="blk">
+									<strong>Mot clés principale</strong>
+									<input type="text" placeholder="">
+								</div> 
+							</div>
+							<div class="col-md-6">
+								<div class="blk">
+									<strong>E-mail</strong>
+									<input type="email" placeholder="">
+								</div> 
+							</div>
+							<div class="col-md-12">
+								<div class="blk">
+									<strong>Consignes</strong>
+									<textarea ></textarea>
+								</div> 
+							</div>
+						</div>    
+					</section>
+					<section class="clearfix submit-area">
+						<input type="submit" value="Enregistrer" class="btn btn-success">
+						<input type="submit" value="Annuler" class="btn btn-warning">
+					</section>
+				</div>
+			</div>
+        </main>
+        <footer>
+        </footer>
+        <script type="text/javascript">
+		$(document).ready(function(){
+			var showThumb = (function(e) {
+				if(typeof FileReader == "undefined") return true;
+				var elem = $(this);
+				var files = e.target.files;
+				for (var i = 0, f;f = files[i]; i++) {
+					if (f.type.match('image.*')) {
+						var reader = new FileReader();
+						var previewDiv = $('.thumbnail', elem.parent());
+						reader.onload = (function(theFile) {
+							return function(e) {
+								var image = e.target.result;
+								if($(previewDiv).children().length){
+									console.log('efa misy image ato');
+									previewDiv.children().remove();
+									previewDiv.append('<img src="'+image+'"/>');
+								}
+								
+								else {
+									previewDiv.append('<img src="'+image+'"/>');
+								}
+							};
+						})(f);
+						reader.readAsDataURL(f);
+					}
+				}
+			});
+			var showThumbPhotos = (function(e) {
+				if(typeof FileReader == "undefined") return true;
+				var elem = $(this);
+				var files = e.target.files;
+				for (var i = 0, f;f = files[i]; i++) {
+					if (f.type.match('image.*')) {
+						var reader = new FileReader();
+						var previewDiv = $('.thumbnail-photo', elem.parent());
+						reader.onload = (function(theFile) {
+							return function(e) {
+								var image = e.target.result;
+								if($(previewDiv).children().length){
+									console.log('efa misy image ato');
+									previewDiv.children().remove();
+									previewDiv.append('<img src="'+image+'"/>');
+									previewDiv.next('.action').remove();
+								}
+								
+								else {
+									previewDiv.append('<img src="'+image+'"/>');
+								}
+							};
+						})(f);
+						reader.readAsDataURL(f);
+					}
+				}
+			});
+			$('input[type=file]#site-logo').bind("change",showThumb);
+			$('input[type=file]#site-photo1').bind("change",showThumbPhotos);
+			$('input[type=file]#site-photo2').bind("change",showThumbPhotos);
+			$('input[type=file]#photo-a-la-une').bind("change",showThumbPhotos);
+		});
+        </script>
+    </body>
+</html>

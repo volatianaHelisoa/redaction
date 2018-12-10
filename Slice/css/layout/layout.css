@@ -476,3 +476,19 @@ a.back-link i {
     font-size: 14px;
     padding: 6px 20px;
 }
+
+.blk { background: #fafafa; border: 1px solid #e7e7e7; padding: 25px; margin-bottom: 2em }
+.blk strong { display: block; color: #26b5ff; font-size: 16px; margin-bottom: 15px; }
+.btn-upload { background: #26b5ff url(../../images/upload_icon.svg) no-repeat 15px center; padding: 0 15px 0 45px; color: white; text-align: center; position: relative; border-radius: 3px 0px 0px 3px; display: inline-block; vertical-align: middle; background-size: 17px; max-width: 200px; overflow: hidden; text-overflow: ellipsis; cursor: pointer; height: 40px; line-height: 40px; }
+.btn-add { background: #26b5ff; padding: 10px 15px 11px; color: white; text-align: center; position: relative; border-radius: 3px;overflow: hidden; display: inline-block; vertical-align: middle; background-size: 17px; max-width: 240px; overflow: hidden; text-overflow: ellipsis; cursor: pointer; position: relative; }
+.btn-add::before { content:"+"; width: 20px; height: 20px; display: inline-block; vertical-align: middle; border-radius: 50%; background-color: white; color: #26b5ff; margin-right: 15px }
+
+.file-name { white-space: nowrap; }
+
+.remove-file { font-style: normal; font-size: 23px; background-color: #12306e; display: inline-block; vertical-align: middle; padding: 0 10px; height: 40px; line-height: 40px; right: 0; color: white; margin-left: 0; border-radius: 0 3px 3px 0; cursor: pointer;-moz-transition: ease 300ms all; -webkit-transition: ease 300ms all; transition: ease 300ms all; -ms-transition: ease 300ms all; display: none; }
+
+.remove-file:hover { background-color: #ff4026; }
+.blk p { display: inline-block; vertical-align: middle; margin: 0; font-size: 12px; margin-left: 1em }
+.blk input,
+.blk textarea { width: 100%; margin-bottom: 0 !important; }
+.blk input::placeholder { color: #bfbfbf; }
