@@ -383,3 +383,12 @@ main.full {
 .mce-branding {
     display:none !important;
 }
+
+#motcle2nd .contenu {
+	background-color: #efefef
+}
+
+#motcle2nd li {
+	display: inline-block;
+	min-width: 25%;
+}
