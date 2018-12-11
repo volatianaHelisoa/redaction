@@ -110,17 +110,6 @@ $(document).ready(function () {
         }
     });
 
-    // var $inputFile = $("input[type='file']");
-    // $inputFile.on('change', function () {
-    //     var fileSize = (this.files[0].size / 1024 / 1024);
-    //     if (fileSize > 1) {
-    //         alert("Le fichier est trop volumineux, veuillez recommencer!");
-    //         console.log(fileSize + "MB");
-    //         $inputFile.val('');
-    //         return false;
-    //     }
-    // });
-
     tinymce.init({
         selector: 'textarea',
         height: 300,

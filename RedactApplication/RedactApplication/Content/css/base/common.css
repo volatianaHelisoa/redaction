@@ -383,7 +383,11 @@ main.full {
 .mce-branding {
     display:none !important;
 }
+.text-centered {
+    text-align: center !important;
+}
 
+#ifth0hide { display: none;}
 #motcle2nd .contenu {
 	background-color: #efefef
 }
