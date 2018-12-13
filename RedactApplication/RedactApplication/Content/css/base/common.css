@@ -386,3 +386,13 @@ main.full {
 .text-centered {
     text-align: center !important;
 }
+
+#ifth0hide { display: none;}
+#motcle2nd .contenu {
+	background-color: #efefef
+}
+
+#motcle2nd li {
+	display: inline-block;
+	min-width: 25%;
+}

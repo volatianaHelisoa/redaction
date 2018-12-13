@@ -54,28 +54,38 @@
             };
             date_input.datepicker(options);
 
-
+			var blocRedac = $("#ifth0hide");
             $("#SelectItemRedacteur").prop('disabled', 'disabled');
             $("#thematique").focusout(function () {
-
                 var dID = $(this).val();
-
+				var themVal = $("#thematique").val();
+				var trimedThemval = $.trim(themVal);
+				if( trimedThemval == "") {
+					blocRedac.slideUp();
+					blocRedac.hide();
+				}
+				else {
+					blocRedac.slideDown();
+					blocRedac.show();
+				}
                 $.getJSON("../Commandes/LoadRedacteurByTheme", { theme: dID },
                     function (data) {
-                        var select = $("#SelectItemRedacteur");
-                        $("#SelectItemRedacteur").prop('disabled', false);
-                        select.empty();
-                        select.append($('<option/>', {
-                            value: 0,
-                            text: "Selectionner redacteur"
-                        }));
-                        $.each(data, function (index, itemData) {
-                            select.append($('<option/>', {
-                                value: itemData.Value,
-                                text: itemData.Text
-                            }));
-                        });
+                        var select = $("#SelectItemRedacteur");						
+						
+						$("#SelectItemRedacteur").prop('disabled', false);
+						select.empty();
+						select.append($('<option/>', {
+							value: 0,
+							text: "Selectionner redacteur"
+						}));
+						$.each(data, function (index, itemData) {
+							select.append($('<option/>', {
+								value: itemData.Value,
+								text: itemData.Text
+							}));
+						});
                     });
+				
             });
 
             $("#SelectItemRedacteur").change(function () {
@@ -280,23 +290,23 @@
                         </label>
                         <label for="" class="col-50 pull-right">
                             <div class="blk">
-                                <strong>Thématique (*)</strong>
-                                @Html.EditorFor(model => model.thematique, new { htmlAttributes = new { @required="true" } })
-                            </div>
-                        </label>
-                        <label for="" class="col-50 pull-left">
-                            <div class="blk">
                                 <strong>TAG</strong>
                                 @Html.EditorFor(model => model.tag, new { htmlAttributes = new { } })
                             </div>
                         </label>
-                        <label for="" class="col-50 pull-right">
+                        <label for="" class="col-50 pull-left">
                             <div class="blk">
                                 <strong>Type de texte (*)</strong>
                                 @Html.DropDownListFor(x => Model.listCommandeTypeId, new SelectList(Model.ListCommandeType, "Value", "Text"), htmlAttributes: new { @id = "SelectItemCommandeType", @required = true })
                             </div>
+                        </label>						
+                        <label for="" class="col-50 pull-right">
+                            <div class="blk">
+                                <strong>Thématique (*)</strong>
+                                @Html.EditorFor(model => model.thematique, new { htmlAttributes = new { @required="true" } })
+                            </div>
                         </label>
-                        <label for="" class="col-50 pull-left">
+                        <label for="" class="col-50 pull-left" id="ifth0hide">
                             <div class="blk">
                                 <strong>Rédacteur (*)</strong>
                                 @Html.DropDownListFor(x => Model.listRedacteurId, new SelectList(Model.ListRedacteur, "Value", "Text"), htmlAttributes: new { id = "SelectItemRedacteur", @required = true })
