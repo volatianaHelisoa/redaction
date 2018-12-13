@@ -1,0 +1,222 @@
+﻿@model RedactApplication.Models.GUIDEViewModel
+@{
+    ViewBag.Title = "ListGuide";
+    Layout = "~/Views/Shared/LayoutConnected.cshtml";
+}
+@section Scripts{
+
+    <script src="~/Scripts/redac-script.js"></script>
+    <link rel="stylesheet" href="~/Content/css/elements/sites-creation.css">
+    <script src="@Url.Content("~/Scripts/jquery-ui-1.12.1.js")"></script>
+    <script src="@Url.Content("~/Scripts/jquery.dataTables.js")"></script>
+    <script src="@Url.Content("~/Scripts/dataTables.js")"></script>
+    <script>
+        $("ul.LinkSearchClear").css("display", "none");
+    </script>
+}
+
+@if (Session["name"] != null && @Session["role"] != null && @Session["role"].ToString() != "2")
+{
+    <main id="wrapper">
+        <div id="single-container">
+            <div class="onglets ease-in-out">
+                <ul>
+                    <li> @Html.ActionLink("Dashboard", "Dashboard", new { controller = "Home" }) </li>
+                    @if (@Session["role"] != null && @Session["role"].ToString() != "2")
+                    {
+                        <li> @Html.ActionLink("Utilisateurs", "ListeUser", new { controller = "Home" }) </li>
+                    }
+                    <li>@Html.ActionLink("Commandes", "ListCommandes", new { controller = "Commandes" })</li>
+                    @if (@Session["role"] != null && @Session["role"].ToString() != "1")
+                    {
+                        <li>@Html.ActionLink("Factures", "ListFacture", new { controller = "Facture" })</li>
+                    }
+                    @if (@Session["role"] != null && @Session["role"].ToString() != "2")
+                    {
+                        <li>@Html.ActionLink("Guides", "ListGuide", new { controller = "Guide" }, new { @class = "active" })</li>
+
+                    }
+                    @if (@Session["role"] != null && @Session["role"].ToString() != "2")
+                    {
+                        <li>@Html.ActionLink("Scoring", "Scoring", new { controller = "Guide" })</li>
+                    }
+                </ul>
+            </div>
+
+            <div class="card back-office with-shadow">
+                <div class="action-bar flex-content flex-jsbet-acenter">
+                    <div class="left search-bloc">
+                        @using (Html.BeginForm("GuideSearch", "Guide", FormMethod.Post, new { @class = "Guide-srch" }))
+                        {
+                            <div class="usr-srch--input-wrapper">
+                                @Html.AntiForgeryToken()
+                                <i class="fa fa-times-circle cancelText"></i>
+                                <input class="usr-srch--input" type="search" placeholder="Rechercher" name="searchValue" id="ValGuideSearch" title="Search...">
+                            </div>
+                        }
+                    </div>
+
+                    <div class="submit-area">
+
+                        <input type="submit" value="Créer une Guide" class="btn btn-success btn-medium" onclick="@("window.location.href='" + @Url.RouteUrl("Home", new { controller = "Guide", action = "Create" }) + "'");">
+                    </div>
+
+                </div>
+                <div class="filters flex-content flex-jsbet-acenter">
+
+
+                    <div class="flex-content flex-jsbet-acenter">
+                        Sélection
+                        <span onclick="CheckedGuideClick()">Tous</span>
+                        <span onclick="DecheckedGuideClick()">Aucun</span>
+                        <button class="btn btn-small" onclick="DeleteAllGuideSelected(@ViewBag.nbrow)"><i class="fa fa-trash"></i> Supprimer la sélection</button>
+                    </div>
+
+
+                </div>
+                <table id="myDataTable" class="trig_table table Guide-table">
+                    <thead>
+                        <tr>
+                            <th>
+                                <input type="checkbox" class="checkbox" onclick="ClickAllGuideInListGuide()" id="checkAllGuide" />
+                            </th>
+                            <th>#</th>
+                            <th>Date de création</th>
+                            <th>Demandeur</th>
+                            <th>Rédacteur</th>
+                            <th>Guides</th>
+
+                            <th class="option">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody class="t1">
+                        @if (ViewBag.listeGuideVm != null)
+                        {
+                            int count = 0;
+
+                            foreach (var item in ViewBag.listeGuideVm)
+                            {
+                                <tr>
+                                    <td><input type="checkbox" class="checkbox" name="selectedGuide" value="@item.guideId" /></td>
+                                    <td>@(count + 1)</td>
+                                    <td>@item.date_creation</td>
+                                    <td>@item.demandeur</td>
+                                    <td>@item.redacteur</td>
+                                   
+                                    <td>
+                                        <div class="item">
+                                            <div class="option">
+                                                @if (item.mot_cle_secondaire != null && item.mot_cle_secondaire != "" && item.type == 0)
+                                                {
+                                                    <a href="~/Guide/DetailsOneshot/@item.guideId" title="Détails">Telecharger</a>
+                                                }
+                                               else if (item.mot_cle_secondaire != null && item.mot_cle_secondaire != "" && item.type == 1)
+                                                {
+                                                    <a href="~/Guide/DetailsPremium/@item.guideId" title="Détails">Telecharger</a>
+                                                }
+                                                else
+                                                {
+                                                    <span> En cours de traitement !</span>
+                                                }
+                                            </div>
+                                        </div>
+                                    </td>
+
+                                    <td class="col-option">
+                                        <div class="item">
+                                            <div class="option">
+                                                @if (item.mot_cle_secondaire != null && item.mot_cle_secondaire != "")
+                                                {
+                                                    <a onclick="DeleteGuideClick('@item.guideId')" title="Supprimer Guide"><i class="fa fa-trash"></i></a>
+                                                }
+
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                                count++;
+                            }
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div id="DeleteDatadialog" style="display: none" class="modal-popup">
+            @Html.Partial("~/Views/Guide/ErrorNoSelection.cshtml")
+        </div>
+        <div id="SearchGuideNoResultat" style="display: none" class="modal-popup">
+            @Html.Partial("~/Views/Shared/SearchNoResultat.cshtml")
+        </div>
+        <!--  Dialogue de confirmation suppression d'utilisateur  -->
+        <div id="deleteAllGuidePoPup" style="display: none" class="modal-popup">
+            @Html.Partial("~/Views/Guide/DeleteGuide.cshtml")
+        </div>
+
+    </main>
+
+}
+else
+{ Response.Redirect("~/Login/Accueil"); }
+<script>
+    /*pour la suppression des utilisateurs séléctionnés*/
+    var DeleteGuideClick = function (Guide) {
+        //  alert(Guide);
+        if (Guide !== '') {
+
+            $.ajax({
+                type: 'POST',
+                url: '/Guide/SelecteAllGuideToDelete',
+                data: { hash: Guide },
+                error: function (ex) {
+                    alert('Error: ' + ex.statusText);
+                },
+                success: function () {
+                    $("#deleteAllGuidePoPup").modal();
+                },
+                async: true,
+                processData: true
+            });
+        }
+    }
+
+    var DeleteAllGuideSelected = function (nbrow) {
+        var ListGuideId = '';
+        $('input[name="selectedGuide"]:checked').each(function () {
+            ListGuideId += $(this).val() + ',';
+        });
+        if (ListGuideId != '') {
+            $.ajax({
+                type: 'POST',
+                url: '/Guide/SelecteAllGuideToDelete',
+                data: { hash: ListGuideId.substring(0, (ListGuideId.length - 1)) },
+                error: function (ex) {
+                    //alert('Error: ' + ex.statusText);
+                },
+                success: function () {
+                    $("#deleteAllGuidePoPup").modal();
+                },
+                async: true,
+                processData: true
+            });
+        } else {
+            $("#DeleteDatadialog").modal();
+        }
+    }
+
+    var ListGuideData = function () {
+        var selectBox = document.getElementById("nbrowpage");
+        var nbrow = selectBox.options[selectBox.selectedIndex].value;
+        $.ajax({
+            type: 'POST',
+            url: '/Home/ReInitPagination',
+            data: { hash: "paginationChange" },
+            success: function (data) {
+                window.location.href = nbrow;
+            }
+        });
+    }
+
+</script>
+
+

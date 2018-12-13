@@ -1,0 +1,75 @@
+﻿
+@model RedactApplication.Models.GUIDEViewModel
+@{
+    ViewBag.Title = "Create";
+    Layout = "~/Views/Shared/LayoutConnected.cshtml";
+
+}
+
+@section Scripts{
+    <link rel="stylesheet" href="~/Content/css/bootstrap-datepicker3.css" />
+    <script type="text/javascript" src="~/Scripts/js/bootstrap-datepicker.min.js"></script>
+    <link rel="stylesheet" href="~/Content/css/elements/scoring.css">
+}
+
+
+@if (Session["name"] != null && @Session["role"] != null && @Session["role"].ToString() != "2")
+{
+
+        <main id="wrapper">
+            <div id="single-container">
+                <div class="card back-office with-shadow">
+                    <div class="head">
+                        <h1>Générer un guide à la rédaction</h1>
+                        <p>Veuillez remplir les champs Requis (*) et appuyez sur Enregistrer pour créer une commande</p>
+                    </div>
+
+                    @using (Html.BeginForm("CreateGuide", "Guide", FormMethod.Post, new { @class = "form-horizontal", role = "form", @id = "createGuide" }))
+                    {
+                        @Html.AntiForgeryToken()
+
+
+                        <section class="theme-customization clearfix">
+                            <div class="section-title">
+                                <span>Type de guide</span>
+                            </div>
+                            <div class="row">
+                                <div id="guide-type">
+                                    <input type="radio" value="0" id="oneShot" name="typeguide"><label for="oneShot">One shot</label>
+                                    <input type="radio" value="1" id="premium" name="typeguide"><label for="premium">Premium</label>
+                                </div>
+
+                                <div class="section-title">
+                                    <span>Détails  & consignes</span>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="blk">
+                                        <strong>Mot clé principal</strong>
+                                        @Html.TextBoxFor(x => x.mot_cle_pricipal, new { @required = true, @name = "name" })
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="blk">
+                                        <strong>E-mail</strong>
+                                        @Html.TextBoxFor(x => x.redacteur, new { @required = true, @type = "email" })
+                                    </div>
+                                </div>
+                                <div class="col-md-12 clearfix">
+                                    <div class="blk">
+                                        <strong>Consignes</strong>
+                                        @Html.TextAreaFor(m => m.consigne_autres, new { rows = "20", style = "resize:none;", @class = "textarea-editor command-edition" })
+                                    </div>
+                                </div>
+                            </div>
+                        </section>
+                        <section class="clearfix submit-area">
+                            <input type="submit" value="Enregistrer" class="btn btn-success">
+                            <input type="submit" value="Annuler" class="btn btn-warning">
+                        </section>
+                    }
+                </div>
+            </div>
+        </main>
+}
+else
+{ Response.Redirect("~/Login/Accueil"); }

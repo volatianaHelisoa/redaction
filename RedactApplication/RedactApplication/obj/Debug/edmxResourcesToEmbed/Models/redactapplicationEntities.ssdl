@@ -54,6 +54,30 @@
     <Property Name="redacteurId" Type="uniqueidentifier" />
     <Property Name="createurId" Type="uniqueidentifier" />
   </EntityType>
+  <EntityType Name="GUIDE">
+    <Key>
+      <PropertyRef Name="guideId" />
+    </Key>
+    <Property Name="guideId" Type="uniqueidentifier" Nullable="false" />
+    <Property Name="date_creation" Type="datetime" />
+    <Property Name="demandeur" Type="nvarchar(max)" />
+    <Property Name="redacteur" Type="nvarchar(max)" />
+    <Property Name="type" Type="int" />
+    <Property Name="mot_cle_pricipal" Type="nvarchar(max)" />
+    <Property Name="mot_cle_secondaire" Type="nvarchar(max)" />
+    <Property Name="consigne_autres" Type="nvarchar(max)" />
+    <Property Name="lien_pdf" Type="nvarchar(max)" />
+    <Property Name="grammes1" Type="nvarchar(max)" />
+    <Property Name="grammes2" Type="nvarchar(max)" />
+    <Property Name="grammes3" Type="nvarchar(max)" />
+    <Property Name="entities" Type="nvarchar(max)" />
+    <Property Name="titre" Type="nvarchar(max)" />
+    <Property Name="chapo" Type="nvarchar(max)" />
+    <Property Name="sous_titre_1" Type="nvarchar(max)" />
+    <Property Name="paragraphe_1" Type="nvarchar(max)" />
+    <Property Name="sous_titre_2" Type="nvarchar(max)" />
+    <Property Name="paragraphe_2" Type="nvarchar(max)" />
+  </EntityType>
   <EntityType Name="MODELE">
     <Key>
       <PropertyRef Name="modeleId" />
@@ -104,6 +128,43 @@
     <Property Name="menu4_p2_alt" Type="nvarchar(max)" />
     <Property Name="favicone" Type="nvarchar" MaxLength="250" />
   </EntityType>
+  <EntityType Name="MODELEs">
+    <Key>
+      <PropertyRef Name="modeleId" />
+    </Key>
+    <Property Name="modeleId" Type="uniqueidentifier" Nullable="false" />
+    <Property Name="logoUrl" Type="nchar" MaxLength="1000" />
+    <Property Name="menu1_titre" Type="nvarchar(max)" />
+    <Property Name="menu2_titre" Type="nvarchar(max)" />
+    <Property Name="menu3_titre" Type="nvarchar(max)" />
+    <Property Name="menu4_titre" Type="nvarchar(max)" />
+    <Property Name="menu1_paragraphe1_titre" Type="nvarchar(max)" />
+    <Property Name="menu1_paragraphe2_titre" Type="nvarchar(max)" />
+    <Property Name="menu1_contenu1" Type="nvarchar(max)" />
+    <Property Name="menu1_contenu2" Type="nvarchar(max)" />
+    <Property Name="menu1_paragraphe1_photoUrl" Type="nvarchar(max)" />
+    <Property Name="menu1_paragraphe2_photoUrl" Type="nvarchar(max)" />
+    <Property Name="menu2_paragraphe1_titre" Type="nvarchar(max)" />
+    <Property Name="menu2_paragraphe2_titre" Type="nvarchar(max)" />
+    <Property Name="menu2_contenu1" Type="nvarchar(max)" />
+    <Property Name="menu2_contenu2" Type="nvarchar(max)" />
+    <Property Name="menu2_paragraphe1_photoUrl" Type="nvarchar(max)" />
+    <Property Name="menu2_paragraphe2_photoUrl" Type="nvarchar(max)" />
+    <Property Name="menu3_paragraphe1_titre" Type="nvarchar(max)" />
+    <Property Name="menu3_paragraphe2_titre" Type="nvarchar(max)" />
+    <Property Name="menu3_contenu1" Type="nvarchar(max)" />
+    <Property Name="menu3_contenu2" Type="nvarchar(max)" />
+    <Property Name="menu3_paragraphe1_photoUrl" Type="nvarchar(max)" />
+    <Property Name="menu3_paragraphe2_photoUrl" Type="nvarchar(max)" />
+    <Property Name="menu4_paragraphe1_titre" Type="nvarchar(max)" />
+    <Property Name="menu4_paragraphe2_titre" Type="nvarchar(max)" />
+    <Property Name="menu4_contenu1" Type="nvarchar(max)" />
+    <Property Name="menu4_contenu2" Type="nvarchar(max)" />
+    <Property Name="menu4_paragraphe1_photoUrl" Type="nvarchar(max)" />
+    <Property Name="menu4_paragraphe2_photoUrl" Type="nvarchar(max)" />
+    <Property Name="photoALaUneUrl" Type="nvarchar(max)" />
+    <Property Name="site_url" Type="nvarchar(max)" />
+  </EntityType>
   <EntityType Name="NOTIFICATION">
     <Key>
       <PropertyRef Name="notificationId" />
@@ -151,6 +212,16 @@
     </Key>
     <Property Name="statutCommandeId" Type="uniqueidentifier" Nullable="false" />
     <Property Name="statut_cmde" Type="nvarchar(max)" />
+  </EntityType>
+  <EntityType Name="sysdiagrams">
+    <Key>
+      <PropertyRef Name="diagram_id" />
+    </Key>
+    <Property Name="name" Type="nvarchar" MaxLength="128" Nullable="false" />
+    <Property Name="principal_id" Type="int" Nullable="false" />
+    <Property Name="diagram_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="version" Type="int" />
+    <Property Name="definition" Type="varbinary(max)" />
   </EntityType>
   <EntityType Name="TAGS">
     <Key>
@@ -416,6 +487,18 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
+  <Association Name="FK_TEMPLATE_MODELE">
+    <End Role="MODELEs" Type="Self.MODELEs" Multiplicity="0..1" />
+    <End Role="TEMPLATE" Type="Self.TEMPLATE" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="MODELEs">
+        <PropertyRef Name="modeleId" />
+      </Principal>
+      <Dependent Role="TEMPLATE">
+        <PropertyRef Name="modeleId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
   <Association Name="FK_TEMPLATE_PROJETS">
     <End Role="PROJETS" Type="Self.PROJETS" Multiplicity="0..1" />
     <End Role="TEMPLATE" Type="Self.TEMPLATE" Multiplicity="*" />
@@ -504,13 +587,16 @@
     <EntitySet Name="COMMANDE" EntityType="Self.COMMANDE" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="COMMANDE_TYPE" EntityType="Self.COMMANDE_TYPE" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="FACTURE" EntityType="Self.FACTURE" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="GUIDE" EntityType="Self.GUIDE" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="MODELE" EntityType="Self.MODELE" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="MODELEs" EntityType="Self.MODELEs" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="NOTIFICATION" EntityType="Self.NOTIFICATION" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="PROJETS" EntityType="Self.PROJETS" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="REDACT_THEME" EntityType="Self.REDACT_THEME" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="ROLE" EntityType="Self.ROLE" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="SITES" EntityType="Self.SITES" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="STATUT_COMMANDE" EntityType="Self.STATUT_COMMANDE" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="TAGS" EntityType="Self.TAGS" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="TEMPLATE" EntityType="Self.TEMPLATE" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="THEMES" EntityType="Self.THEMES" Schema="dbo" store:Type="Tables" />
@@ -580,6 +666,10 @@
     <AssociationSet Name="FK_REDACT_THEME_UTILISATEUR" Association="Self.FK_REDACT_THEME_UTILISATEUR">
       <End Role="UTILISATEUR" EntitySet="UTILISATEUR" />
       <End Role="REDACT_THEME" EntitySet="REDACT_THEME" />
+    </AssociationSet>
+    <AssociationSet Name="FK_TEMPLATE_MODELE" Association="Self.FK_TEMPLATE_MODELE">
+      <End Role="MODELEs" EntitySet="MODELEs" />
+      <End Role="TEMPLATE" EntitySet="TEMPLATE" />
     </AssociationSet>
     <AssociationSet Name="FK_TEMPLATE_PROJETS" Association="Self.FK_TEMPLATE_PROJETS">
       <End Role="PROJETS" EntitySet="PROJETS" />

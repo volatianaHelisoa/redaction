@@ -33,7 +33,7 @@ namespace RedactApplication.Models
 
 
         private static bool SendMessage(string from, string to,
-            string subject, string body)
+            string subject, string body,string filepath = "")
         {
             MailMessage mm = null;
             bool isSent = false;
@@ -59,8 +59,12 @@ namespace RedactApplication.Models
                 mm.IsBodyHtml = true;
                 mm.DeliveryNotificationOptions =
                     DeliveryNotificationOptions.OnFailure;
-              
 
+                if (!string.IsNullOrEmpty( filepath))
+                {
+                    Attachment at = new Attachment(filepath);
+                    mm.Attachments.Add(at);
+                }
                 // Send it
                 Client.Send(mm);
                 isSent = true;
@@ -81,12 +85,12 @@ namespace RedactApplication.Models
         }
 
 
-        public static bool SendMail(string email,string content,string subject)
+        public static bool SendMail(string email,string content,string subject, string filepath = "")
         {
             string body = content;
             return SendMessage(
                 ConfigurationManager.AppSettings["adminEmail"],
-                email, subject, body);
+                email, subject, body, filepath);
         }
     }
 }

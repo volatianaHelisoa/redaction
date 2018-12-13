@@ -65,6 +65,9 @@
     <Reference Include="itextsharp.xmlworker, Version=5.5.13.0, Culture=neutral, PublicKeyToken=8354ae6d2174ddca, processorArchitecture=MSIL">
       <HintPath>..\packages\itextsharp.xmlworker.5.5.13\lib\itextsharp.xmlworker.dll</HintPath>
     </Reference>
+    <Reference Include="itextsharp.xtra, Version=5.5.13.0, Culture=neutral, PublicKeyToken=8354ae6d2174ddca, processorArchitecture=MSIL">
+      <HintPath>..\packages\itextsharp.xtra.5.5.13\lib\itextsharp.xtra.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.AspNet.SignalR.Core, Version=2.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.AspNet.SignalR.Core.2.2.3\lib\net45\Microsoft.AspNet.SignalR.Core.dll</HintPath>
       <Private>True</Private>
@@ -89,6 +92,9 @@
     <Reference Include="Newtonsoft.Json, Version=9.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.9.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
       <Private>True</Private>
+    </Reference>
+    <Reference Include="RazorEngine, Version=3.10.0.0, Culture=neutral, PublicKeyToken=9ee697374c7e744a, processorArchitecture=MSIL">
+      <HintPath>..\packages\RazorEngine.3.10.0\lib\net45\RazorEngine.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
@@ -222,6 +228,10 @@
     <Compile Include="Controllers\CommandesController.cs" />
     <Compile Include="Controllers\FactureController.cs" />
     <Compile Include="Controllers\GuideController.cs" />
+    <Compile Include="Models\GUIDE.cs">
+      <DependentUpon>redactapplicationEntities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Guides.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\LoginController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
@@ -242,8 +252,11 @@
       <DependentUpon>redactapplicationEntities.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\FTP.cs" />
-    <Compile Include="Models\Guide.cs" />
+    <Compile Include="Models\GUIDEViewModel.cs" />
     <Compile Include="Models\MODELE.cs">
+      <DependentUpon>redactapplicationEntities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\MODELE1.cs">
       <DependentUpon>redactapplicationEntities.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Modeles.cs" />
@@ -302,6 +315,9 @@
     </Compile>
     <Compile Include="Models\StatePageSingleton.cs" />
     <Compile Include="Models\STATUT_COMMANDE.cs">
+      <DependentUpon>redactapplicationEntities.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\sysdiagram.cs">
       <DependentUpon>redactapplicationEntities.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\TAG.cs">
@@ -393,6 +409,7 @@
     <Content Include="Content\css\elements\forms.css" />
     <Content Include="Content\css\elements\login.css" />
     <Content Include="Content\css\elements\profil.css" />
+    <Content Include="Content\css\elements\scoring.css" />
     <Content Include="Content\css\elements\sites-creation.css" />
     <Content Include="Content\css\facture.css" />
     <Content Include="Content\css\jquery-ui.css" />
@@ -724,6 +741,16 @@
     <Content Include="Views\Commandes\EditDuplicateCommande.cshtml" />
     <Content Include="Views\Commandes\UpdateCommande.cshtml" />
     <Content Include="Views\Commandes\UpdateCommande - Copier.cshtml" />
+    <Content Include="Views\Guide\Scoring.cshtml" />
+    <Content Include="Views\Guide\ListGuide.cshtml" />
+    <Content Include="Views\Guide\Create.cshtml" />
+    <Content Include="Views\Guide\ErrorNoSelection.cshtml" />
+    <Content Include="Views\Guide\DeleteGuide.cshtml" />
+    <Content Include="Views\Guide\CreateGuideConfirmation.cshtml" />
+    <Content Include="Views\Guide\DeletedAllGuideConfirmation.cshtml" />
+    <Content Include="Views\Guide\DeletedGuideConfirmation.cshtml" />
+    <Content Include="Views\Guide\DetailsOneshot.cshtml" />
+    <Content Include="Views\Guide\DetailsPremium.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -732,7 +759,6 @@
     <Folder Include="Themes\Theme2\img\" />
     <Folder Include="Themes\Theme3\img\" />
     <Folder Include="Themes\Theme4\img\" />
-    <Folder Include="Views\Guide\" />
     <Folder Include="Views\Sms\" />
   </ItemGroup>
   <ItemGroup>

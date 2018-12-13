@@ -25,6 +25,8 @@ using System.Web.Script.Serialization;
 using Newtonsoft.Json.Linq;
 using System.Threading.Tasks;
 using System.Net.Http;
+using System.Web.Hosting;
+using System.Threading;
 
 namespace RedactApplication.Controllers
 {
@@ -184,8 +186,263 @@ namespace RedactApplication.Controllers
             return null;
         }
 
+        private void UpdateCommande()
+        {
+           // HostingEnvironment.QueueBackgroundWorkItem(cancellationToken => GenerateCommandeKeysAsync(cancellationToken));
+            HostingEnvironment.QueueBackgroundWorkItem(cancellationToken => new Worker().GenerateCommandeKeysAsync(cancellationToken));
+        }
+
+        private async System.Threading.Tasks.Task GenerateCommandeKeysAsync(CancellationToken cancellationToken)
+        {
+            try
+            {
+
+                // Exécute le traitement de la pagination
+                Commandes val = new Commandes();
+
+                // Récupère la liste des commandes
+                var listeDataCmde = val.GetListCommande();
+                var now = DateTime.Now;
+                var startDate = ConfigurationManager.AppSettings["startDate"].ToString();
+                var startOfMonth = new DateTime(now.Year, now.Month - 1, int.Parse(startDate));
+                var daysInMonth = DateTime.DaysInMonth(now.Year, now.Month);
+                var lastDay = new DateTime(now.Year, now.Month, daysInMonth);
+                listeDataCmde = listeDataCmde.Where(x => x.date_livraison >= startOfMonth &&
+                                                              x.date_livraison <= lastDay).ToList();
+
+                var statut = db.STATUT_COMMANDE.SingleOrDefault(x => x.statut_cmde.Contains("Traitement"));
+
+                if (listeDataCmde.Count() > 0)
+                {
+                    listeDataCmde = listeDataCmde.Where(x => x.commandeStatutId == statut.statutCommandeId).ToList();
+
+                    foreach (var cmd in listeDataCmde)
+                    {
+                        COMMANDE commande = db.COMMANDEs.Find(cmd.commandeId);
+                        if (string.IsNullOrEmpty(commande.mot_cle_secondaire))
+                        {
+                            string mot_cle_pricipal = commande.mot_cle_pricipal;
+                            int guide_id = GetGuideID(mot_cle_pricipal);
+
+                            //Lancer une commande de guide              
+                            string url = "https://yourtext.guru/api/guide/" + guide_id;
+
+                            var res = "";
+                            var request = (HttpWebRequest)WebRequest.Create(url);
+                            var grammes = "";
+
+                            string usernamePassword = ConfigurationManager.AppSettings["yourtext_usr"] + ":" + ConfigurationManager.AppSettings["yourtext_pwd"];
+                            //execute when task has been cancel  
+                            cancellationToken.ThrowIfCancellationRequested();
+                            //Obtenir le guide
+                            if (request != null)
+                            {
+                                request.ContentType = "application/json";
+                                request.Method = "GET";
+                                UTF8Encoding enc = new UTF8Encoding();
+                                request.Headers.Add("Authorization", "Basic " + Convert.ToBase64String(enc.GetBytes(usernamePassword)));
+                                request.Headers.Add("KEY", ConfigurationManager.AppSettings["yourtext_api"]);
+
+                                await Task.Delay(200000); //3mn       
+
+
+                                var response = (HttpWebResponse)request.GetResponse();
+                                await Task.Delay(200000); //3mn    
+                                using (StreamReader streamReader = new StreamReader(response.GetResponseStream()))
+                                {
+                                    res = streamReader.ReadToEnd();
+                                    JArray jsonVal = JArray.Parse(res) as JArray;
+                                    Console.WriteLine(string.Join(" ", jsonVal[0]["grammes2"]));
+                                    string grammes2 = string.Join(",", jsonVal[0]["grammes2"]);
+                                    var grammes2FiveItems = jsonVal[0]["grammes2"].Skip(5).Take(5);
+                                    string grammes3 = string.Join(",", jsonVal[0]["grammes3"]);
+                                    grammes = grammes2 + "," + grammes3;
+                                }
+
+                                if (!string.IsNullOrEmpty(grammes))
+                                {
+                                    commande.mot_cle_secondaire = StatePageSingleton.SanitizeString(Sanitizer.GetSafeHtmlFragment(grammes));
+                                    string etat = "En attente";
+                                    var newstatut = db.STATUT_COMMANDE.SingleOrDefault(x => x.statut_cmde.Contains(etat));
+                                    commande.commandeStatutId = newstatut.statutCommandeId;
+                                    int result = db.SaveChanges();
+
+
+                                    if (result > 0)
+                                    {
+                                        bool? sendsms = commande.etat_sms;
+
+                                        if (sendsms != null && sendsms == true)
+                                        {
+                                            Session["notifSms"] = null;
+                                            string msgBody = "Vous avez une nouvelle commande.";
+                                            var accountSid =
+                                                System.Configuration.ConfigurationManager.AppSettings["SMSAccountIdentification"];
+                                            var authToken = System.Configuration.ConfigurationManager.AppSettings["SMSAccountPassword"];
+                                            var phonenumber = System.Configuration.ConfigurationManager.AppSettings["SMSAccountFrom"];
+
+                                            TwilioClient.Init(accountSid, authToken);
+                                            if (commande.REDACTEUR != null)
+                                            {
+                                                string redactNumber = commande.REDACTEUR.redactPhone;
+                                                redactNumber = redactNumber.TrimStart(new char[] { '0' });
+                                                redactNumber = "+261" + redactNumber;
+
+                                                var to = new PhoneNumber(redactNumber);
+                                                var message = MessageResource.Create(
+                                                    to,
+                                                    @from: new PhoneNumber(phonenumber),
+                                                    body: msgBody);
+
+                                                if (!string.IsNullOrEmpty(message.Sid))
+                                                {
+                                                    Console.WriteLine(message.Sid);
+                                                    //return View("Create");
+                                                }
+                                            }
+                                        }
+
+                                        if (Request.Url != null)
+                                        {
+                                            var url_req = Request.Url.Scheme;
+                                            if (Request.Url != null)
+                                            {
+
+                                                string callbackurl = Request.Url.Host != "localhost"
+                                                    ? Request.Url.Host
+                                                    : Request.Url.Authority;
+                                                var port = Request.Url.Port;
+                                                if (!string.IsNullOrEmpty(port.ToString()) && Request.Url.Host != "localhost")
+                                                    callbackurl += ":" + port;
+
+                                                url_req += "://" + callbackurl;
+                                            }
+
+
+                                            StringBuilder mailBody = new StringBuilder();
+                                            if (commande.REDACTEUR != null)
+                                            {
+                                                mailBody.AppendFormat(
+                                                    "Monsieur / Madame " + CultureInfo.CurrentCulture.TextInfo.ToTitleCase(commande.REDACTEUR.userNom
+                                                        .ToLower()));
+                                                mailBody.AppendFormat("<br />");
+                                                mailBody.AppendFormat(
+                                                    "<p>Vous venez de recevoir une de commande de " + commande.REFERENCEUR.userNom + " " + commande.REFERENCEUR.userPrenom + " le " + DateTime.Now + ".Veuillez cliquer sur le lien suivant pour accepter ou refuser la commande.</p>");
+                                                mailBody.AppendFormat("<br />");
+                                                mailBody.AppendFormat(url + "/Commandes/CommandeWaitting?token=" + commande.commandeId);
+                                                mailBody.AppendFormat("<br />");
+                                                mailBody.AppendFormat("Cordialement,");
+                                                mailBody.AppendFormat("<br />");
+                                                mailBody.AppendFormat("Media click App .");
+
+                                                bool isSendMail = MailClient.SendMail(commande.REDACTEUR.userMail, mailBody.ToString(), "Media click App - nouvelle commande.");
+                                                if (isSendMail)
+                                                {
+                                                    commande.commandeToken = commande.commandeId;
+                                                    commande.dateToken = DateTime.Now;
+                                                    int tmp = db.SaveChanges();
+                                                    if (tmp > 0)
+                                                    {
+                                                        string notif = "Vous venez de recevoir une de commande de " + commande.REFERENCEUR.userNom + " " + commande.REFERENCEUR.userPrenom + " le " + DateTime.Now + ".Veuillez accepter ou refuser la commande.";
+
+                                                        if (SendNotification(commande, commande.commandeReferenceurId, commande.commandeRedacteurId, notif) > 0)
+                                                            Debug.WriteLine("CreateCommandeConfirmation");
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                    else
+                                    {
+                                        Debug.WriteLine("thread error");
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+                Session["UpdateCommande"] = null;
+            }
+            catch (Exception ex)
+            {
+                Session["UpdateCommande"] = null;
+                ProcessCancellation();
+                Debug.WriteLine("thread error: " + ex);
+
+            }
+
+            Thread.Sleep(200000);
+        }
+
+        public int SendNotification(COMMANDE commande, Guid? fromId, Guid? toId, string message)
+        {
+            var notif = new NOTIFICATION();
+            notif.commandeId = commande.commandeId;
+            notif.fromId = fromId;
+            notif.toId = toId;
+            notif.statut = true;
+            notif.datenotif = DateTime.Now;
+            notif.message = message;
+            notif.notificationId = Guid.NewGuid();
+            db.NOTIFICATIONs.Add(notif);
+            var res = db.SaveChanges();
+
+            return res;
+        }
+
+
+        private int GetGuideID(string mot_cle_pricipal)
+        {
+            int guide_id = 0;
+            string url = "https://yourtext.guru/api/guide/";
+            var request = (HttpWebRequest)WebRequest.Create(url);
+            request.ContentType = "application/json";
+            request.Method = "POST";
+            string usernamePassword = ConfigurationManager.AppSettings["yourtext_usr"] + ":" + ConfigurationManager.AppSettings["yourtext_pwd"];
+
+            if (request != null)
+            {
+                UTF8Encoding enc = new UTF8Encoding();
+                request.Headers.Add("Authorization", "Basic " + Convert.ToBase64String(enc.GetBytes(usernamePassword)));
+                request.Headers.Add("KEY", ConfigurationManager.AppSettings["yourtext_api"]);
+
+                using (var streamWriter = new StreamWriter(request.GetRequestStream()))
+                {
+                    string json = new JavaScriptSerializer().Serialize(new
+                    {
+                        query = mot_cle_pricipal,
+                        lang = "fr_fr",
+                        type = "premium"
+                    });
+
+                    streamWriter.Write(json);
+                }
+
+                var response = (HttpWebResponse)request.GetResponse();
+
+                using (var streamReader = new StreamReader(response.GetResponseStream()))
+                {
+                    var result = streamReader.ReadToEnd();
+                    Console.WriteLine(String.Format("Response: {0}", result));
+                    JObject obj = JObject.Parse(result);
+                    guide_id = (int)obj["guide_id"];
+                }
+            }
+
+            return guide_id;
+        }
+
+        private void ProcessCancellation()
+        {
+            Thread.Sleep(10000);
+            Debug.WriteLine("thread cancel");
+
+            }
+
         public ActionResult ListCommandes(string statut = null)
         {
+            UpdateCommande();
+
             // Exécute le suivi de session utilisateur
             if (!string.IsNullOrEmpty(Request.QueryString["currentid"]))
             {
@@ -1735,21 +1992,21 @@ namespace RedactApplication.Controllers
             return View("ErrorException");
         }
 
-        public int SendNotification( COMMANDE commande,Guid? fromId, Guid? toId,string message )
-        {
-            var notif = new  NOTIFICATION();
-            notif.commandeId = commande.commandeId;
-            notif.fromId = fromId;
-            notif.toId = toId;
-            notif.statut = true;
-            notif.datenotif = DateTime.Now;
-            notif.message = message;
-            notif.notificationId = Guid.NewGuid();
-            db.NOTIFICATIONs.Add(notif);
-            var res = db.SaveChanges();
+        //public int SendNotification( COMMANDE commande,Guid? fromId, Guid? toId,string message )
+        //{
+        //    var notif = new  NOTIFICATION();
+        //    notif.commandeId = commande.commandeId;
+        //    notif.fromId = fromId;
+        //    notif.toId = toId;
+        //    notif.statut = true;
+        //    notif.datenotif = DateTime.Now;
+        //    notif.message = message;
+        //    notif.notificationId = Guid.NewGuid();
+        //    db.NOTIFICATIONs.Add(notif);
+        //    var res = db.SaveChanges();
 
-            return res;
-        }
+        //    return res;
+        //}
 
 
         public ActionResult RelanceSMS(Guid hash)
@@ -1891,14 +2148,9 @@ namespace RedactApplication.Controllers
         public int UpdateStatutNotification(Guid? notificationId)
         {
             var notif =  db.NOTIFICATIONs.SingleOrDefault(x=>x.notificationId == notificationId);
-            
-            notif.statut = false;
-            
-            
+            notif.statut = false;     
             var res = db.SaveChanges();
-
             return res;
-
         }
 
         // GET: COMMANDEs/Edit/5

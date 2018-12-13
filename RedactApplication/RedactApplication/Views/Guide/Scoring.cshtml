@@ -1,0 +1,183 @@
+﻿@model RedactApplication.Models.GUIDEViewModel
+
+@{
+    ViewBag.Title = "Edit";
+    Layout = "~/Views/Shared/LayoutConnected.cshtml";
+
+}
+@if (Session["name"] != null && @Session["role"] != null && @Session["role"].ToString() != "2")
+{
+    <main id="wrapper">
+        <div id="single-container">
+            <div class="onglets ease-in-out">
+                <ul>
+                    <li> @Html.ActionLink("Dashboard", "Dashboard", new { controller = "Home" }) </li>
+                    @if (@Session["role"] != null && @Session["role"].ToString() != "2")
+                    {
+                        <li> @Html.ActionLink("Utilisateurs", "ListeUser", new { controller = "Home" }) </li>
+                    }
+                    <li>@Html.ActionLink("Commandes", "ListCommandes", new { controller = "Commandes" })</li>
+                    @if (@Session["role"] != null && @Session["role"].ToString() != "1")
+                    {
+                        <li>@Html.ActionLink("Factures", "ListFacture", new { controller = "Facture" })</li>
+                    }
+                    @if (@Session["role"] != null && @Session["role"].ToString() != "2")
+                    {
+                        <li>@Html.ActionLink("Guides", "ListGuide", new { controller = "Guide" })</li>
+                    }
+                    @if (@Session["role"] != null && @Session["role"].ToString() != "2")
+                    {
+                        <li>@Html.ActionLink("Scoring", "Scoring", new { controller = "Guide" }, new { @class = "active" })</li>
+                    }
+                </ul>
+            </div>
+            <div class="card back-office with-shadow">
+                <!-- Champs -->
+                <div class="container clearfix">
+                    <div class="section-title-rounded">
+                        <span>Verification</span>
+                    </div>
+                    @using (Html.BeginForm("ScoringGuide", "Guide", FormMethod.Post, new { @class = "form-horizontal", role = "form", @id = "scoringGuide" }))
+                    {
+                        @Html.AntiForgeryToken();
+
+                        <div class="col-md-12">
+                            <div class="row">
+
+                                <div class="blk">
+                                    <strong>Mots clés :</strong>
+                                    @Html.TextBoxFor(x => x.mot_cle_pricipal)
+                                </div>
+                                <div class="blk">
+                                    <strong>Type :</strong>
+                                    <input type="radio" value="0" id="oneShot" name="typeguide"><label for="oneShot">One shot</label>
+                                    <input type="radio" value="1" id="premium" name="typeguide"><label for="premium">Premium</label>
+                                </div>
+                                <div class="wrap commande-view">
+                                    <div class="blk">
+                                        <strong>Contenu : </strong>
+                                        <div class="">
+                                            @Html.TextAreaFor(m => m.contenu, new { rows = "20", style = "resize:none;", @class = "textarea-editor command-edition" })
+                                        </div>
+
+                                    </div>
+                                    <div class="text-centered">
+                                        <button class="btn btn-primary">Vérifier</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    }
+
+                        <span class="clearfix"></span>
+                        @if (ViewBag.optimisation != null)
+                        {
+                            <div id="optimisation-result">
+                                <div class="section-title-rounded">
+                                    <span>Niveau d'optimisation</span>
+                                </div>
+                                <div class="score text-centered" style="padding: 30px 0;">
+                                    <div class="scoreitem soseo">
+                                        Score d'optimisation (SOSEO)
+                                        <strong id="soseo-val">35%</strong>
+                                    </div>
+                                    <div class="scoreitem dseo">
+                                        Danger SEO (DSEO)
+                                        <strong id="dseo-val">0%</strong>
+                                    </div>
+                                </div>
+                                <div class="detail-optimisation">
+                                    <ul>
+                                        <li><dd class="word">Crédit</dd> <div class="txt-score">25<span class="normal"></span></div></li>
+                                        <li><dd class="word">Pret</dd> <div class="txt-score">25<span class="forte"></span></div></li>
+                                        <li><dd class="word">Assurance</dd> <div class="txt-score">25<span class="normal"></span></div></li>
+                                        <li><dd class="word">Immobilier</dd> <div class="txt-score">25<span class="sousoptimise"></span></div></li>
+                                        <li><dd class="word">Justificatif</dd> <div class="txt-score">25<span class="forte"></span></div></li>
+                                        <li><dd class="word">Personnel</dd> <div class="txt-score">25<span class="suroptimise"></span></div></li>
+                                        <li><dd class="word">Projet</dd> <div class="txt-score">25<span class="sousoptimise"></span></div></li>
+                                        <li><dd class="word">Financement</dd> <div class="txt-score">25<span class="forte"></span></div></li>
+                                    </ul>
+                                </div>
+                                <div class="legend">
+                                    <ul>
+                                        <li><dd class="word">Suroptimisation</dd><span class="suroptimise"></span></li>
+                                        <li><dd class="word">Optimisation forte</dd><span class="forte"></span></li>
+                                        <li><dd class="word">Optimisation normale</dd> <span class="normal"></span></li>
+                                        <li><dd class="word">Sous-optimisation</dd><span class="sousoptimise"></span></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        }
+
+                    </div>
+
+            </div>
+        </div>
+    </main>
+}
+else
+{ Response.Redirect("~/Login/Accueil"); }
+<!--  Dialogue succès ajout user   -->
+<div id="addUserPopUp">
+
+</div>
+
+<!--  Dialogue error valid data   -->
+<div id="errorValidDataUserPopUp">
+
+</div>
+@section Scripts
+{
+    <link rel="stylesheet" href="~/Content/css/bootstrap-datepicker3.css" />
+    <link rel="stylesheet" href="~/Content/css/elements/commandes.css" />
+
+    <script type="text/javascript" src="~/Scripts/js/bootstrap-datepicker.min.js"></script>
+    <script type="text/javascript" src="~/Scripts/scriptredacteur.js"></script>
+
+
+    <script type="text/javascript" src="//cdn.tinymce.com/4/tinymce.min.js"></script>
+
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+  
+
+           
+            $(".scores").hide();
+
+            $("#btn-optimisation").click(function () {
+
+                var contenu_res = tinymce.activeEditor.getContent().replace(/(style="([^"]*)")/g, "");
+                var regex = /(&nbsp;|<([^>]+)>)/ig;
+                contenu_res = contenu_res.replace(regex, "");
+                var mot_cle_pricipal = $("#mot_cle_pricipal").val();
+                console.log(contenu_res);
+                $.ajax({
+                    type: 'GET',
+                    url: '/Commandes/LoadScoreByContent',
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "json",
+
+                    data: {
+                        contenu: contenu_res,
+                        mot_cle_pricipal: mot_cle_pricipal
+                    },
+
+                    success: function (response) {
+                        alert(response);
+                    },
+                    error: function (response) {
+                        alert(response);
+                        $(".scores").show();
+                    }
+                });
+                $(".scores").show();
+            });
+
+        });
+
+
+
+    </script>
+}
+

@@ -40,8 +40,16 @@
                     {
                         <li>@Html.ActionLink("Factures", "ListFacture", new { controller = "Facture" }, new { @class = "active" })</li>
                     }
+                    @if (@Session["role"] != null && @Session["role"].ToString() != "2")
+                    {
+                        <li>@Html.ActionLink("Guides", "ListGuide", new { controller = "Guide" })</li>
 
-                    </ul>
+                    }
+                    @if (@Session["role"] != null && @Session["role"].ToString() != "2")
+                    {
+                        <li>@Html.ActionLink("Scoring", "Scoring", new { controller = "Guide" })</li>
+                    }
+                </ul>
             </div>
 
             <div class="card back-office with-shadow">

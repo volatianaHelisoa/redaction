@@ -42,6 +42,15 @@
                         <li>@Html.ActionLink("Factures", "ListFacture", new { controller = "Facture" })</li>
 
                     }
+                    @if (@Session["role"] != null && @Session["role"].ToString() != "2")
+                    {
+                        <li>@Html.ActionLink("Guides", "ListGuide", new { controller = "Guide" })</li>
+
+                    }
+                    @if (@Session["role"] != null && @Session["role"].ToString() != "2")
+                    {
+                        <li>@Html.ActionLink("Scoring", "Scoring", new { controller = "Guide" })</li>
+                    }
                 </ul>
             </div>
             

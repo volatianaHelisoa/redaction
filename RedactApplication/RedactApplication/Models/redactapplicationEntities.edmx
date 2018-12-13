@@ -59,6 +59,30 @@
           <Property Name="redacteurId" Type="uniqueidentifier" />
           <Property Name="createurId" Type="uniqueidentifier" />
         </EntityType>
+        <EntityType Name="GUIDE">
+          <Key>
+            <PropertyRef Name="guideId" />
+          </Key>
+          <Property Name="guideId" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="date_creation" Type="datetime" />
+          <Property Name="demandeur" Type="nvarchar(max)" />
+          <Property Name="redacteur" Type="nvarchar(max)" />
+          <Property Name="type" Type="int" />
+          <Property Name="mot_cle_pricipal" Type="nvarchar(max)" />
+          <Property Name="mot_cle_secondaire" Type="nvarchar(max)" />
+          <Property Name="consigne_autres" Type="nvarchar(max)" />
+          <Property Name="lien_pdf" Type="nvarchar(max)" />
+          <Property Name="grammes1" Type="nvarchar(max)" />
+          <Property Name="grammes2" Type="nvarchar(max)" />
+          <Property Name="grammes3" Type="nvarchar(max)" />
+          <Property Name="entities" Type="nvarchar(max)" />
+          <Property Name="titre" Type="nvarchar(max)" />
+          <Property Name="chapo" Type="nvarchar(max)" />
+          <Property Name="sous_titre_1" Type="nvarchar(max)" />
+          <Property Name="paragraphe_1" Type="nvarchar(max)" />
+          <Property Name="sous_titre_2" Type="nvarchar(max)" />
+          <Property Name="paragraphe_2" Type="nvarchar(max)" />
+        </EntityType>
         <EntityType Name="MODELE">
           <Key>
             <PropertyRef Name="modeleId" />
@@ -109,6 +133,43 @@
           <Property Name="menu4_p2_alt" Type="nvarchar(max)" />
           <Property Name="favicone" Type="nvarchar" MaxLength="250" />
         </EntityType>
+        <EntityType Name="MODELEs">
+          <Key>
+            <PropertyRef Name="modeleId" />
+          </Key>
+          <Property Name="modeleId" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="logoUrl" Type="nchar" MaxLength="1000" />
+          <Property Name="menu1_titre" Type="nvarchar(max)" />
+          <Property Name="menu2_titre" Type="nvarchar(max)" />
+          <Property Name="menu3_titre" Type="nvarchar(max)" />
+          <Property Name="menu4_titre" Type="nvarchar(max)" />
+          <Property Name="menu1_paragraphe1_titre" Type="nvarchar(max)" />
+          <Property Name="menu1_paragraphe2_titre" Type="nvarchar(max)" />
+          <Property Name="menu1_contenu1" Type="nvarchar(max)" />
+          <Property Name="menu1_contenu2" Type="nvarchar(max)" />
+          <Property Name="menu1_paragraphe1_photoUrl" Type="nvarchar(max)" />
+          <Property Name="menu1_paragraphe2_photoUrl" Type="nvarchar(max)" />
+          <Property Name="menu2_paragraphe1_titre" Type="nvarchar(max)" />
+          <Property Name="menu2_paragraphe2_titre" Type="nvarchar(max)" />
+          <Property Name="menu2_contenu1" Type="nvarchar(max)" />
+          <Property Name="menu2_contenu2" Type="nvarchar(max)" />
+          <Property Name="menu2_paragraphe1_photoUrl" Type="nvarchar(max)" />
+          <Property Name="menu2_paragraphe2_photoUrl" Type="nvarchar(max)" />
+          <Property Name="menu3_paragraphe1_titre" Type="nvarchar(max)" />
+          <Property Name="menu3_paragraphe2_titre" Type="nvarchar(max)" />
+          <Property Name="menu3_contenu1" Type="nvarchar(max)" />
+          <Property Name="menu3_contenu2" Type="nvarchar(max)" />
+          <Property Name="menu3_paragraphe1_photoUrl" Type="nvarchar(max)" />
+          <Property Name="menu3_paragraphe2_photoUrl" Type="nvarchar(max)" />
+          <Property Name="menu4_paragraphe1_titre" Type="nvarchar(max)" />
+          <Property Name="menu4_paragraphe2_titre" Type="nvarchar(max)" />
+          <Property Name="menu4_contenu1" Type="nvarchar(max)" />
+          <Property Name="menu4_contenu2" Type="nvarchar(max)" />
+          <Property Name="menu4_paragraphe1_photoUrl" Type="nvarchar(max)" />
+          <Property Name="menu4_paragraphe2_photoUrl" Type="nvarchar(max)" />
+          <Property Name="photoALaUneUrl" Type="nvarchar(max)" />
+          <Property Name="site_url" Type="nvarchar(max)" />
+        </EntityType>
         <EntityType Name="NOTIFICATION">
           <Key>
             <PropertyRef Name="notificationId" />
@@ -156,6 +217,16 @@
           </Key>
           <Property Name="statutCommandeId" Type="uniqueidentifier" Nullable="false" />
           <Property Name="statut_cmde" Type="nvarchar(max)" />
+        </EntityType>
+        <EntityType Name="sysdiagrams">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="principal_id" Type="int" Nullable="false" />
+          <Property Name="diagram_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="version" Type="int" />
+          <Property Name="definition" Type="varbinary(max)" />
         </EntityType>
         <EntityType Name="TAGS">
           <Key>
@@ -421,6 +492,18 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_TEMPLATE_MODELE">
+          <End Role="MODELEs" Type="Self.MODELEs" Multiplicity="0..1" />
+          <End Role="TEMPLATE" Type="Self.TEMPLATE" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="MODELEs">
+              <PropertyRef Name="modeleId" />
+            </Principal>
+            <Dependent Role="TEMPLATE">
+              <PropertyRef Name="modeleId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_TEMPLATE_PROJETS">
           <End Role="PROJETS" Type="Self.PROJETS" Multiplicity="0..1" />
           <End Role="TEMPLATE" Type="Self.TEMPLATE" Multiplicity="*" />
@@ -509,13 +592,16 @@
           <EntitySet Name="COMMANDE" EntityType="Self.COMMANDE" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="COMMANDE_TYPE" EntityType="Self.COMMANDE_TYPE" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="FACTURE" EntityType="Self.FACTURE" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="GUIDE" EntityType="Self.GUIDE" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="MODELE" EntityType="Self.MODELE" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="MODELEs" EntityType="Self.MODELEs" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="NOTIFICATION" EntityType="Self.NOTIFICATION" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="PROJETS" EntityType="Self.PROJETS" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="REDACT_THEME" EntityType="Self.REDACT_THEME" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ROLE" EntityType="Self.ROLE" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="SITES" EntityType="Self.SITES" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="STATUT_COMMANDE" EntityType="Self.STATUT_COMMANDE" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="TAGS" EntityType="Self.TAGS" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="TEMPLATE" EntityType="Self.TEMPLATE" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="THEMES" EntityType="Self.THEMES" Schema="dbo" store:Type="Tables" />
@@ -585,6 +671,10 @@
           <AssociationSet Name="FK_REDACT_THEME_UTILISATEUR" Association="Self.FK_REDACT_THEME_UTILISATEUR">
             <End Role="UTILISATEUR" EntitySet="UTILISATEUR" />
             <End Role="REDACT_THEME" EntitySet="REDACT_THEME" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TEMPLATE_MODELE" Association="Self.FK_TEMPLATE_MODELE">
+            <End Role="MODELEs" EntitySet="MODELEs" />
+            <End Role="TEMPLATE" EntitySet="TEMPLATE" />
           </AssociationSet>
           <AssociationSet Name="FK_TEMPLATE_PROJETS" Association="Self.FK_TEMPLATE_PROJETS">
             <End Role="PROJETS" EntitySet="PROJETS" />
@@ -732,6 +822,13 @@
             <End Role="SITE" EntitySet="SITES" />
             <End Role="COMMANDE" EntitySet="COMMANDEs" />
           </AssociationSet>
+          <EntitySet Name="MODELEs1" EntityType="redactapplicationModel.MODELE1" />
+          <EntitySet Name="sysdiagrams" EntityType="redactapplicationModel.sysdiagram" />
+          <AssociationSet Name="FK_TEMPLATE_MODELE1" Association="redactapplicationModel.FK_TEMPLATE_MODELE1">
+            <End Role="MODELE1" EntitySet="MODELEs1" />
+            <End Role="TEMPLATE" EntitySet="TEMPLATEs" />
+          </AssociationSet>
+          <EntitySet Name="GUIDEs" EntityType="redactapplicationModel.GUIDE" />
           </EntityContainer>
         <EntityType Name="COMMANDE">
           <Key>
@@ -911,6 +1008,7 @@
           <NavigationProperty Name="THEME" Relationship="redactapplicationModel.FK_TEMPLATE_THEMES" FromRole="TEMPLATE" ToRole="THEME" />
           <NavigationProperty Name="UTILISATEUR" Relationship="redactapplicationModel.FK_TEMPLATE_UTILISATEUR" FromRole="TEMPLATE" ToRole="UTILISATEUR" />
           <Property Name="ip" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="MODELE1" Relationship="redactapplicationModel.FK_TEMPLATE_MODELE1" FromRole="TEMPLATE" ToRole="MODELE1" />
         </EntityType>
         <EntityType Name="THEME">
           <Key>
@@ -1293,6 +1391,90 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <EntityType Name="MODELE1">
+          <Key>
+            <PropertyRef Name="modeleId" />
+          </Key>
+          <Property Name="modeleId" Type="Guid" Nullable="false" />
+          <Property Name="logoUrl" Type="String" MaxLength="1000" FixedLength="true" Unicode="true" />
+          <Property Name="menu1_titre" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="menu2_titre" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="menu3_titre" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="menu4_titre" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="menu1_paragraphe1_titre" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="menu1_paragraphe2_titre" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="menu1_contenu1" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="menu1_contenu2" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="menu1_paragraphe1_photoUrl" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="menu1_paragraphe2_photoUrl" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="menu2_paragraphe1_titre" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="menu2_paragraphe2_titre" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="menu2_contenu1" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="menu2_contenu2" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="menu2_paragraphe1_photoUrl" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="menu2_paragraphe2_photoUrl" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="menu3_paragraphe1_titre" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="menu3_paragraphe2_titre" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="menu3_contenu1" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="menu3_contenu2" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="menu3_paragraphe1_photoUrl" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="menu3_paragraphe2_photoUrl" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="menu4_paragraphe1_titre" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="menu4_paragraphe2_titre" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="menu4_contenu1" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="menu4_contenu2" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="menu4_paragraphe1_photoUrl" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="menu4_paragraphe2_photoUrl" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="photoALaUneUrl" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="site_url" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="TEMPLATEs" Relationship="redactapplicationModel.FK_TEMPLATE_MODELE1" FromRole="MODELE1" ToRole="TEMPLATE" />
+        </EntityType>
+        <EntityType Name="sysdiagram">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="principal_id" Type="Int32" Nullable="false" />
+          <Property Name="diagram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="version" Type="Int32" />
+          <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
+        </EntityType>
+        <Association Name="FK_TEMPLATE_MODELE1">
+          <End Type="redactapplicationModel.MODELE1" Role="MODELE1" Multiplicity="0..1" />
+          <End Type="redactapplicationModel.TEMPLATE" Role="TEMPLATE" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="MODELE1">
+              <PropertyRef Name="modeleId" />
+            </Principal>
+            <Dependent Role="TEMPLATE">
+              <PropertyRef Name="modeleId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="GUIDE">
+          <Key>
+            <PropertyRef Name="guideId" />
+          </Key>
+          <Property Name="guideId" Type="Guid" Nullable="false" />
+          <Property Name="date_creation" Type="DateTime" Precision="3" />
+          <Property Name="demandeur" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="redacteur" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="type" Type="Int32" />
+          <Property Name="mot_cle_pricipal" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="mot_cle_secondaire" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="consigne_autres" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="lien_pdf" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="grammes1" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="grammes2" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="grammes3" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="entities" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="titre" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="chapo" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="sous_titre_1" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="paragraphe_1" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="sous_titre_2" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="paragraphe_2" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+        </EntityType>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -1532,6 +1714,80 @@
               <MappingFragment StoreEntitySet="SITES">
                 <ScalarProperty Name="site_name" ColumnName="site_name" />
                 <ScalarProperty Name="siteId" ColumnName="siteId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="MODELEs1">
+            <EntityTypeMapping TypeName="redactapplicationModel.MODELE1">
+              <MappingFragment StoreEntitySet="MODELEs">
+                <ScalarProperty Name="site_url" ColumnName="site_url" />
+                <ScalarProperty Name="photoALaUneUrl" ColumnName="photoALaUneUrl" />
+                <ScalarProperty Name="menu4_paragraphe2_photoUrl" ColumnName="menu4_paragraphe2_photoUrl" />
+                <ScalarProperty Name="menu4_paragraphe1_photoUrl" ColumnName="menu4_paragraphe1_photoUrl" />
+                <ScalarProperty Name="menu4_contenu2" ColumnName="menu4_contenu2" />
+                <ScalarProperty Name="menu4_contenu1" ColumnName="menu4_contenu1" />
+                <ScalarProperty Name="menu4_paragraphe2_titre" ColumnName="menu4_paragraphe2_titre" />
+                <ScalarProperty Name="menu4_paragraphe1_titre" ColumnName="menu4_paragraphe1_titre" />
+                <ScalarProperty Name="menu3_paragraphe2_photoUrl" ColumnName="menu3_paragraphe2_photoUrl" />
+                <ScalarProperty Name="menu3_paragraphe1_photoUrl" ColumnName="menu3_paragraphe1_photoUrl" />
+                <ScalarProperty Name="menu3_contenu2" ColumnName="menu3_contenu2" />
+                <ScalarProperty Name="menu3_contenu1" ColumnName="menu3_contenu1" />
+                <ScalarProperty Name="menu3_paragraphe2_titre" ColumnName="menu3_paragraphe2_titre" />
+                <ScalarProperty Name="menu3_paragraphe1_titre" ColumnName="menu3_paragraphe1_titre" />
+                <ScalarProperty Name="menu2_paragraphe2_photoUrl" ColumnName="menu2_paragraphe2_photoUrl" />
+                <ScalarProperty Name="menu2_paragraphe1_photoUrl" ColumnName="menu2_paragraphe1_photoUrl" />
+                <ScalarProperty Name="menu2_contenu2" ColumnName="menu2_contenu2" />
+                <ScalarProperty Name="menu2_contenu1" ColumnName="menu2_contenu1" />
+                <ScalarProperty Name="menu2_paragraphe2_titre" ColumnName="menu2_paragraphe2_titre" />
+                <ScalarProperty Name="menu2_paragraphe1_titre" ColumnName="menu2_paragraphe1_titre" />
+                <ScalarProperty Name="menu1_paragraphe2_photoUrl" ColumnName="menu1_paragraphe2_photoUrl" />
+                <ScalarProperty Name="menu1_paragraphe1_photoUrl" ColumnName="menu1_paragraphe1_photoUrl" />
+                <ScalarProperty Name="menu1_contenu2" ColumnName="menu1_contenu2" />
+                <ScalarProperty Name="menu1_contenu1" ColumnName="menu1_contenu1" />
+                <ScalarProperty Name="menu1_paragraphe2_titre" ColumnName="menu1_paragraphe2_titre" />
+                <ScalarProperty Name="menu1_paragraphe1_titre" ColumnName="menu1_paragraphe1_titre" />
+                <ScalarProperty Name="menu4_titre" ColumnName="menu4_titre" />
+                <ScalarProperty Name="menu3_titre" ColumnName="menu3_titre" />
+                <ScalarProperty Name="menu2_titre" ColumnName="menu2_titre" />
+                <ScalarProperty Name="menu1_titre" ColumnName="menu1_titre" />
+                <ScalarProperty Name="logoUrl" ColumnName="logoUrl" />
+                <ScalarProperty Name="modeleId" ColumnName="modeleId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="sysdiagrams">
+            <EntityTypeMapping TypeName="redactapplicationModel.sysdiagram">
+              <MappingFragment StoreEntitySet="sysdiagrams">
+                <ScalarProperty Name="definition" ColumnName="definition" />
+                <ScalarProperty Name="version" ColumnName="version" />
+                <ScalarProperty Name="diagram_id" ColumnName="diagram_id" />
+                <ScalarProperty Name="principal_id" ColumnName="principal_id" />
+                <ScalarProperty Name="name" ColumnName="name" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="GUIDEs">
+            <EntityTypeMapping TypeName="redactapplicationModel.GUIDE">
+              <MappingFragment StoreEntitySet="GUIDE">
+                <ScalarProperty Name="paragraphe_2" ColumnName="paragraphe_2" />
+                <ScalarProperty Name="sous_titre_2" ColumnName="sous_titre_2" />
+                <ScalarProperty Name="paragraphe_1" ColumnName="paragraphe_1" />
+                <ScalarProperty Name="sous_titre_1" ColumnName="sous_titre_1" />
+                <ScalarProperty Name="chapo" ColumnName="chapo" />
+                <ScalarProperty Name="titre" ColumnName="titre" />
+                <ScalarProperty Name="entities" ColumnName="entities" />
+                <ScalarProperty Name="grammes3" ColumnName="grammes3" />
+                <ScalarProperty Name="grammes2" ColumnName="grammes2" />
+                <ScalarProperty Name="grammes1" ColumnName="grammes1" />
+                <ScalarProperty Name="lien_pdf" ColumnName="lien_pdf" />
+                <ScalarProperty Name="consigne_autres" ColumnName="consigne_autres" />
+                <ScalarProperty Name="mot_cle_secondaire" ColumnName="mot_cle_secondaire" />
+                <ScalarProperty Name="mot_cle_pricipal" ColumnName="mot_cle_pricipal" />
+                <ScalarProperty Name="type" ColumnName="type" />
+                <ScalarProperty Name="redacteur" ColumnName="redacteur" />
+                <ScalarProperty Name="demandeur" ColumnName="demandeur" />
+                <ScalarProperty Name="date_creation" ColumnName="date_creation" />
+                <ScalarProperty Name="guideId" ColumnName="guideId" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

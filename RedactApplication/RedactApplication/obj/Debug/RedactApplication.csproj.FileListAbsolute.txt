@@ -305,7 +305,11 @@ D:\.NET Projet\redaction\RedactApplication\RedactApplication\bin\roslyn\VBCSComp
 D:\.NET Projet\redaction\RedactApplication\RedactApplication\bin\RedactApplication.dll.config
 D:\.NET Projet\redaction\RedactApplication\RedactApplication\bin\RedactApplication.dll
 D:\.NET Projet\redaction\RedactApplication\RedactApplication\bin\RedactApplication.pdb
+D:\.NET Projet\redaction\RedactApplication\RedactApplication\bin\itextsharp.xtra.dll
+D:\.NET Projet\redaction\RedactApplication\RedactApplication\bin\RazorEngine.dll
+D:\.NET Projet\redaction\RedactApplication\RedactApplication\bin\RazorEngine.xml
 D:\.NET Projet\redaction\RedactApplication\RedactApplication\obj\Debug\RedactApplication.csproj.CoreCompileInputs.cache
 D:\.NET Projet\redaction\RedactApplication\RedactApplication\obj\Debug\RedactApplication.csproj.CopyComplete
 D:\.NET Projet\redaction\RedactApplication\RedactApplication\obj\Debug\RedactApplication.dll
 D:\.NET Projet\redaction\RedactApplication\RedactApplication\obj\Debug\RedactApplication.pdb
+D:\.NET Projet\redaction\RedactApplication\RedactApplication\obj\Debug\RedactApplication.csprojAssemblyReference.cache

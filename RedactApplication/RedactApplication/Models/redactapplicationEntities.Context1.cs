@@ -41,5 +41,8 @@ namespace RedactApplication.Models
         public virtual DbSet<REDACT_THEME> REDACT_THEME { get; set; }
         public virtual DbSet<TAG> TAGS { get; set; }
         public virtual DbSet<SITE> SITES { get; set; }
+        public virtual DbSet<MODELE1> MODELEs1 { get; set; }
+        public virtual DbSet<sysdiagram> sysdiagrams { get; set; }
+        public virtual DbSet<GUIDE> GUIDEs { get; set; }
     }
 }

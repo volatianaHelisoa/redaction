@@ -30,5 +30,6 @@ namespace RedactApplication.Models
         public virtual PROJET PROJET { get; set; }
         public virtual THEME THEME { get; set; }
         public virtual UTILISATEUR UTILISATEUR { get; set; }
+        public virtual MODELE1 MODELE1 { get; set; }
     }
 }
