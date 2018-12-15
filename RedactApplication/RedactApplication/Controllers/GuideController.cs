@@ -673,7 +673,7 @@ namespace RedactApplication.Controllers
         [HttpPost]
         [Authorize]
         [ValidateInput(false)]     
-        public ActionResult ScoringGuide(GUIDEViewModel model, FormCollection collection, CancellationToken cancellationToken)
+        public async Task<ActionResult> ScoringGuide(GUIDEViewModel model, FormCollection collection, CancellationToken cancellationToken)
         {
          
             var mot_cle_pricipal = model.mot_cle_pricipal;
@@ -692,99 +692,84 @@ namespace RedactApplication.Controllers
             {
                 guide_id = GetGuideID(mot_cle_pricipal, "premium");
             }
-            string url = "https://yourtext.guru/api/check/" + guide_id;
-            // Create a request using a URL that can receive a post. 
-            WebRequest request = WebRequest.Create(url);
-            // Set the Method property of the request to POST.
-            request.Method = "POST";
 
-            // Create POST data and convert it to a byte array.
-            string postData = "une technologie grille-pain présente de nombreux avantages";
-            byte[] byteArray = Encoding.UTF8.GetBytes(postData);
-            // Set the ContentType property of the WebRequest.
-            request.ContentType = "application/x-www-form-urlencoded";
-            // Set the ContentLength property of the WebRequest.
-            request.ContentLength = byteArray.Length;
+            UTF8Encoding enc = new UTF8Encoding();
 
-            // Get the request stream.
-            Stream dataStream = request.GetRequestStream();
-            // Write the data to the request stream.
-            dataStream.Write(byteArray, 0, byteArray.Length);
-            // Close the Stream object.
-            dataStream.Close();
+            //Lancer une commande de guide              
+            string url_guide = "https://yourtext.guru/api/guide/" + guide_id;
+            var res = "";
+            var request_guide = (HttpWebRequest)WebRequest.Create(url_guide);
+          
+            string usernamePassword = ConfigurationManager.AppSettings["yourtext_usr"] + ":" + ConfigurationManager.AppSettings["yourtext_pwd"];
+            //execute when task has been cancel  
+            cancellationToken.ThrowIfCancellationRequested();
+            //Obtenir le guide
+            if (request_guide != null)
+            {
+                request_guide.ContentType = "application/json";
+                request_guide.Method = "GET";
+               
+                request_guide.Headers.Add("Authorization", "Basic " + Convert.ToBase64String(enc.GetBytes(usernamePassword)));
+                request_guide.Headers.Add("KEY", ConfigurationManager.AppSettings["yourtext_api"]);
 
-            // Get the response.
-            WebResponse response = request.GetResponse();
-            // Display the status.
-            Console.WriteLine(((HttpWebResponse)response).StatusDescription);
-            // Get the stream containing content returned by the server.
-            dataStream = response.GetResponseStream();
-            // Open the stream using a StreamReader for easy access.
-            StreamReader reader = new StreamReader(dataStream);
-            // Read the content.
-            string responseFromServer = reader.ReadToEnd();
-            // Display the content.
-            Console.WriteLine(responseFromServer);
-            // Clean up the streams.
-            reader.Close();
-            dataStream.Close();
-            response.Close();
+                await Task.Delay(200000); //3mn   
+                var response_guide = (HttpWebResponse)request_guide.GetResponse();
+                await Task.Delay(200000); //3mn    
+                using (StreamReader streamReader = new StreamReader(response_guide.GetResponseStream()))
+                {
+                    res = streamReader.ReadToEnd();
 
-
-
-
-
-
-
+                }
+            }
 
             //generate guide id
-           // string url = "https://yourtext.guru/api/check/" + guide_id;
+            string url = "https://yourtext.guru/api/check/" + guide_id;
 
-            //var request = (HttpWebRequest)WebRequest.Create(url);
-            //request.Method = "POST";
-            //request.ContentType = "application/x-www-form-urlencoded";
+            var request = (HttpWebRequest)WebRequest.Create(url);
+            request.Method = "POST";
+            request.ContentType = "application/x-www-form-urlencoded";
             //string usernamePassword = ConfigurationManager.AppSettings["yourtext_usr"] + ":" + ConfigurationManager.AppSettings["yourtext_pwd"];
-            
-            //if (request != null)
-            //{
-            //    UTF8Encoding enc = new UTF8Encoding();
-            //    request.Headers.Add("Authorization", "Basic " + Convert.ToBase64String(enc.GetBytes(usernamePassword)));
-            //    request.Headers.Add("KEY", ConfigurationManager.AppSettings["yourtext_api"]);
-                               
-            //    //using (var streamWriter = new StreamWriter(request.GetRequestStream()))
-            //    //{
-            //    //    //string json = new JavaScriptSerializer().Serialize(new
-            //    //    //{
-            //    //    //    content = "une technologie grille-pain présente de nombreux avantages"
-            //    //    //});
 
-            //    //    string json = "{ \"content\" : \" un grille-pain présente de nombreux avantages \" }";
-            //    //    // string json = "{\"content\":\"" + CONTENT + "\"}";
-            //    //    streamWriter.Write(json);
-            //    //}
-            //    var postData = "{ \"content\" : \" un grille-pain présente de nombreux avantages \" }";
+            if (request != null)
+            {
+                //UTF8Encoding enc = new UTF8Encoding();
+                request.Headers.Add("Authorization", "Basic " + Convert.ToBase64String(enc.GetBytes(usernamePassword)));
+                request.Headers.Add("KEY", ConfigurationManager.AppSettings["yourtext_api"]);
 
-            //    byte[] byteArray = Encoding.UTF8.GetBytes(postData);
-            //    request.ContentLength = byteArray.Length;
+                //using (var streamWriter = new StreamWriter(request.GetRequestStream()))
+                //{
+                //    //string json = new JavaScriptSerializer().Serialize(new
+                //    //{
+                //    //    content = "une technologie grille-pain présente de nombreux avantages"
+                //    //});
 
-            //    // Get the request stream.
-            //    Stream dataStream = request.GetRequestStream();
-            //    // Write the data to the request stream.
-            //    dataStream.Write(byteArray, 0, byteArray.Length);
-            //    // Close the Stream object.
-            //    dataStream.Close();
-            //    ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
-            //    //Thread.Sleep(190000);
-            //    var response = (HttpWebResponse)request.GetResponse();
+                //    string json = "{ \"content\" : \" un grille-pain présente de nombreux avantages \" }";
+                //    // string json = "{\"content\":\"" + CONTENT + "\"}";
+                //    streamWriter.Write(json);
+                //}
+                var postData = "{ \"content\" : \" un grille-pain présente de nombreux avantages \" }";
 
-            //    using (var streamReader = new StreamReader(response.GetResponseStream()))
-            //    {
-            //        var result = streamReader.ReadToEnd();
-            //        Console.WriteLine(String.Format("Response: {0}", result));
-            //        JArray jsonVal = JArray.Parse(result) as JArray;
+                byte[] byteArray = Encoding.UTF8.GetBytes(postData);
+                request.ContentLength = byteArray.Length;
 
-            //    }
-            //}
+                // Get the request stream.
+                Stream dataStream = request.GetRequestStream();
+                // Write the data to the request stream.
+                dataStream.Write(byteArray, 0, byteArray.Length);
+                // Close the Stream object.
+                dataStream.Close();
+                ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
+                //Thread.Sleep(190000);
+                var response = (HttpWebResponse)request.GetResponse();
+
+                using (var streamReader = new StreamReader(response.GetResponseStream()))
+                {
+                    var result = streamReader.ReadToEnd();
+                    Console.WriteLine(String.Format("Response: {0}", result));
+                    JArray jsonVal = JArray.Parse(result) as JArray;
+
+                }
+            }
 
 
             return View();

@@ -1615,10 +1615,10 @@ namespace RedactApplication.Controllers
             {
                 DateTime dateToken = (DateTime)commande.dateToken;
                 double nbrTime = (now - dateToken).TotalMinutes;
-                if (nbrTime > 60.0)
-                {
-                    return View("ExpiredLink");
-                }
+                //if (nbrTime > 60.0)
+                //{
+                //    return View("ExpiredLink");
+                //}
             }
             Session["tokenCmde"] = token;
             ViewBag.hashCmde = token;
