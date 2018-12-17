@@ -5,21 +5,45 @@
     Layout = "~/Views/Shared/LayoutConnected.cshtml";
 
 }
-
-@section Scripts{
+@section css{
     <link rel="stylesheet" href="~/Content/css/bootstrap-datepicker3.css" />
-    <script type="text/javascript" src="~/Scripts/js/bootstrap-datepicker.min.js"></script>
+	<link rel="stylesheet" href="~/Content/css/elements/sites-creation.css">
     <link rel="stylesheet" href="~/Content/css/elements/scoring.css">
 }
-
+@section Scripts{
+    <script type="text/javascript" src="~/Scripts/js/bootstrap-datepicker.min.js"></script>
+}
 
 @if (Session["name"] != null && @Session["role"] != null && @Session["role"].ToString() != "2")
 {
 
         <main id="wrapper">
             <div id="single-container">
+				<div class="onglets ease-in-out">
+					<ul>
+						<li> @Html.ActionLink("Dashboard", "Dashboard", new { controller = "Home" }) </li>
+						@if (@Session["role"] != null && @Session["role"].ToString() != "2")
+						{
+							<li> @Html.ActionLink("Utilisateurs", "ListeUser", new { controller = "Home" }) </li>
+						}
+						<li>@Html.ActionLink("Commandes", "ListCommandes", new { controller = "Commandes" })</li>
+						@if (@Session["role"] != null && @Session["role"].ToString() != "1")
+						{
+							<li>@Html.ActionLink("Factures", "ListFacture", new { controller = "Facture" })</li>
+						}
+						@if (@Session["role"] != null && @Session["role"].ToString() != "2")
+						{
+							<li>@Html.ActionLink("Guides", "ListGuide", new { controller = "Guide" }, new { @class = "active" })</li>
+
+						}
+						@if (@Session["role"] != null && @Session["role"].ToString() != "2")
+						{
+							<li>@Html.ActionLink("Scoring", "Scoring", new { controller = "Guide" })</li>
+						}
+					</ul>
+				</div>
                 <div class="card back-office with-shadow">
-                    <div class="head">
+                    <div class="head" style="border-bottom: none;">
                         <h1>Générer un guide à la rédaction</h1>
                         <p>Veuillez remplir les champs Requis (*) et appuyez sur Enregistrer pour créer une commande</p>
                     </div>
@@ -30,7 +54,7 @@
 
 
                         <section class="theme-customization clearfix">
-                            <div class="section-title">
+                            <div class="section-title-rounded">
                                 <span>Type de guide</span>
                             </div>
                             <div class="row">
@@ -39,7 +63,7 @@
                                     <input type="radio" value="1" id="premium" name="typeguide"><label for="premium">Premium</label>
                                 </div>
 
-                                <div class="section-title">
+                                <div class="section-title-rounded">
                                     <span>Détails  & consignes</span>
                                 </div>
                                 <div class="col-md-6">

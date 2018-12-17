@@ -43,16 +43,16 @@
 
                         <div class="col-md-12">
                             <div class="row">
-
+								<div class="blk hide">
+                                    <strong>Type :</strong>
+                                    <input type="radio" value="0" id="oneShot" name="typeguide"><label for="oneShot">One shot</label>
+                                    <input type="radio" value="1" id="premium" name="typeguide" checked><label for="premium">Premium</label>
+                                </div>
                                 <div class="blk">
                                     <strong>Mots clés :</strong>
                                     @Html.TextBoxFor(x => x.mot_cle_pricipal)
                                 </div>
-                                <div class="blk">
-                                    <strong>Type :</strong>
-                                    <input type="radio" value="0" id="oneShot" name="typeguide"><label for="oneShot">One shot</label>
-                                    <input type="radio" value="1" id="premium" name="typeguide"><label for="premium">Premium</label>
-                                </div>
+                                
                                 <div class="wrap commande-view">
                                     <div class="blk">
                                         <strong>Contenu : </strong>

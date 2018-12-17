@@ -243,26 +243,26 @@
     position: relative;
 }
 
-    .head-list .resume ul {
-        margin: 0;
-        padding: 8px 25px;
-        border: 1px solid #ebebeb;
-        background: #fafafa;
-        display: inline-block;
-    }
+.head-list .resume ul {
+	margin: 0;
+	padding: 8px 25px;
+	border: 1px solid #ebebeb;
+	background: #fafafa;
+	display: inline-block;
+}
 
-    .head-list .resume li {
-        list-style: none;
-        display: inline-block;
-        text-transform: uppercase;
-        border-right: 1px solid #868686;
-        padding: 0 20px;
-        margin-left: -2px;
-    }
+.head-list .resume li {
+	list-style: none;
+	display: inline-block;
+	text-transform: uppercase;
+	border-right: 1px solid #868686;
+	padding: 0 20px;
+	margin-left: -2px;
+}
 
-        .head-list .resume li:last-of-type {
-            border-right: none;
-        }
+.head-list .resume li:last-of-type {
+	border-right: none;
+}
 /** Commande view **/
 .commande-view .wrap span,
 .commande-resume .wrap span {
@@ -338,9 +338,9 @@
     border: 1px solid #e0e0e0;
 }
 
-    .commande-resume .status li {
-        list-style-position: inside;
-    }
+.commande-resume .status li {
+	list-style-position: inside;
+}
 
 #table_id_length {
     float: right;
@@ -348,13 +348,13 @@
     background: white;
 }
 
-    #table_id_length select {
-        width: auto;
-        display: inline-block;
-        margin: 0;
-        padding: 7px 40px 7px 15px;
-        background-size: 30px;
-    }
+#table_id_length select {
+	width: auto;
+	display: inline-block;
+	margin: 0;
+	padding: 7px 40px 7px 15px;
+	background-size: 30px;
+}
 
 #table_id th {
     font-weight: normal;
@@ -381,16 +381,16 @@
     margin-top: 20px;
 }
 
-    #table_id_paginate .paginate_button.current {
-        border-radius: 50%;
-        width: 30px;
-        height: 30px;
-        line-height: 30px;
-        padding: 0;
-        border: 1px solid #26b5ff;
-        color: #26b5ff !important;
-        background: white;
-    }
+#table_id_paginate .paginate_button.current {
+	border-radius: 50%;
+	width: 30px;
+	height: 30px;
+	line-height: 30px;
+	padding: 0;
+	border: 1px solid #26b5ff;
+	color: #26b5ff !important;
+	background: white;
+}
 
 /* Commande non livré */
 .commande-view .commande-not-delivered > span {
@@ -408,17 +408,17 @@
     cursor: pointer
 }
 
-    .commande-not-delivered .item > span {
-        width: 70px;
-        height: 70px;
-        border-radius: 50%;
-        padding: 0;
-        color: white;
-        text-align: center;
-        line-height: 80px;
-        margin: 0 auto 10px;
-        display: block;
-    }
+.commande-not-delivered .item > span {
+	width: 70px;
+	height: 70px;
+	border-radius: 50%;
+	padding: 0;
+	color: white;
+	text-align: center;
+	line-height: 80px;
+	margin: 0 auto 10px;
+	display: block;
+}
 
 
 /* Command create */
@@ -428,28 +428,28 @@
     padding: 0;
     text-align: center;
     border: none;
-    margin: 0 0 30px;
+    margin: 10px 0 30px;
 }
 
-    .section-title-rounded::before {
-        content: "";
-        border-top: 1px solid #e0e0e0;
-        position: absolute;
-        top: 50%;
-        width: 100%;
-        height: 1px;
-        left: 0;
-    }
+.section-title-rounded::before {
+	content: "";
+	border-top: 1px solid #e0e0e0;
+	position: absolute;
+	top: 50%;
+	width: 100%;
+	height: 1px;
+	left: 0;
+}
 
-    .section-title-rounded span {
-        position: relative;
-        z-index: 10;
-        background: #12306e;
-        padding: 15px 30px;
-        border-radius: 30px;
-        color: white;
-        text-transform: uppercase;
-    }
+.section-title-rounded span {
+	position: relative;
+	z-index: 10;
+	background: #12306e;
+	padding: 15px 30px;
+	border-radius: 30px;
+	color: white;
+	text-transform: uppercase;
+}
 
 .blk {
     background: #fafafa;
@@ -458,19 +458,19 @@
     margin-bottom: 2em;
 }
 
-    .blk input,
-    .blk select,
-    .blk textarea {
-        margin: 0 !important;
-        background-color: white;
-    }
+.blk input,
+.blk select,
+.blk textarea {
+	margin: 0 !important;
+	background-color: white;
+}
 
-    .blk strong {
-        display: block;
-        color: #26b5ff;
-        font-size: 16px;
-        margin-bottom: 15px;
-    }
+.blk strong {
+	display: block;
+	color: #26b5ff;
+	font-size: 16px;
+	margin-bottom: 15px;
+}
 
 .btn-add {
     background: #26b5ff;
