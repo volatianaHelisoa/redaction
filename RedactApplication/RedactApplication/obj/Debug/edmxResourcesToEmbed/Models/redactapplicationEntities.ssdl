@@ -32,6 +32,7 @@
     <Property Name="tagId" Type="uniqueidentifier" />
     <Property Name="siteId" Type="uniqueidentifier" />
     <Property Name="etat_sms" Type="bit" />
+    <Property Name="guide_id" Type="nvarchar(max)" />
   </EntityType>
   <EntityType Name="COMMANDE_TYPE">
     <Key>
@@ -77,6 +78,7 @@
     <Property Name="paragraphe_1" Type="nvarchar(max)" />
     <Property Name="sous_titre_2" Type="nvarchar(max)" />
     <Property Name="paragraphe_2" Type="nvarchar(max)" />
+    <Property Name="guide_id" Type="nchar" MaxLength="10" />
   </EntityType>
   <EntityType Name="MODELE">
     <Key>

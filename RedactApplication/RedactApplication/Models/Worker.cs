@@ -255,15 +255,13 @@ namespace RedactApplication.Models
         }
 
 
-        public async Task<string> GetScoringAsync(string mot_cle_pricipal, string contenu)
+        public async Task<string> GetScoringAsync(string idCommande, string contenu)
         {
             string scores = "";
             try
             {
-               
-                
-
-                int guide_id = GetGuideID(mot_cle_pricipal);
+                var commande = db.COMMANDEs.Find(idCommande);
+                int guide_id = int.Parse(commande.guide_id);
 
                 string url = "https://yourtext.guru/api/check/" + guide_id;
                 

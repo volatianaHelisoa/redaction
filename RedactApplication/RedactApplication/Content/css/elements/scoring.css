@@ -7,7 +7,7 @@
 #optimisation-result .dseo::before { content: ""; position: absolute; border-left: 1px solid white; height: 57px; min-width: 1px; left: 71px; top: 12px; }
 
 #optimisation-result .dseo { background: #ffaa23 url(../../images/caution.svg) no-repeat 25px center; background-size: 29px;}
-.detail-optimisation { padding: 20px 0; border-top: 1px solid #eaeaea; border-bottom: 1px solid #eaeaea; margin: 40px 0 0; }
+.detail-optimisation { padding: 20px 0; border-top: 1px solid #eaeaea; border-bottom: 1px solid #eaeaea; margin: 40px 0; }
 .detail-optimisation li { color: #383838; padding: 8px 0; display: inline-block; vertical-align: middle; width: 33.33%; margin: 0 -2px; }
 .detail-optimisation .txt-score { display: inline-block; vertical-align: middle;}
 

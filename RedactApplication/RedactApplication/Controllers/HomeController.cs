@@ -85,7 +85,15 @@ namespace RedactApplication.Controllers
             var user = db.UTILISATEURs.Find(userId);
             var now = DateTime.Now;
             var startDate = ConfigurationManager.AppSettings["startDate"].ToString();
-            var startOfMonth = new DateTime(now.Year, now.Month - 1, int.Parse(startDate));
+            var startOfMonth = new DateTime();
+            if (now.Month != 1)
+            {
+                startOfMonth = new DateTime(now.Year, now.Month - 1, int.Parse(startDate));
+            } else
+            {
+                startOfMonth = new DateTime(now.Year - 1, 12, int.Parse(startDate));
+            }
+            
             var daysInMonth = DateTime.DaysInMonth(now.Year, now.Month);
             var lastDay = new DateTime(now.Year, now.Month, daysInMonth);
             var role = val.GetUtilisateurRoleToString(userId);
@@ -216,7 +224,15 @@ namespace RedactApplication.Controllers
                 var listeDataCmde = val.GetListCommande();
                 var now = DateTime.Now;
                 var startDate = ConfigurationManager.AppSettings["startDate"].ToString();
-                var startOfMonth = new DateTime(now.Year, now.Month - 1, int.Parse(startDate));
+                var startOfMonth = new DateTime();
+                if (now.Month != 1)
+                {
+                    startOfMonth = new DateTime(now.Year, now.Month - 1, int.Parse(startDate));
+                }
+                else
+                {
+                    startOfMonth = new DateTime(now.Year - 1, 12, int.Parse(startDate));
+                }
                 var daysInMonth = DateTime.DaysInMonth(now.Year, now.Month);
                 var lastDay = new DateTime(now.Year, now.Month, daysInMonth);
                 listeDataCmde = listeDataCmde.Where(x => x.date_livraison >= startOfMonth &&
@@ -231,11 +247,11 @@ namespace RedactApplication.Controllers
                     foreach (var cmd in listeDataCmde)
                     {
                         COMMANDE commande = db.COMMANDEs.Find(cmd.commandeId);
-                        if (string.IsNullOrEmpty(commande.mot_cle_secondaire))
+                        /*if (string.IsNullOrEmpty(commande.mot_cle_secondaire))
                         {
                             string mot_cle_pricipal = commande.mot_cle_pricipal;
                             int guide_id = GetGuideID(mot_cle_pricipal);
-
+                            commande.guide_id = guide_id.ToString();
                             //Lancer une commande de guide              
                             string url = "https://yourtext.guru/api/guide/" + guide_id;
 
@@ -370,7 +386,7 @@ namespace RedactApplication.Controllers
                                     }
                                 }
                             }
-                        }
+                        }*/
                     }
                 }
                 Session["UpdateCommande"] = null;
@@ -383,7 +399,7 @@ namespace RedactApplication.Controllers
                
             }
 
-            Thread.Sleep(200000);
+            //Thread.Sleep(200000);
         }
 
         public int SendNotification(COMMANDE commande, Guid? fromId, Guid? toId, string message)

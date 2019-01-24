@@ -1,9 +1,10 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
-  <EntityContainerMapping StorageEntityContainer="redactapplicationModelStoreContainer" CdmEntityContainer="redactapplicationEntities">
+  <EntityContainerMapping CdmEntityContainer="redactapplicationEntities" StorageEntityContainer="redactapplicationModelStoreContainer">
     <EntitySetMapping Name="COMMANDEs">
       <EntityTypeMapping TypeName="redactapplicationModel.COMMANDE">
         <MappingFragment StoreEntitySet="COMMANDE">
+          <ScalarProperty Name="guide_id" ColumnName="guide_id" />
           <ScalarProperty Name="etat_sms" ColumnName="etat_sms" />
           <ScalarProperty Name="siteId" ColumnName="siteId" />
           <ScalarProperty Name="tagId" ColumnName="tagId" />
@@ -289,6 +290,7 @@
     <EntitySetMapping Name="GUIDEs">
       <EntityTypeMapping TypeName="redactapplicationModel.GUIDE">
         <MappingFragment StoreEntitySet="GUIDE">
+          <ScalarProperty Name="guide_id" ColumnName="guide_id" />
           <ScalarProperty Name="paragraphe_2" ColumnName="paragraphe_2" />
           <ScalarProperty Name="sous_titre_2" ColumnName="sous_titre_2" />
           <ScalarProperty Name="paragraphe_1" ColumnName="paragraphe_1" />

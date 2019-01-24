@@ -37,6 +37,7 @@
           <Property Name="tagId" Type="uniqueidentifier" />
           <Property Name="siteId" Type="uniqueidentifier" />
           <Property Name="etat_sms" Type="bit" />
+          <Property Name="guide_id" Type="nvarchar(max)" />
         </EntityType>
         <EntityType Name="COMMANDE_TYPE">
           <Key>
@@ -82,6 +83,7 @@
           <Property Name="paragraphe_1" Type="nvarchar(max)" />
           <Property Name="sous_titre_2" Type="nvarchar(max)" />
           <Property Name="paragraphe_2" Type="nvarchar(max)" />
+          <Property Name="guide_id" Type="nchar" MaxLength="10" />
         </EntityType>
         <EntityType Name="MODELE">
           <Key>
@@ -872,6 +874,7 @@
           <Property Name="siteId" Type="Guid" />
           <NavigationProperty Name="SITE" Relationship="redactapplicationModel.FK_COMMANDE_SITES" FromRole="COMMANDE" ToRole="SITE" />
           <Property Name="etat_sms" Type="Boolean" />
+          <Property Name="guide_id" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="COMMANDE_TYPE">
           <Key>
@@ -1455,35 +1458,37 @@
           <Key>
             <PropertyRef Name="guideId" />
           </Key>
-          <Property Name="guideId" Type="Guid" Nullable="false" />
-          <Property Name="date_creation" Type="DateTime" Precision="3" />
-          <Property Name="demandeur" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="redacteur" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="guideId" Nullable="false" Type="Guid" />
+          <Property Name="date_creation" Precision="3" Type="DateTime" />
+          <Property Name="demandeur" MaxLength="Max" FixedLength="false" Unicode="true" Type="String" />
+          <Property Name="redacteur" MaxLength="Max" FixedLength="false" Unicode="true" Type="String" />
           <Property Name="type" Type="Int32" />
-          <Property Name="mot_cle_pricipal" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="mot_cle_secondaire" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="consigne_autres" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="lien_pdf" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="grammes1" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="grammes2" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="grammes3" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="entities" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="titre" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="chapo" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="sous_titre_1" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="paragraphe_1" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="sous_titre_2" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="paragraphe_2" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="mot_cle_pricipal" MaxLength="Max" FixedLength="false" Unicode="true" Type="String" />
+          <Property Name="mot_cle_secondaire" MaxLength="Max" FixedLength="false" Unicode="true" Type="String" />
+          <Property Name="consigne_autres" MaxLength="Max" FixedLength="false" Unicode="true" Type="String" />
+          <Property Name="lien_pdf" MaxLength="Max" FixedLength="false" Unicode="true" Type="String" />
+          <Property Name="grammes1" MaxLength="Max" FixedLength="false" Unicode="true" Type="String" />
+          <Property Name="grammes2" MaxLength="Max" FixedLength="false" Unicode="true" Type="String" />
+          <Property Name="grammes3" MaxLength="Max" FixedLength="false" Unicode="true" Type="String" />
+          <Property Name="entities" MaxLength="Max" FixedLength="false" Unicode="true" Type="String" />
+          <Property Name="titre" MaxLength="Max" FixedLength="false" Unicode="true" Type="String" />
+          <Property Name="chapo" MaxLength="Max" FixedLength="false" Unicode="true" Type="String" />
+          <Property Name="sous_titre_1" MaxLength="Max" FixedLength="false" Unicode="true" Type="String" />
+          <Property Name="paragraphe_1" MaxLength="Max" FixedLength="false" Unicode="true" Type="String" />
+          <Property Name="sous_titre_2" MaxLength="Max" FixedLength="false" Unicode="true" Type="String" />
+          <Property Name="paragraphe_2" MaxLength="Max" FixedLength="false" Unicode="true" Type="String" />
+          <Property Name="guide_id" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
         </EntityType>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
-        <EntityContainerMapping StorageEntityContainer="redactapplicationModelStoreContainer" CdmEntityContainer="redactapplicationEntities">
+        <EntityContainerMapping CdmEntityContainer="redactapplicationEntities" StorageEntityContainer="redactapplicationModelStoreContainer">
           <EntitySetMapping Name="COMMANDEs">
             <EntityTypeMapping TypeName="redactapplicationModel.COMMANDE">
               <MappingFragment StoreEntitySet="COMMANDE">
+                <ScalarProperty Name="guide_id" ColumnName="guide_id" />
                 <ScalarProperty Name="etat_sms" ColumnName="etat_sms" />
                 <ScalarProperty Name="siteId" ColumnName="siteId" />
                 <ScalarProperty Name="tagId" ColumnName="tagId" />
@@ -1769,6 +1774,7 @@
           <EntitySetMapping Name="GUIDEs">
             <EntityTypeMapping TypeName="redactapplicationModel.GUIDE">
               <MappingFragment StoreEntitySet="GUIDE">
+                <ScalarProperty Name="guide_id" ColumnName="guide_id" />
                 <ScalarProperty Name="paragraphe_2" ColumnName="paragraphe_2" />
                 <ScalarProperty Name="sous_titre_2" ColumnName="sous_titre_2" />
                 <ScalarProperty Name="paragraphe_1" ColumnName="paragraphe_1" />

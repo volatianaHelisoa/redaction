@@ -33,5 +33,6 @@ namespace RedactApplication.Models
         public string paragraphe_1 { get; set; }
         public string sous_titre_2 { get; set; }
         public string paragraphe_2 { get; set; }
+        public string guide_id { get; set; }
     }
 }

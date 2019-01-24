@@ -27,5 +27,6 @@ namespace RedactApplication.Models
         public string sous_titre_2 { get; set; }
         public string paragraphe_2 { get; set; }
         public string contenu { get; set; }
+        public string guide_id { get; set; }
     }
 }

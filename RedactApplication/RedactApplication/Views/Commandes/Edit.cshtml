@@ -221,6 +221,8 @@ else
                 var regex = /(&nbsp;|<([^>]+)>)/ig;
                 contenu_res = contenu_res.replace(regex, "");
                 var mot_cle_pricipal = $("#mot_cle_pricipal").val();
+                var idCommande = $("#idCommande").val();
+                
                 console.log(contenu_res);
                 $.ajax({
                     type: 'GET',
@@ -230,7 +232,8 @@ else
 
                     data: {
                         contenu: contenu_res,
-                        mot_cle_pricipal: mot_cle_pricipal
+                        mot_cle_pricipal: mot_cle_pricipal,
+                        idCommande: idCommande
                     },
 
                     success: function (response) {

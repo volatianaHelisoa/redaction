@@ -514,6 +514,7 @@
       <DependentUpon>redactapplicationEntities.edmx</DependentUpon>
       <LastGenOutput>redactapplicationEntities.Context1.cs</LastGenOutput>
     </Content>
+    <Content Include="Models\redactapplicationEntities.edmx.sql" />
     <Content Include="Models\redactapplicationEntities.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <DependentUpon>redactapplicationEntities.edmx</DependentUpon>

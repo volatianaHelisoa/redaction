@@ -5,19 +5,19 @@
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
       <Diagram DiagramId="6dd7474700274a3088dbc0ac9123a609" Name="Diagram1" ZoomLevel="75">
-        <EntityTypeShape EntityType="redactapplicationModel.COMMANDE" Width="3" PointX="5.25" PointY="3.75" />
-        <EntityTypeShape EntityType="redactapplicationModel.COMMANDE_TYPE" Width="1.5" PointX="0.625" PointY="10.25" />
-        <EntityTypeShape EntityType="redactapplicationModel.FACTURE" Width="1.5" PointX="17.625" PointY="0.5" />
-        <EntityTypeShape EntityType="redactapplicationModel.MODELE" Width="1.5" PointX="23.375" PointY="0.5" />
-        <EntityTypeShape EntityType="redactapplicationModel.NOTIFICATION" Width="1.5" PointX="17.875" PointY="8.375" />
-        <EntityTypeShape EntityType="redactapplicationModel.PROJET" Width="1.5" PointX="4" PointY="0.5" IsExpanded="true" />
-        <EntityTypeShape EntityType="redactapplicationModel.ROLE" Width="1.5" PointX="13.75" PointY="3.75" />
-        <EntityTypeShape EntityType="redactapplicationModel.STATUT_COMMANDE" Width="1.5" PointX="13.875" PointY="6.75" />
-        <EntityTypeShape EntityType="redactapplicationModel.TEMPLATE" Width="1.5" PointX="21.375" PointY="0.5" />
-        <EntityTypeShape EntityType="redactapplicationModel.THEME" Width="1.5" PointX="12.375" PointY="0.5" />
-        <EntityTypeShape EntityType="redactapplicationModel.USER_THEME" Width="1.5" PointX="17.625" PointY="4.875" />
-        <EntityTypeShape EntityType="redactapplicationModel.UserRole" Width="1.5" PointX="0.5" PointY="6.75" />
-        <EntityTypeShape EntityType="redactapplicationModel.UTILISATEUR" Width="1.5" PointX="10.25" PointY="5.25" />
+        <EntityTypeShape EntityType="redactapplicationModel.COMMANDE" Width="3" PointX="8.25" PointY="11.25" />
+        <EntityTypeShape EntityType="redactapplicationModel.COMMANDE_TYPE" Width="1.5" PointX="6" PointY="23.25" />
+        <EntityTypeShape EntityType="redactapplicationModel.FACTURE" Width="1.5" PointX="3" PointY="16" />
+        <EntityTypeShape EntityType="redactapplicationModel.MODELE" Width="1.5" PointX="3.75" PointY="21.25" />
+        <EntityTypeShape EntityType="redactapplicationModel.NOTIFICATION" Width="1.5" PointX="12" PointY="14.125" />
+        <EntityTypeShape EntityType="redactapplicationModel.PROJET" Width="1.5" PointX="3.75" PointY="3.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="redactapplicationModel.ROLE" Width="1.5" PointX="3.75" PointY="7.125" />
+        <EntityTypeShape EntityType="redactapplicationModel.STATUT_COMMANDE" Width="1.5" PointX="6" PointY="21" />
+        <EntityTypeShape EntityType="redactapplicationModel.TEMPLATE" Width="1.5" PointX="6" PointY="12.875" />
+        <EntityTypeShape EntityType="redactapplicationModel.THEME" Width="1.5" PointX="0.75" PointY="8.875" />
+        <EntityTypeShape EntityType="redactapplicationModel.USER_THEME" Width="1.5" PointX="3" PointY="9.875" />
+        <EntityTypeShape EntityType="redactapplicationModel.UserRole" Width="1.5" PointX="6" PointY="9.875" />
+        <EntityTypeShape EntityType="redactapplicationModel.UTILISATEUR" Width="1.5" PointX="0.75" PointY="11.875" />
         <AssociationConnector Association="redactapplicationModel.FK_COMMANDE_COMMANDE_TYPE" />
         <AssociationConnector Association="redactapplicationModel.FK_COMMANDE_FACTURE" />
         <AssociationConnector Association="redactapplicationModel.FK_COMMANDE_PROJETS" />
@@ -38,17 +38,17 @@
         <AssociationConnector Association="redactapplicationModel.FK_USER_THEME_THEMES" />
         <AssociationConnector Association="redactapplicationModel.FK_USER_THEME_UTILISATEUR" />
         <AssociationConnector Association="redactapplicationModel.FK_UserRole_UTILISATEUR" />
-        <EntityTypeShape EntityType="redactapplicationModel.REDACT_THEME" Width="1.5" PointX="7.625" PointY="0.5" />
+        <EntityTypeShape EntityType="redactapplicationModel.REDACT_THEME" Width="1.5" PointX="3" PointY="12.875" />
         <AssociationConnector Association="redactapplicationModel.FK_REDACT_THEME_THEMES" />
         <AssociationConnector Association="redactapplicationModel.FK_REDACT_THEME_UTILISATEUR" />
-        <EntityTypeShape EntityType="redactapplicationModel.TAG" Width="1.5" PointX="0.75" PointY="0.5" />
+        <EntityTypeShape EntityType="redactapplicationModel.TAG" Width="1.5" PointX="6" PointY="7.25" />
         <AssociationConnector Association="redactapplicationModel.FK_COMMANDE_TAGS" />
-        <EntityTypeShape EntityType="redactapplicationModel.SITE" Width="1.5" PointX="0.75" PointY="3.875" />
+        <EntityTypeShape EntityType="redactapplicationModel.SITE" Width="1.5" PointX="6" PointY="18.625" />
         <AssociationConnector Association="redactapplicationModel.FK_COMMANDE_SITES" />
-        <EntityTypeShape EntityType="redactapplicationModel.MODELE1" Width="1.5" PointX="0.75" PointY="13.25" />
-        <EntityTypeShape EntityType="redactapplicationModel.sysdiagram" Width="1.5" PointX="12.75" PointY="9.75" />
+        <EntityTypeShape EntityType="redactapplicationModel.MODELE1" Width="1.5" PointX="3.75" PointY="31.875" />
+        <EntityTypeShape EntityType="redactapplicationModel.sysdiagram" Width="1.5" PointX="0.75" PointY="0.75" />
         <AssociationConnector Association="redactapplicationModel.FK_TEMPLATE_MODELE1" />
-        <EntityTypeShape EntityType="redactapplicationModel.GUIDE" Width="1.5" PointX="9.375" PointY="12.75" />
+        <EntityTypeShape EntityType="redactapplicationModel.GUIDE" PointX="6.375" PointY="0.75" Width="1.5" />
         </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

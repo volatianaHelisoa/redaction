@@ -5,6 +5,12 @@
     Layout = "~/Views/Shared/LayoutConnected.cshtml";
 
 }
+
+@section css
+{
+    <link rel="stylesheet" href="~/Content/css/elements/scoring.css">
+}
+
 @if (Session["name"] != null && @Session["role"] != null && @Session["role"].ToString() != "2")
 {
     <main id="wrapper">
@@ -48,11 +54,6 @@
                                     <strong>Mots clés :</strong>
                                     @Html.TextBoxFor(x => x.mot_cle_pricipal)
                                 </div>
-                                <div class="blk">
-                                    <strong>Type :</strong>
-                                    <input type="radio" value="0" id="oneShot" name="typeguide"><label for="oneShot">One shot</label>
-                                    <input type="radio" value="1" id="premium" name="typeguide"><label for="premium">Premium</label>
-                                </div>
                                 <div class="wrap commande-view">
                                     <div class="blk">
                                         <strong>Contenu : </strong>
@@ -69,47 +70,47 @@
                         </div>
                     }
 
-                        <span class="clearfix"></span>
-                        @if (ViewBag.optimisation != null)
-                        {
-                            <div id="optimisation-result">
-                                <div class="section-title-rounded">
-                                    <span>Niveau d'optimisation</span>
+                    <span class="clearfix"></span>
+                    @if (ViewBag.optimisation != null)
+                    {
+                        <div id="optimisation-result">
+                            <div class="section-title-rounded">
+                                <span>Niveau d'optimisation</span>
+                            </div>
+                            <div class="score text-centered" style="padding: 30px 0;">
+                                <div class="scoreitem soseo">
+                                    Score d'optimisation (SOSEO)
+                                    <strong id="soseo-val">35%</strong>
                                 </div>
-                                <div class="score text-centered" style="padding: 30px 0;">
-                                    <div class="scoreitem soseo">
-                                        Score d'optimisation (SOSEO)
-                                        <strong id="soseo-val">35%</strong>
-                                    </div>
-                                    <div class="scoreitem dseo">
-                                        Danger SEO (DSEO)
-                                        <strong id="dseo-val">0%</strong>
-                                    </div>
-                                </div>
-                                <div class="detail-optimisation">
-                                    <ul>
-                                        <li><dd class="word">Crédit</dd> <div class="txt-score">25<span class="normal"></span></div></li>
-                                        <li><dd class="word">Pret</dd> <div class="txt-score">25<span class="forte"></span></div></li>
-                                        <li><dd class="word">Assurance</dd> <div class="txt-score">25<span class="normal"></span></div></li>
-                                        <li><dd class="word">Immobilier</dd> <div class="txt-score">25<span class="sousoptimise"></span></div></li>
-                                        <li><dd class="word">Justificatif</dd> <div class="txt-score">25<span class="forte"></span></div></li>
-                                        <li><dd class="word">Personnel</dd> <div class="txt-score">25<span class="suroptimise"></span></div></li>
-                                        <li><dd class="word">Projet</dd> <div class="txt-score">25<span class="sousoptimise"></span></div></li>
-                                        <li><dd class="word">Financement</dd> <div class="txt-score">25<span class="forte"></span></div></li>
-                                    </ul>
-                                </div>
-                                <div class="legend">
-                                    <ul>
-                                        <li><dd class="word">Suroptimisation</dd><span class="suroptimise"></span></li>
-                                        <li><dd class="word">Optimisation forte</dd><span class="forte"></span></li>
-                                        <li><dd class="word">Optimisation normale</dd> <span class="normal"></span></li>
-                                        <li><dd class="word">Sous-optimisation</dd><span class="sousoptimise"></span></li>
-                                    </ul>
+                                <div class="scoreitem dseo">
+                                    Danger SEO (DSEO)
+                                    <strong id="dseo-val">0%</strong>
                                 </div>
                             </div>
-                        }
+                            <div class="detail-optimisation">
+                                <ul>
+                                    <li><dd class="word">Crédit</dd> <div class="txt-score">25<span class="normal"></span></div></li>
+                                    <li><dd class="word">Pret</dd> <div class="txt-score">25<span class="forte"></span></div></li>
+                                    <li><dd class="word">Assurance</dd> <div class="txt-score">25<span class="normal"></span></div></li>
+                                    <li><dd class="word">Immobilier</dd> <div class="txt-score">25<span class="sousoptimise"></span></div></li>
+                                    <li><dd class="word">Justificatif</dd> <div class="txt-score">25<span class="forte"></span></div></li>
+                                    <li><dd class="word">Personnel</dd> <div class="txt-score">25<span class="suroptimise"></span></div></li>
+                                    <li><dd class="word">Projet</dd> <div class="txt-score">25<span class="sousoptimise"></span></div></li>
+                                    <li><dd class="word">Financement</dd> <div class="txt-score">25<span class="forte"></span></div></li>
+                                </ul>
+                            </div>
+                            <div class="legend">
+                                <ul>
+                                    <li><dd class="word">Suroptimisation</dd><span class="suroptimise"></span></li>
+                                    <li><dd class="word">Optimisation forte</dd><span class="forte"></span></li>
+                                    <li><dd class="word">Optimisation normale</dd> <span class="normal"></span></li>
+                                    <li><dd class="word">Sous-optimisation</dd><span class="sousoptimise"></span></li>
+                                </ul>
+                            </div>
+                        </div>
+                    }
 
-                    </div>
+                </div>
 
             </div>
         </div>
@@ -140,9 +141,9 @@ else
 
     <script type="text/javascript">
         $(document).ready(function () {
-  
 
-           
+
+
             $(".scores").hide();
 
             $("#btn-optimisation").click(function () {

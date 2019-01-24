@@ -36,15 +36,62 @@ namespace RedactApplication.Controllers
         // GET: Guide
         public ActionResult ListGuide()
         {
-            if (Session["UpdateGuide"] == null)
+            string guides_in_progress = "0";
+
+            try
             {
-                Session["UpdateGuide"] = 1;
-                UpdateGuide();
+                JObject status = get_status();
+                guides_in_progress = GetJArrayValue(status, "guides_in_progress");
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine("thread error: " + ex);
             }
 
-           
+            if (guides_in_progress == "0")
+                 UpdateGuide();
+
             ViewBag.listeGuideVm = new Guides().GetListGuide();           
             return View();
+        }
+
+        private string GetJArrayValue(JObject yourJArray, string key)
+        {
+            string res = "";
+            foreach (KeyValuePair<string, JToken> keyValuePair in yourJArray)
+            {
+                if (key == keyValuePair.Key)
+                {
+                    return keyValuePair.Value.ToString();
+                }
+            }
+
+            return res;
+        }
+
+        private JObject get_status()
+        {
+            string url = "https://yourtext.guru/api/status/";
+            var request = (HttpWebRequest)WebRequest.Create(url);
+
+            request.ContentType = "application/json";
+            request.Method = "GET";
+            UTF8Encoding enc = new UTF8Encoding();
+            string usernamePassword = ConfigurationManager.AppSettings["yourtext_usr"] + ":" + ConfigurationManager.AppSettings["yourtext_pwd"];
+            request.Headers.Add("Authorization", "Basic " + Convert.ToBase64String(enc.GetBytes(usernamePassword)));
+            request.Headers.Add("KEY", ConfigurationManager.AppSettings["yourtext_api"]);
+
+            var response = (HttpWebResponse)request.GetResponse();
+
+            JObject jsonVal;
+
+            using (StreamReader streamReader = new StreamReader(response.GetResponseStream()))
+            {
+                var res = streamReader.ReadToEnd();
+                jsonVal = JObject.Parse(res) as JObject;
+            }
+
+            return jsonVal;
         }
 
         // GET: Guide/Create
@@ -72,7 +119,7 @@ namespace RedactApplication.Controllers
                     _userId = Guid.Parse(HttpContext.User.Identity.Name);
 
 
-                var typeguide = Request.Form["typeguide"];
+                var typeguide = "1";
 
                 var newGuide = new GUIDE();
                 newGuide.date_creation = DateTime.Now;
@@ -113,6 +160,8 @@ namespace RedactApplication.Controllers
                 // Récupère la liste des commandes
                 var listeDataCmde = val.GetListGuide();
 
+                var db = new redactapplicationEntities();
+
                 if (listeDataCmde.Count() > 0)
                 { 
                     listeDataCmde = listeDataCmde.Where(x => x.mot_cle_secondaire == "" || x.mot_cle_secondaire == null).ToList();
@@ -120,67 +169,85 @@ namespace RedactApplication.Controllers
                     foreach (var cmd in listeDataCmde)
                     {
                         GUIDE guide = db.GUIDEs.Find(cmd.guideId);
-
                         string mot_cle_pricipal = guide.mot_cle_pricipal;
-                        int guide_id = 0;
-
-                        if (guide.type == 0) //oneshot
+                        if (string.IsNullOrEmpty(guide.guide_id))
                         {
-                             guide_id = GetGuideID(mot_cle_pricipal, "oneshot");
+                            int guide_id = GetGuideID(mot_cle_pricipal, "premium");
+                            guide.guide_id = guide_id.ToString();
+                            int save = db.SaveChanges();
                         }
-                        else //premium
+                        else
                         {
-                             guide_id = GetGuideID(mot_cle_pricipal, "premium");
-                        }
-
-                        //Lancer une commande de guide              
-                        string url = "https://yourtext.guru/api/guide/" + guide_id;
-
-                        var res = "";
-                        var request = (HttpWebRequest)WebRequest.Create(url);
-                        var grammes = "";
-
-                        string usernamePassword = ConfigurationManager.AppSettings["yourtext_usr"] + ":" + ConfigurationManager.AppSettings["yourtext_pwd"];
-                        //execute when task has been cancel  
-                        cancellationToken.ThrowIfCancellationRequested();
-                        //Obtenir le guide
-                        if (request != null)
-                        {
-                            request.ContentType = "application/json";
-                            request.Method = "GET";
-                            UTF8Encoding enc = new UTF8Encoding();
-                            request.Headers.Add("Authorization", "Basic " + Convert.ToBase64String(enc.GetBytes(usernamePassword)));
-                            request.Headers.Add("KEY", ConfigurationManager.AppSettings["yourtext_api"]);
-
-                            await Task.Delay(200000); //3mn       
-
-
-                            var response = (HttpWebResponse)request.GetResponse();
-                            await Task.Delay(200000); //3mn    
-                            using (StreamReader streamReader = new StreamReader(response.GetResponseStream()))
+                            /*if (guide.type == 0) //oneshot
                             {
-                                res = streamReader.ReadToEnd();
-                                JArray jsonVal = JArray.Parse(res) as JArray;
-                                if (guide.type == 0) //oneshot
-                                {
-                                    string titre = (jsonVal[0]["items"][0]["tokens"] != null) ? string.Join(",", jsonVal[0]["items"][0]["tokens"]) : "";
-                                    string chapo = (jsonVal[0]["items"][1]["tokens"] != null) ? string.Join(",", jsonVal[0]["items"][1]["tokens"]) : "";
-                                    string sous_titre_1 = (jsonVal[0]["items"][2]["tokens"] != null) ? string.Join(",", jsonVal[0]["items"][2]["tokens"]) : "";
-                                    var paragraphe_1 = string.Join(",", jsonVal[0]["items"][3]["lines"]) ?? null;
-                                    string sous_titre_2 = (jsonVal[0]["items"][4]["tokens"] != null) ? string.Join(",", jsonVal[0]["items"][4]["tokens"]) : "";
-                                    var paragraphe_2 = string.Join(",", jsonVal[0]["items"][5]["lines"]) ?? null;
+                                guide_id = GetGuideID(mot_cle_pricipal, "oneshot");
+                            }
+                            else //premium
+                            {
+                                guide_id = GetGuideID(mot_cle_pricipal, "premium");
+                            }*/
 
-                                    guide.titre = StatePageSingleton.SanitizeString(Sanitizer.GetSafeHtmlFragment(titre));
-                                    guide.chapo = StatePageSingleton.SanitizeString(Sanitizer.GetSafeHtmlFragment(chapo));
-                                    guide.sous_titre_1 = StatePageSingleton.SanitizeString(Sanitizer.GetSafeHtmlFragment(sous_titre_1));
-                                    guide.paragraphe_1 = StatePageSingleton.SanitizeString(Sanitizer.GetSafeHtmlFragment(paragraphe_1.Replace("[","").Replace("]","")));
-                                    guide.sous_titre_2 = StatePageSingleton.SanitizeString(Sanitizer.GetSafeHtmlFragment(sous_titre_2));
-                                    guide.paragraphe_2 = StatePageSingleton.SanitizeString(Sanitizer.GetSafeHtmlFragment(paragraphe_2.Replace("[", "").Replace("]", "")));
+                            //Lancer une commande de guide              
+                            string url = "https://yourtext.guru/api/guide/" + guide.guide_id;
 
-                                    guide.mot_cle_secondaire = StatePageSingleton.SanitizeString(Sanitizer.GetSafeHtmlFragment(titre));
-                                }
-                                else //premium
+                            var res = "";
+                            var request = (HttpWebRequest)WebRequest.Create(url);
+                            var grammes = "";
+
+                            string usernamePassword = ConfigurationManager.AppSettings["yourtext_usr"] + ":" + ConfigurationManager.AppSettings["yourtext_pwd"];
+                            //execute when task has been cancel  
+                            cancellationToken.ThrowIfCancellationRequested();
+                            //Obtenir le guide
+                            if (request != null)
+                            {
+                                request.ContentType = "application/json";
+                                request.Method = "GET";
+                                UTF8Encoding enc = new UTF8Encoding();
+                                request.Headers.Add("Authorization", "Basic " + Convert.ToBase64String(enc.GetBytes(usernamePassword)));
+                                request.Headers.Add("KEY", ConfigurationManager.AppSettings["yourtext_api"]);
+                                //await Task.Delay(200000); //3mn       
+
+                                var response = (HttpWebResponse)request.GetResponse();
+                                //await Task.Delay(200000); //3mn    
+                                using (StreamReader streamReader = new StreamReader(response.GetResponseStream()))
                                 {
+                                    res = streamReader.ReadToEnd();
+                                    JArray jsonVal = JArray.Parse(res) as JArray;
+                                    /*if (guide.type == 0) //oneshot
+                                    {
+                                        string titre = (jsonVal[0]["items"][0]["tokens"] != null) ? string.Join(",", jsonVal[0]["items"][0]["tokens"]) : "";
+                                        string chapo = (jsonVal[0]["items"][1]["tokens"] != null) ? string.Join(",", jsonVal[0]["items"][1]["tokens"]) : "";
+                                        string sous_titre_1 = (jsonVal[0]["items"][2]["tokens"] != null) ? string.Join(",", jsonVal[0]["items"][2]["tokens"]) : "";
+                                        var paragraphe_1 = string.Join(",", jsonVal[0]["items"][3]["lines"]) ?? null;
+                                        string sous_titre_2 = (jsonVal[0]["items"][4]["tokens"] != null) ? string.Join(",", jsonVal[0]["items"][4]["tokens"]) : "";
+                                        var paragraphe_2 = string.Join(",", jsonVal[0]["items"][5]["lines"]) ?? null;
+
+                                        guide.titre = StatePageSingleton.SanitizeString(Sanitizer.GetSafeHtmlFragment(titre));
+                                        guide.chapo = StatePageSingleton.SanitizeString(Sanitizer.GetSafeHtmlFragment(chapo));
+                                        guide.sous_titre_1 = StatePageSingleton.SanitizeString(Sanitizer.GetSafeHtmlFragment(sous_titre_1));
+                                        guide.paragraphe_1 = StatePageSingleton.SanitizeString(Sanitizer.GetSafeHtmlFragment(paragraphe_1.Replace("[","").Replace("]","")));
+                                        guide.sous_titre_2 = StatePageSingleton.SanitizeString(Sanitizer.GetSafeHtmlFragment(sous_titre_2));
+                                        guide.paragraphe_2 = StatePageSingleton.SanitizeString(Sanitizer.GetSafeHtmlFragment(paragraphe_2.Replace("[", "").Replace("]", "")));
+
+                                        guide.mot_cle_secondaire = StatePageSingleton.SanitizeString(Sanitizer.GetSafeHtmlFragment(titre));
+                                    }
+                                    else //premium
+                                    {
+                                        string grammes1 = (jsonVal[0]["grammes1"] != null) ? string.Join(",", jsonVal[0]["grammes1"]) : "";
+                                        string grammes2 = (jsonVal[0]["grammes2"] != null) ? string.Join(",", jsonVal[0]["grammes2"]) : "";
+                                        string grammes3 = (jsonVal[0]["grammes3"] != null) ? string.Join(",", jsonVal[0]["grammes3"]) : "";
+                                        string entities = (jsonVal[0]["entities"] != null) ? string.Join(",", jsonVal[0]["entities"]) : "";
+                                        grammes = grammes2 + "," + grammes3;
+
+                                        guide.grammes1 = StatePageSingleton.SanitizeString(Sanitizer.GetSafeHtmlFragment(grammes1));
+                                        guide.grammes2 = StatePageSingleton.SanitizeString(Sanitizer.GetSafeHtmlFragment(grammes2));
+                                        guide.grammes3 = StatePageSingleton.SanitizeString(Sanitizer.GetSafeHtmlFragment(grammes3));
+                                        guide.entities = StatePageSingleton.SanitizeString(Sanitizer.GetSafeHtmlFragment(entities));
+
+                                        if (!string.IsNullOrEmpty(grammes))
+                                            guide.mot_cle_secondaire = StatePageSingleton.SanitizeString(Sanitizer.GetSafeHtmlFragment(grammes));
+                                    }*/
+
                                     string grammes1 = (jsonVal[0]["grammes1"] != null) ? string.Join(",", jsonVal[0]["grammes1"]) : "";
                                     string grammes2 = (jsonVal[0]["grammes2"] != null) ? string.Join(",", jsonVal[0]["grammes2"]) : "";
                                     string grammes3 = (jsonVal[0]["grammes3"] != null) ? string.Join(",", jsonVal[0]["grammes3"]) : "";
@@ -195,83 +262,82 @@ namespace RedactApplication.Controllers
                                     if (!string.IsNullOrEmpty(grammes))
                                         guide.mot_cle_secondaire = StatePageSingleton.SanitizeString(Sanitizer.GetSafeHtmlFragment(grammes));
                                 }
-                               
+
+
                             }
 
-                          
-                        }
+                            int result = db.SaveChanges();
 
-                        int result = db.SaveChanges();
-
-                        if (result > 0)
-                        {
-                            if (Request.Url != null)
+                            if (result > 0)
                             {
-                                var url_req = Request.Url.Scheme;
                                 if (Request.Url != null)
                                 {
-                                    string callbackurl = Request.Url.Host != "localhost"
-                                        ? Request.Url.Host
-                                        : Request.Url.Authority;
-                                    var port = Request.Url.Port;
-                                    if (!string.IsNullOrEmpty(port.ToString()) && Request.Url.Host != "localhost")
-                                        callbackurl += ":" + port;
-
-                                    url_req += "://" + callbackurl;
-                                }
-
-
-                                StringBuilder mailBody = new StringBuilder();
-                                string filename = "";
-
-                                if (guide.type == 0) //oneshot
-                                {
-                                    filename = "GuideOneShot-" + mot_cle_pricipal +".pdf";
-                                    GeneratOneshotPDF(guide, filename);
-                                }
-
-                                else
-                                {
-                                    filename = "GuidePremium" + mot_cle_pricipal  + ".pdf";
-                                    GeneratePremiumPDF(guide, filename);
-                                }
-
-                                var filePath = Server.MapPath("~/Pdf/Guides/"+ filename);
-                                                               
-                                if (guide.redacteur != null)
-                                {
-                                    mailBody.AppendFormat(
-                                        "Monsieur / Madame, ");
-                                    mailBody.AppendFormat("<br />");
-                                    mailBody.AppendFormat(
-                                        "<p>Vous avez reçu un nouveau guide à la rédaction le " + DateTime.Now +".<p>") ;
-                                    mailBody.AppendFormat("<br />");
-                                    mailBody.AppendFormat(
-                                       "<p>Consignes : " + guide.consigne_autres);
-                                    mailBody.AppendFormat("<br />");
-                                    mailBody.AppendFormat("Cordialement,");
-                                    mailBody.AppendFormat("<br />");
-                                    mailBody.AppendFormat("Media click App .");
-
-                                    bool isSendMail = MailClient.SendMail(guide.redacteur, mailBody.ToString(), "Media click App - nouvelle commande.", filePath);
-                                    if (isSendMail)
+                                    var url_req = Request.Url.Scheme;
+                                    if (Request.Url != null)
                                     {
-                                        guide.lien_pdf = "~/Pdf/Guides/" + filename;
-                                        db.SaveChanges();
-                                        Debug.WriteLine("CreateCommandeConfirmation");
+                                        string callbackurl = Request.Url.Host != "localhost"
+                                            ? Request.Url.Host
+                                            : Request.Url.Authority;
+                                        var port = Request.Url.Port;
+                                        if (!string.IsNullOrEmpty(port.ToString()) && Request.Url.Host != "localhost")
+                                            callbackurl += ":" + port;
+
+                                        url_req += "://" + callbackurl;
                                     }
 
-                                 
 
+                                    StringBuilder mailBody = new StringBuilder();
+                                    string filename = "";
+
+                                    if (guide.type == 0) //oneshot
+                                    {
+                                        filename = "GuideOneShot-" + mot_cle_pricipal + ".pdf";
+                                        GeneratOneshotPDF(guide, filename);
+                                    }
+
+                                    else
+                                    {
+                                        filename = "GuidePremium" + mot_cle_pricipal + ".pdf";
+                                        GeneratePremiumPDF(guide, filename);
+                                    }
+
+                                    var filePath = Server.MapPath("~/Pdf/Guides/" + filename);
+
+                                    if (guide.redacteur != null)
+                                    {
+                                        mailBody.AppendFormat(
+                                            "Monsieur / Madame, ");
+                                        mailBody.AppendFormat("<br />");
+                                        mailBody.AppendFormat(
+                                            "<p>Vous avez reçu un nouveau guide à la rédaction le " + DateTime.Now + ".<p>");
+                                        mailBody.AppendFormat("<br />");
+                                        mailBody.AppendFormat(
+                                           "<p>Consignes : " + guide.consigne_autres);
+                                        mailBody.AppendFormat("<br />");
+                                        mailBody.AppendFormat("Cordialement,");
+                                        mailBody.AppendFormat("<br />");
+                                        mailBody.AppendFormat("Media click App .");
+
+                                        bool isSendMail = MailClient.SendMail(guide.redacteur, mailBody.ToString(), "Media click App - nouvelle commande.", filePath);
+                                        if (isSendMail)
+                                        {
+                                            guide.lien_pdf = "~/Pdf/Guides/" + filename;
+                                            db.SaveChanges();
+                                            Debug.WriteLine("CreateCommandeConfirmation");
+                                        }
+
+
+
+                                    }
                                 }
                             }
-                        }
-                        else
-                        {
-                            Debug.WriteLine("thread error");
+                            else
+                            {
+                                Debug.WriteLine("thread error");
+                            }
                         }
                     }
-                    Session["UpdateGuide"] = null;
+                    //Session["UpdateGuide"] = null;
                 }
 
             }
@@ -286,43 +352,53 @@ namespace RedactApplication.Controllers
 
         private int GetGuideID(string mot_cle_pricipal,string type)
         {
-            int guide_id = 0;
-            string url = "https://yourtext.guru/api/guide/";
-            var request = (HttpWebRequest)WebRequest.Create(url);
-            request.ContentType = "application/json";
-            request.Method = "POST";
-            string usernamePassword = ConfigurationManager.AppSettings["yourtext_usr"] + ":" + ConfigurationManager.AppSettings["yourtext_pwd"];
-
-            if (request != null)
+            try
             {
-                UTF8Encoding enc = new UTF8Encoding();
-                request.Headers.Add("Authorization", "Basic " + Convert.ToBase64String(enc.GetBytes(usernamePassword)));
-                request.Headers.Add("KEY", ConfigurationManager.AppSettings["yourtext_api"]);
 
-                using (var streamWriter = new StreamWriter(request.GetRequestStream()))
+                int guide_id = 0;
+                string url = "https://yourtext.guru/api/guide/";
+                var request = (HttpWebRequest)WebRequest.Create(url);
+                request.ContentType = "application/json";
+                request.Method = "POST";
+                string usernamePassword = ConfigurationManager.AppSettings["yourtext_usr"] + ":" + ConfigurationManager.AppSettings["yourtext_pwd"];
+
+                if (request != null)
                 {
-                    string json = new JavaScriptSerializer().Serialize(new
+                    UTF8Encoding enc = new UTF8Encoding();
+                    request.Headers.Add("Authorization", "Basic " + Convert.ToBase64String(enc.GetBytes(usernamePassword)));
+                    request.Headers.Add("KEY", ConfigurationManager.AppSettings["yourtext_api"]);
+
+                    using (var streamWriter = new StreamWriter(request.GetRequestStream()))
                     {
-                        query = mot_cle_pricipal,
-                        lang = "fr_fr",
-                        type = type
-                    });
+                        string json = new JavaScriptSerializer().Serialize(new
+                        {
+                            query = mot_cle_pricipal,
+                            lang = "fr_fr",
+                            type = type
+                        });
 
-                    streamWriter.Write(json);
+                        streamWriter.Write(json);
+                    }
+
+                    var response = (HttpWebResponse)request.GetResponse();
+
+                    using (var streamReader = new StreamReader(response.GetResponseStream()))
+                    {
+                        var result = streamReader.ReadToEnd();
+                        Console.WriteLine(String.Format("Response: {0}", result));
+                        JObject obj = JObject.Parse(result);
+                        guide_id = (int)obj["guide_id"];
+                    }
                 }
 
-                var response = (HttpWebResponse)request.GetResponse();
-
-                using (var streamReader = new StreamReader(response.GetResponseStream()))
-                {
-                    var result = streamReader.ReadToEnd();
-                    Console.WriteLine(String.Format("Response: {0}", result));
-                    JObject obj = JObject.Parse(result);
-                    guide_id = (int)obj["guide_id"];
-                }
+                return guide_id;
             }
+            catch (Exception ex)
+            {
+                Debug.WriteLine("thread error: " + ex);
+                return 0;
 
-            return guide_id;
+            }
         }
 
         public ActionResult GuideConfirmationVolume()
@@ -675,104 +751,117 @@ namespace RedactApplication.Controllers
         [ValidateInput(false)]     
         public async Task<ActionResult> ScoringGuide(GUIDEViewModel model, FormCollection collection, CancellationToken cancellationToken)
         {
-         
-            var mot_cle_pricipal = model.mot_cle_pricipal;
-            var CONTENT = model.contenu;
-
-            int guide_id = int.Parse(Request.Form["typeguide"]);
-
-            string type = Request.Form["typeguide"] == "0" ? "oneshot" : "premium";
-
-
-            if (guide_id == 0) //oneshot
+            try
             {
-                guide_id = GetGuideID(mot_cle_pricipal, "oneshost");
-            }
-            else //premium
-            {
-                guide_id = GetGuideID(mot_cle_pricipal, "premium");
-            }
 
-            UTF8Encoding enc = new UTF8Encoding();
+                var mot_cle_pricipal = model.mot_cle_pricipal;
+                var CONTENT = model.contenu;
 
-            //Lancer une commande de guide              
-            string url_guide = "https://yourtext.guru/api/guide/" + guide_id;
-            var res = "";
-            var request_guide = (HttpWebRequest)WebRequest.Create(url_guide);
+                int guide_id = 47395;
+
+                string type = Request.Form["typeguide"] == "0" ? "oneshot" : "premium";
+
+
+                /*if (guide_id == 0) //oneshot
+                {
+                    guide_id = GetGuideID(mot_cle_pricipal, "oneshot");
+                }
+                else //premium
+                {
+                    guide_id = GetGuideID(mot_cle_pricipal, "premium");
+                }*/
+                //guide_id = GetGuideID(mot_cle_pricipal, "premium");
+                UTF8Encoding enc = new UTF8Encoding();
+                string usernamePassword = ConfigurationManager.AppSettings["yourtext_usr"] + ":" + ConfigurationManager.AppSettings["yourtext_pwd"];
+                
+                //Lancer une commande de guide              
+                /*string url_guide = "https://yourtext.guru/api/guide/" + guide_id;
+                var res = "";
+                var request_guide = (HttpWebRequest)WebRequest.Create(url_guide);
           
-            string usernamePassword = ConfigurationManager.AppSettings["yourtext_usr"] + ":" + ConfigurationManager.AppSettings["yourtext_pwd"];
-            //execute when task has been cancel  
-            cancellationToken.ThrowIfCancellationRequested();
-            //Obtenir le guide
-            if (request_guide != null)
-            {
-                request_guide.ContentType = "application/json";
-                request_guide.Method = "GET";
+                
+                //execute when task has been cancel  
+                cancellationToken.ThrowIfCancellationRequested();
+                //Obtenir le guide
+                if (request_guide != null)
+                {
+                    request_guide.ContentType = "application/json";
+                    request_guide.Method = "GET";
                
-                request_guide.Headers.Add("Authorization", "Basic " + Convert.ToBase64String(enc.GetBytes(usernamePassword)));
-                request_guide.Headers.Add("KEY", ConfigurationManager.AppSettings["yourtext_api"]);
+                    request_guide.Headers.Add("Authorization", "Basic " + Convert.ToBase64String(enc.GetBytes(usernamePassword)));
+                    request_guide.Headers.Add("KEY", ConfigurationManager.AppSettings["yourtext_api"]);
 
-                await Task.Delay(200000); //3mn   
-                var response_guide = (HttpWebResponse)request_guide.GetResponse();
-                await Task.Delay(200000); //3mn    
-                using (StreamReader streamReader = new StreamReader(response_guide.GetResponseStream()))
+                    await Task.Delay(200000); //3mn   
+                    var response_guide = (HttpWebResponse)request_guide.GetResponse();
+                   // await Task.Delay(200000); //3mn    
+                    using (StreamReader streamReader = new StreamReader(response_guide.GetResponseStream()))
+                    {
+                        res = streamReader.ReadToEnd();
+
+                    }
+                }*/
+
+                //scoring guide      
+                string url = "https://yourtext.guru/api/check/" + guide_id;
+
+                var request = (HttpWebRequest)WebRequest.Create(url);
+                request.Method = "POST";
+                request.ContentType = "application/json";
+                //string usernamePassword = ConfigurationManager.AppSettings["yourtext_usr"] + ":" + ConfigurationManager.AppSettings["yourtext_pwd"];
+
+                if (request != null)
                 {
-                    res = streamReader.ReadToEnd();
+                    //UTF8Encoding enc = new UTF8Encoding();
+                    request.Headers.Add("Authorization", "Basic " + Convert.ToBase64String(enc.GetBytes(usernamePassword)));
+                    request.Headers.Add("KEY", ConfigurationManager.AppSettings["yourtext_api"]);
 
+                    //using (var streamWriter = new StreamWriter(request.GetRequestStream()))
+                    //{
+                    //    //string json = new JavaScriptSerializer().Serialize(new
+                    //    //{
+                    //    //    content = "une technologie grille-pain présente de nombreux avantages"
+                    //    //});
+
+                    //    string json = "{ \"content\" : \" un grille-pain présente de nombreux avantages \" }";
+                    //    // string json = "{\"content\":\"" + CONTENT + "\"}";
+                    //    streamWriter.Write(json);
+                    //}
+                    //var postData = "{ \"content\" : \" un grille-pain présente de nombreux avantages \" }";
+                    var postData = "{\"content\":\"" + CONTENT + "\"}";
+
+
+                    byte[] byteArray = Encoding.UTF8.GetBytes(postData);
+                    request.ContentLength = byteArray.Length;
+
+                    // Get the request stream.
+                    Stream dataStream = request.GetRequestStream();
+                    // Write the data to the request stream.
+                    dataStream.Write(byteArray, 0, byteArray.Length);
+                    // Close the Stream object.
+                    dataStream.Close();
+                    ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
+                    //Thread.Sleep(190000);
+                    var response = (HttpWebResponse)request.GetResponse();
+
+                    using (var streamReader = new StreamReader(response.GetResponseStream()))
+                    {
+                        var result = streamReader.ReadToEnd();
+                        Console.WriteLine(String.Format("Response: {0}", result));
+                        //JArray jsonVal = JArray.Parse(result) as JArray;
+                        JObject jsonVal = JObject.Parse(result);
+                        ViewBag.optimisation = jsonVal;
+                    }
                 }
+
+
+                return View("Scoring");
             }
-
-            //generate guide id
-            string url = "https://yourtext.guru/api/check/" + guide_id;
-
-            var request = (HttpWebRequest)WebRequest.Create(url);
-            request.Method = "POST";
-            request.ContentType = "application/x-www-form-urlencoded";
-            //string usernamePassword = ConfigurationManager.AppSettings["yourtext_usr"] + ":" + ConfigurationManager.AppSettings["yourtext_pwd"];
-
-            if (request != null)
+            catch (Exception ex)
             {
-                //UTF8Encoding enc = new UTF8Encoding();
-                request.Headers.Add("Authorization", "Basic " + Convert.ToBase64String(enc.GetBytes(usernamePassword)));
-                request.Headers.Add("KEY", ConfigurationManager.AppSettings["yourtext_api"]);
+                Debug.WriteLine("thread error: " + ex);
+                return View();
 
-                //using (var streamWriter = new StreamWriter(request.GetRequestStream()))
-                //{
-                //    //string json = new JavaScriptSerializer().Serialize(new
-                //    //{
-                //    //    content = "une technologie grille-pain présente de nombreux avantages"
-                //    //});
-
-                //    string json = "{ \"content\" : \" un grille-pain présente de nombreux avantages \" }";
-                //    // string json = "{\"content\":\"" + CONTENT + "\"}";
-                //    streamWriter.Write(json);
-                //}
-                var postData = "{ \"content\" : \" un grille-pain présente de nombreux avantages \" }";
-
-                byte[] byteArray = Encoding.UTF8.GetBytes(postData);
-                request.ContentLength = byteArray.Length;
-
-                // Get the request stream.
-                Stream dataStream = request.GetRequestStream();
-                // Write the data to the request stream.
-                dataStream.Write(byteArray, 0, byteArray.Length);
-                // Close the Stream object.
-                dataStream.Close();
-                ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
-                //Thread.Sleep(190000);
-                var response = (HttpWebResponse)request.GetResponse();
-
-                using (var streamReader = new StreamReader(response.GetResponseStream()))
-                {
-                    var result = streamReader.ReadToEnd();
-                    Console.WriteLine(String.Format("Response: {0}", result));
-                    JArray jsonVal = JArray.Parse(result) as JArray;
-
-                }
             }
-
-
-            return View();
         }
         
     }

@@ -48,6 +48,7 @@ namespace RedactApplication.Models
         public Nullable<System.Guid> tagId { get; set; }
         public Nullable<System.Guid> siteId { get; set; }
         public Nullable<bool> etat_sms { get; set; }
+        public string guide_id { get; set; }
     
         public virtual COMMANDE_TYPE COMMANDE_TYPE { get; set; }
         public virtual FACTURE FACTURE { get; set; }
